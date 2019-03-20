@@ -1,0 +1,20 @@
+  <div class="feed-header">
+    <h2 class="title">Tweets</h2>
+    <div class="button-container">
+      <div class="button">Tweet</div>
+    </div>
+  </div>
+  <div class="compose-tweet">
+    <form id="compose-tweet">
+      <label for="new-tweet" class="not-visable">Compose a new Tweet</label>
+      <textarea type="text" id="new-tweet" name="new-tweet" ng-required
+        ng-minlength="4" ng-maxlength="280" size="10"
+        ng-attr-placeholder="Compose a new Tweet" rows="3" cols="74" ></textarea>
+    </form>
+    <div class="button-container">
+      <div class="button">Submit</div>
+    </div>
+  </div>
+  <div class="feed">
+    <app-tweet class="full-tweet" *ngFor="let tweet of tweets" [tweet]="tweet"></app-tweet>
+  </div>
