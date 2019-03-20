@@ -1,0 +1,131 @@
+.main .twitter-feed {
+  .feed-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 0px 10px;
+    border-bottom: $border;
+    .title {
+      color: $med-grey3;
+      font-weight: 200;
+      display: flex;
+      flex: 1;
+    }
+    .button-container {
+      display: flex;
+      flex: 1;
+      margin: 11px 0px;
+      .button {
+        margin-left: auto;
+      }
+    }
+  }
+  .compose-tweet {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    padding: 20px 10px;
+    form textarea {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .button-container {
+      margin-left: auto;
+    }
+  }
+  .full-tweet {
+    padding: 0px 10px 0px 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .tweet-sidebar {
+      display: flex;
+      flex: 2;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      margin-right: 15px;
+      .thumbnail-container {
+        flex: 2;
+      }
+      .grey-line-long {
+        flex: 5;
+        @include vertical-line(3px, 100%, $med-grey3);
+        margin-left: auto;
+        margin-right: auto;
+        margin: 2px auto;
+      }
+      .grey-dot {
+        flex: 0.12;
+        @include circle(2.5px, $med-grey3);
+        margin: 2px auto 2px auto;
+      }
+      .grey-line-short {
+        flex: 0.25;
+        @include vertical-line(3px, 100%, $med-grey3);
+        margin: 2px auto;
+      }
+    }
+    .tweet {
+      margin-bottom: 20px;
+    }
+    .profile-description, .tweet-text, .tweet-controls {
+      display: flex;
+      flex: 9;
+    }
+    .profile-description {
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      font-size: 14px;
+      .profile-full-name, .profile-handle, .time-since-tweet {
+        display: flex;
+        margin: 5px 5px 5px 0px;
+      }
+      .profile-full-name {
+        font-size: 16px;
+      }
+      .profile-handle {
+        font-weight: 400;
+      }
+      .profile-handle, .time-since-tweet {
+        color: $med-grey3;
+      }
+
+      .time-since-tweet {
+        margin-left: auto;
+      }
+    }
+    .tweet-text {
+      margin-top: 5px;
+      margin-bottom: 0px;
+    }
+    .tweet-controls {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      .tweet-replies, .icon-menu {
+        display: flex;
+        flex: 1;
+      }
+      .tweet-replies {
+        a {
+          @include clickable-link($dark-blue, $light-blue);
+        }
+      }
+    }
+  }
+}
+
+.twitter-feed .icon-menu {
+  ul {
+    margin: 15px 0px;
+  }
+  li {
+    margin-right: 15px;
+  }
+  a {
+    i {
+      font-size: 16px;
+    }
+  }
+}

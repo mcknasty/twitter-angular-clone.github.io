@@ -1,0 +1,59 @@
+$border: 2px solid $med-grey2;
+
+.sidebar .profile-meta > h3 {
+  @include screenreader();
+}
+.sidebar {
+  .profile-meta {
+    .portrait-container {
+      margin-left: 96px;
+      margin-top: -131px;
+    }
+    .profile-about {
+      padding: 10px 10px;
+      .name-container, .about {
+        width: 100%;
+      }
+      .name-container {
+        h2 {
+          margin-bottom: 5px;
+        }
+        .handle {
+          font-size: 16px;
+        }
+      }
+    }
+    .profile-stats {
+      @include flex-container();
+      border-top: $border;
+      .cell {
+        display: flex;
+        flex-flow: column nowrap;
+        flex: 1;
+        border-right: $border;
+        padding: 10px 10px;
+        .stat-label {
+          margin-bottom: 2px;
+          margin-top: 10px;
+        }
+        .stat-label, .stat-number {
+          margin-right: auto;
+        }
+
+      }
+      .cell:last-child {
+        border-right: none;
+      }
+    }
+  }
+  .trends {
+    h2 {
+      color: $med-grey3;
+      font-weight: 200;
+    }
+    padding: 5px 10px;
+  }
+  .footer {
+    padding: 20px 10px;
+  }
+}
