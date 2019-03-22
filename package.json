@@ -9,6 +9,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "scripts": {
+    "build-github-pages": "ng build --prod --output-path docs --base-href /twitter-angular-clone.github.io/"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~7.2.0",

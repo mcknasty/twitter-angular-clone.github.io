@@ -82,20 +82,18 @@ export class TweetFeedComponent implements OnInit {
         followed.push(id);
         console.log(tweets.length);
         this.tweets = tweets
-          .filter((tweet: Tweet) => followed.indexOf(tweet.userId) !== -1);
+          .filter((tweet: Tweet) => followed.indexOf(tweet.userId) !== -1)
+          .slice(0, 20)
           //Todo: fix sorting
-          // .sort((a, b) => {
-          //   console.log('got here', a.updated, b.updated);
-          //   if(a.updated < b.updated) {
-          //     console.log('less than!');
-          //     return -1;
-          //   }
-          //   if(a.updated > b.updated) {
-          //     console.log('greater than!');
-          //     return 1;
-          //   }
-          //   return 0;
-          // })
+          .sort((a, b) => {
+            if(a.created < b.created) {
+              return 1;
+            }
+            if(a.created > b.created) {
+              return -1;
+            }
+            return 0;
+          });
       });
   }
 
@@ -121,7 +119,9 @@ export class TweetFeedComponent implements OnInit {
   //Todo: comeback to
   add(tweetText: string): void {
     this.newTweet = { ...this.newTweet, userId: this.user.id, tweetText };
-    this.tweetService.addTweet(this.newTweet).subscribe((tweet) => this.tweets.unshift(tweet));
+    this.tweetService
+      .addTweet(this.newTweet)
+      .subscribe((tweet) => this.tweets.unshift(tweet));
   }
 
   /**
