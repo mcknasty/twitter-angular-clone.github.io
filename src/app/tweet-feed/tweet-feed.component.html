@@ -1,7 +1,7 @@
   <div class="feed-header">
     <h2 class="title">Tweets</h2>
     <div class="button-container">
-      <div class="button" (click)="toggle(hero)">Tweet</div>
+      <div class="button" (click)="toggle()">Tweet</div>
     </div>
   </div>
   <div [@openClose]="isOpen ? 'open' : 'closed'" class="compose-tweet" [ngClass]="hide ? 'display-none': null">

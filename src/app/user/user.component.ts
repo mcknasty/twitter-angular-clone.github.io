@@ -10,7 +10,7 @@ import { User } from '../user/user';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit, OnDestroy {
-  user = {}
+  user: User
   navigationSubscription;
   now: number = Date.now();
 

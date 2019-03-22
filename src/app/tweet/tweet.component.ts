@@ -15,8 +15,8 @@ import { UserService } from '../user/user.service';
 })
 export class TweetComponent implements OnInit {
   @Input() tweet: Tweet;
-  user: User | object = {};
-  private now: number = Date.now();
+  user: User;
+  now: number = Date.now();
 
   constructor(private tweetService: TweetService, private userService: UserService) {}
 
