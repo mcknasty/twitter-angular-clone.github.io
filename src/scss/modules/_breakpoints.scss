@@ -52,6 +52,9 @@
     .twitter-feed {
       margin-left: 0px;
       margin-right: 0px;
+      .tweet {
+        min-width: 488px;
+      }
     }
   }
   .footer-mobile {

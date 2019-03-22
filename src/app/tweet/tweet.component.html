@@ -1,7 +1,6 @@
-
   <aside class="tweet-sidebar">
     <div class="thumbnail-container">
-      <img src="https://picsum.photos/47/47/?random&time={{now}}" height="47" width="47" alt="picture of fred" class="thumbnail" />
+      <img src="https://picsum.photos/47/47/?random&time={{ now }}" height="47" width="47" alt="picture of fred" class="thumbnail" />
     </div>
     <!--
     <div class="grey-line-long">&nbsp;</div>
@@ -13,9 +12,9 @@
   </aside>
   <article class="tweet">
     <div class="profile-description">
-      <h3 class="profile-full-name">Patrick Ewing</h3>
-      <span class="profile-handle">@hoverbird</span>
-      <span class="time-since-tweet">{{ changed }}</span>
+      <h3 class="profile-full-name">{{ user.name }}</h3>
+      <span class="profile-handle"><a routerLink="/user/{{user.id}}">{{ user.handle }}</a></span>
+      <span class="time-since-tweet">{{ tweet.created | amTimeAgo:true }} ago</span>
     </div>
     <p class="tweet-text">
       {{ tweet.tweetText }}

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import tweets from '../assets/mock-tweets.json';
 import users from '../assets/mock-users.json';
+import followers from '../assets/mock-followers.json';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,7 @@ export class InMemoryDataService implements InMemoryDbService {
   private db: object;
 
   constructor() {
-    console.log(users);
-    console.log(tweets);
-    this.db = { users, tweets: tweets.slice(0, 5) }
+    this.db = { users, tweets: tweets, followers }
   }
 
   createDb() {

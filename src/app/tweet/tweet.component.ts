@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { Tweet } from './tweet';
 import { TweetBasic } from './tweetBasic';
 import { TweetService } from './tweet.service';
+import { User } from '../user/user';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-tweet',
@@ -13,32 +15,24 @@ import { TweetService } from './tweet.service';
 })
 export class TweetComponent implements OnInit {
   @Input() tweet: Tweet;
-  @Input() now: number = Date.now();
+  user: User | object = {};
+  private now: number = Date.now();
 
-  constructor(private tweetService: TweetService) { }
+  constructor(private tweetService: TweetService, private userService: UserService) {}
 
+  /** Todo: Need to get time string correct! */
   ngOnInit() {
-    //this.getTweets();
+    this.getUser();
   }
 
-  // getTweets(): void {
-  //   this.tweetService.getTweets()
-  //     .subscribe(tweets => this.tweets = tweets);
-  // }
-  //
-  // //Todo: comeback to
-  // add(name: string): void {
-  //   // name = name.trim();
-  //   // if (!name) { return; }
-  //   // this.heroService.addHero({ name } as Hero)
-  //   //   .subscribe(hero => {
-  //   //     this.heroes.push(hero);
-  //   //   });
-  // }
-  //
-  // delete(tweet: Tweet): void {
-  //   this.tweets = this.tweets.filter(t => t !== tweet);
-  //   this.tweetService.deleteTweet(tweet).subscribe();
-  // }
+  getUser(): void {
+    this.userService.getUser(this.tweet.userId)
+      .subscribe(user => this.user = user);
+  }
 
+  /** Todo: Complete
+  formatAgo(time) {
+
+  }
+  **/
 }

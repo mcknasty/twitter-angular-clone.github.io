@@ -1,11 +1,11 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, of, pipe } from 'rxjs';
+import { catchError, map, tap, filter } from 'rxjs/operators';
 
 import { Tweet } from './tweet';
-import { MessageService } from '../message.service';
+import { MessageService } from '../messages/message.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,7 +15,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class TweetService implements OnInit {
-
   private tweetUrl = 'api/tweets';  // URL to web api
 
   ngOnInit() {
@@ -123,6 +122,6 @@ export class TweetService implements OnInit {
 
   /** Log a TweetService message with the MessageService */
   private log(message: string) {
-    this.messageService.add(`TweetService: ${message}`);
+    // this.messageService.add(`TweetService: ${message}`);
   }
 }

@@ -5,9 +5,13 @@ $border: 2px solid $med-grey2;
 }
 .sidebar {
   .profile-meta {
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
     .portrait-container {
       margin-left: 96px;
-      margin-top: -131px;
+      margin-top: -135px;
     }
     .profile-about {
       padding: 10px 10px;
