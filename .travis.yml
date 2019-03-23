@@ -10,7 +10,6 @@ before_script:
   - npm install -g @angular/cli
 script:
   - ng lint
-  - npm run build-github-pages
 deploy:
   provider: pages
   skip_cleanup: true
