@@ -9,5 +9,12 @@ branches:
 before_script:
   - npm install -g @angular/cli
 script:
-- ng lint
-- npm run build-github-pages
+  - ng lint
+  - npm run build-github-pages
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $public_repo
+  local_dir: docs/twitter-angular-clone.github.io
+  on:
+    branch: master
