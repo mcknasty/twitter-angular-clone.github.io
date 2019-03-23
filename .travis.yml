@@ -4,8 +4,8 @@ node_js:
 dist: trusty
 sudo: required
 branches:
-  only:
   - master
+  - build-debug
 before_script:
   - npm install -g @angular/cli
 script:
