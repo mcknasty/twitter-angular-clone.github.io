@@ -10,8 +10,7 @@ before_script:
   - npm install -g @angular/cli
 script:
   - ng lint
-  - mkdir docs
-  - mkdir docs/twitter-angular-clone.github.io
+  - npm run deploy:gh-pages
 deploy:
   provider: pages
   skip_cleanup: true

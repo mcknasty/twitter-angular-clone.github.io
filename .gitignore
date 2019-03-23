@@ -6,8 +6,8 @@
 /out-tsc
 # Only exists if Bazel was run
 /bazel-out
-/docs/twitter-angular-clone.github.io/**
-/docs/twitter-angular-clone.github.io/.gitkeep
+# /docs/twitter-angular-clone.github.io/**
+# /docs/twitter-angular-clone.github.io/.gitkeep
 
 # dependencies
 /node_modules
