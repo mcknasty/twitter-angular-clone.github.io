@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   trigger,
   state,
   style,
   animate,
-  transition,
-  AnimationEvent
+  transition
 } from '@angular/animations';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Tweet } from '../tweet/tweet';
-import { TweetBasic } from '../tweet/tweetBasic';
 import { TweetService } from '../tweet/tweet.service';
 
 import { UserService } from '../user/user.service';
@@ -40,22 +37,37 @@ import followers from '../../assets/mock-followers.json';
     ]),
   ]
 })
-export class TweetFeedComponent implements OnInit {
-  tweets: Tweet[];
+export class TweetFeedComponent implements OnInit, OnDestroy {
+  tweets: Tweet[] = [];
   isOpen = false;
   hide = true;
   user: User;
   newTweet: Tweet;
+  navigationSubscription: any;
 
-  constructor(private tweetService: TweetService, private userService: UserService, private route: ActivatedRoute) { }
+  constructor(
+    private tweetService: TweetService,
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.initNewTweet();
+        this.getTweets();
+        this.getUser();
+      }
+    });
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initNewTweet();
     this.getTweets();
     this.getUser();
   }
 
-  initNewTweet() {
+  initNewTweet(): void {
     this.newTweet = {
       id: this.generateId(),
       created: Date.now(),
@@ -65,13 +77,13 @@ export class TweetFeedComponent implements OnInit {
     };
   }
 
-  generateId (len: number = 0) {
-    const dec2hex = (dec) => {
-      return ('0' + dec.toString(16)).substr(-2)
-    }
-    var arr = new Uint8Array((len || 40) / 2)
-    window.crypto.getRandomValues(arr)
-    return Array.from(arr, dec2hex).join('')
+  generateId(len: number = 0): string {
+    const dec2hex = (dec: number) => {
+      return ('0' + dec.toString(16)).substr(-2);
+    };
+    const arr = new Uint8Array((len || 40) / 2);
+    window.crypto.getRandomValues(arr);
+    return Array.from(arr, dec2hex).join('');
   }
 
   getTweets(): void {
@@ -80,16 +92,14 @@ export class TweetFeedComponent implements OnInit {
       .subscribe((tweets: Tweet[]) => {
         const followed: string[] = this.getUsersFollowed(id);
         followed.push(id);
-        console.log(tweets.length);
         this.tweets = tweets
           .filter((tweet: Tweet) => followed.indexOf(tweet.userId) !== -1)
           .slice(0, 20)
-          //Todo: fix sorting
           .sort((a, b) => {
-            if(a.created < b.created) {
+            if (a.created < b.created) {
               return 1;
             }
-            if(a.created > b.created) {
+            if (a.created > b.created) {
               return -1;
             }
             return 0;
@@ -97,7 +107,7 @@ export class TweetFeedComponent implements OnInit {
       });
   }
 
-  getUsersFollowed(userId): string[] {
+  getUsersFollowed(userId: string): string[] {
     return followers
       .filter(f => userId === f.userId)
       .map(f => f.targetId);
@@ -111,12 +121,11 @@ export class TweetFeedComponent implements OnInit {
       });
   }
 
-  toggle() {
+  toggle(): void {
     this.isOpen = !this.isOpen;
     this.hide = !this.hide;
   }
 
-  //Todo: comeback to
   add(tweetText: string): void {
     this.newTweet = { ...this.newTweet, userId: this.user.id, tweetText };
     this.tweetService
@@ -125,10 +134,19 @@ export class TweetFeedComponent implements OnInit {
   }
 
   /**
-  // Todo: Implement later
-  delete(tweet: Tweet): void {
-    this.tweets = this.tweets.filter(t => t !== tweet);
-    this.tweetService.deleteTweet(tweet).subscribe();
+   * Todo: Implement later
+   */
+  // delete(tweet: Tweet): void {
+  //   this.tweets = this.tweets.filter(t => t !== tweet);
+  //   this.tweetService.deleteTweet(tweet).subscribe();
+  // }
+
+  ngOnDestroy(): void {
+    // avoid memory leaks here by cleaning up after ourselves. If we
+    // don't then we will continue to run our initialiseInvites()
+    // method on every navigationEnd event.
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
-  **/
 }

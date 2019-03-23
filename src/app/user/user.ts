@@ -2,4 +2,16 @@ import { BasicRecord } from '../BasicRecord';
 import { UserBasic } from './userBasic';
 import { UserAccount } from './userAccount';
 
-export type User = UserBasic & UserAccount & BasicRecord;
+export class User implements UserBasic, UserAccount, BasicRecord {
+  id = '';
+  created = 0;
+  updated = 0;
+  name = '';
+  handle = '';
+  userName = '';
+  email = '';
+  plainPass = '';
+  token = '';
+  password = '';
+  lastLogin = 0;
+}

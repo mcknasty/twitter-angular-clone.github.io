@@ -1,9 +1,5 @@
-import { HttpHeaders } from '@angular/common/http';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { Tweet } from './tweet/tweet';
-import { User } from './user/user';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import tweets from '../assets/mock-tweets.json';
 import users from '../assets/mock-users.json';
@@ -16,7 +12,7 @@ export class InMemoryDataService implements InMemoryDbService {
   private db: object;
 
   constructor() {
-    this.db = { users, tweets: tweets, followers }
+    this.db = { users, tweets, followers };
   }
 
   createDb() {

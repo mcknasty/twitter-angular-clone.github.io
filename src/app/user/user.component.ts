@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Location } from '@angular/common';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 
@@ -10,14 +9,13 @@ import { User } from '../user/user';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit, OnDestroy {
-  user: User
-  navigationSubscription;
+  user: User = new User();
+  navigationSubscription: any;
   now: number = Date.now();
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private location: Location,
     private router: Router
   ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {

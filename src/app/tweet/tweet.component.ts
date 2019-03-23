@@ -1,10 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-
 import { Tweet } from './tweet';
-import { TweetBasic } from './tweetBasic';
-import { TweetService } from './tweet.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 
@@ -14,13 +9,12 @@ import { UserService } from '../user/user.service';
   styleUrls: ['./tweet.component.scss']
 })
 export class TweetComponent implements OnInit {
-  @Input() tweet: Tweet;
-  user: User;
+  @Input() tweet: Tweet = new Tweet();
+  user: User = new User();
   now: number = Date.now();
 
-  constructor(private tweetService: TweetService, private userService: UserService) {}
+  constructor(private userService: UserService) {}
 
-  /** Todo: Need to get time string correct! */
   ngOnInit() {
     this.getUser();
   }
@@ -29,10 +23,4 @@ export class TweetComponent implements OnInit {
     this.userService.getUser(this.tweet.userId)
       .subscribe(user => this.user = user);
   }
-
-  /** Todo: Complete
-  formatAgo(time) {
-
-  }
-  **/
 }

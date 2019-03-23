@@ -1,11 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, of, pipe } from 'rxjs';
-import { catchError, map, tap, filter } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { Tweet } from './tweet';
-import { MessageService } from '../messages/message.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -21,16 +20,13 @@ export class TweetService implements OnInit {
     this.getTweets();
   }
 
-  constructor(
-    private http: HttpClient,
-    private messageService: MessageService) { }
+  constructor(private http: HttpClient) { }
 
   /** GET tweets from the server */
-  getTweets (): Observable<Tweet[]> {
+  getTweets(): Observable<Tweet[]> {
     return this.http.get<Tweet[]>(this.tweetUrl)
-      .pipe(
-        tap(_ => {
-          this.log('fetched tweets')
+      .pipe(tap(_ => {
+          this.log('fetched tweets');
         }),
         catchError(this.handleError<Tweet[]>('getTweet', []))
       );
@@ -74,7 +70,7 @@ export class TweetService implements OnInit {
   //////// Save methods //////////
 
   /** POST: add a new tweet to the server */
-  addTweet (tweet: Tweet): Observable<Tweet> {
+  addTweet(tweet: Tweet): Observable<Tweet> {
     return this.http.post<Tweet>(this.tweetUrl, tweet, httpOptions).pipe(
       tap((newTweet: Tweet) => this.log(`added tweet w/ id=${newTweet.id}`)),
       catchError(this.handleError<Tweet>('addTweet'))
@@ -82,7 +78,7 @@ export class TweetService implements OnInit {
   }
 
   /** DELETE: delete the tweet from the server */
-  deleteTweet (tweet: Tweet | number): Observable<Tweet> {
+  deleteTweet(tweet: Tweet | number): Observable<Tweet> {
     const id = typeof tweet === 'number' ? tweet : tweet.id;
     const url = `${this.tweetUrl}/${id}`;
 
@@ -93,7 +89,7 @@ export class TweetService implements OnInit {
   }
 
   /** PUT: update the tweet on the server */
-  updateTweet (tweet: Tweet): Observable<any> {
+  updateTweet(tweet: Tweet): Observable<any> {
     return this.http.put(this.tweetUrl, tweet, httpOptions).pipe(
       tap(_ => this.log(`updated tweet id=${tweet.id}`)),
       catchError(this.handleError<any>('updateTweet'))
@@ -106,7 +102,7 @@ export class TweetService implements OnInit {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
@@ -122,6 +118,6 @@ export class TweetService implements OnInit {
 
   /** Log a TweetService message with the MessageService */
   private log(message: string) {
-    // this.messageService.add(`TweetService: ${message}`);
+    console.log(message);
   }
 }
