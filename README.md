@@ -7,7 +7,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 This project was created with the following features:
 
   - Mobile first css framework. Views for [desktop](#desktop), [tablet](#tablet) and [mobile devices](/#phone). :thumbsup:
-  - [Angular 7 typescript framework](https://angular.io/). :thumbsup:
+  - [Angular 8 typescript framework](https://angular.io/). :thumbsup:
   - [Angular Animations](https://angular.io/guide/animations). :thumbsup:
   - [CSS Flex container layouts](https://css-tricks.com/snippets/css/a-guide-to-flexbox/). :thumbsup:
   - [Font Awesome Icons](https://github.com/FortAwesome/Font-Awesome). :thumbsup:
