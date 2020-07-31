@@ -60,6 +60,10 @@
   .footer-mobile {
     display: none;
   }
+
+  #compose-tweet textarea {
+    width: 39em;
+  }
 }
 @media only screen and (min-width:1140px) {
 

@@ -51,7 +51,7 @@ form label.not-visable {
   @include screenreader();
 }
 
-textarea {
+#compose-tweet textarea {
   overflow: auto;
   padding: 5px 5px;
   border: $border;
