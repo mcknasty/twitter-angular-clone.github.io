@@ -5,11 +5,26 @@
   .header {
     .search-box { display: flex; }
   }
+  .main {
+    padding: 0px 25px;
+  }
+  #compose-tweet {
+    margin: 0px auto;
+    textarea {
+      width: 30em;
+    }
+  }
 }
 @media only screen and (min-width:768px) {
   .main .main-container .twitter-feed {
     margin-left: 20px;
     margin-right: 20px;
+  }
+  .main {
+    padding: 0px 0px;
+  }
+  #compose-tweet textarea {
+    width: 51em;
   }
 }
 @media only screen and (min-width:1024px) {
@@ -60,7 +75,6 @@
   .footer-mobile {
     display: none;
   }
-
   #compose-tweet textarea {
     width: 39em;
   }

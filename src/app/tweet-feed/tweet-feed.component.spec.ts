@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { declarations } from '../declarations';
+import { imports } from '../imports';
 import { TweetFeedComponent } from './tweet-feed.component';
 
 describe('TweetFeedComponent', () => {
@@ -8,7 +9,8 @@ describe('TweetFeedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TweetFeedComponent ]
+      declarations: [ ...declarations, TweetFeedComponent ],
+      imports
     })
     .compileComponents();
   }));

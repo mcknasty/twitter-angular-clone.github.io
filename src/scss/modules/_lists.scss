@@ -1,39 +1,21 @@
 .icon-menu {
-  ul {
+  ul, li, a {
     @include flex-container();
-  }
-  li {
-    @include flex-container();
-  }
-  a {
-    @include flex-container();
-    i {
-      display: flex;
-    }
-    span {
-      display: flex;
-    }
   }
 }
 
-header .icon-menu {
-  a {
-    @include clickable-icon-link($white, $light-blue, $med-grey);
-  }
+header .icon-menu a, .mobile-menu ul li a {
+  @include clickable-icon-link($white, $light-blue, $med-grey);
 }
 
-.twitter-feed .icon-menu {
-  a {
-    font-size: 14px;
-    @include clickable-icon-link($med-grey3, $light-blue, $dark-grey);
-  }
+.twitter-feed .icon-menu a {
+  font-size: 14px;
+  @include clickable-icon-link($med-grey3, $light-blue, $dark-grey);
 }
 
 ul.link-cloud {
-  display: flex;
-  flex-flow: row wrap;
+  @include flex-container(row wrap);
   li {
-    display: flex;
     margin-right: 5px;
   }
   a {
@@ -41,26 +23,19 @@ ul.link-cloud {
   }
 }
 
-ul.hash-tag-cloud {
-  a {
-    @include clickable-link($dark-blue, $light-blue);
-  }
+ul.hash-tag-cloud a {
+  @include clickable-link($dark-blue, $light-blue);
 }
 
-ul.footer-links {
-  a {
-    @include clickable-link($med-grey3, $light-blue);
-  }
+ul.footer-links a {
+  @include clickable-link($med-grey3, $light-blue);
 }
 
 .mobile-menu {
    width: 200px;
    $border: 1px solid $light-grey;
-   z-index: 1;
-   &:hover, &:focus {
-     ul {
-       display: block;
-     }
+   &:hover ul, &:focus ul {
+     display: block;
    }
    ul {
      display: none;
@@ -72,16 +47,12 @@ ul.footer-links {
      li {
        border-bottom: $border;
        padding: 10px 10px;
-       a {
-         @include clickable-icon-link($white, $light-blue, $med-grey);
-       }
-       a.active {
-         span {
-           text-decoration: underline;
-         }
+       a.active span {
+        text-decoration: underline;
        }
        i {
          font-size: 16px;
+         padding-right: 10px;
        }
      }
    }

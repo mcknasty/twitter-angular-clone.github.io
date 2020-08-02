@@ -2,8 +2,9 @@
   max-width: 895px;
   margin: 30px auto;
   .main-container {
-    display: flex;
-    flex-flow: row;
+    // display: flex;
+    // flex-flow: row;
+    @include flex-container();
     .sidebar {
       display: none;
       flex-flow: column wrap;

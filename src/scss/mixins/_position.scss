@@ -1,4 +1,4 @@
-@mixin flex-container() {
+@mixin flex-container($flow: row nowrap) {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: $flow;
 }

@@ -3,34 +3,49 @@
   height: 50px;
   background: $med-blue;
   @include flex-container();
-  .left-toolbar {
-    display: flex;
-    flex: 1;
-    order: 1;
-    .nav.icon-menu {
-      display: none;
-    }
-  }
-  .search-box {
+}
+
+.header h1 { @include screenreader() }
+
+.header .left-toolbar {
+  flex: 1;
+  order: 1;
+  z-index: 1;
+  .nav.icon-menu {
     display: none;
-    flex: 1;
-    order: 2;
-    .search-container {
-      margin-left: auto;
-      margin-right: auto;
-    }
   }
-  .logo {
-    display: flex;
+}
+
+.header .search-box {
+  display: none;
+  flex: 1;
+  order: 2;
+  .search-container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.header .logo {
     flex: 1;
     order: 3;
-  }
-  .right-toolbar {
-    display: none;
-    margin-right: 20px;
-    nav.icon-menu {
+    a {
       margin-left: auto;
+      margin-right: 20px;
+      i {
+        color: $white;
+        font-size: 30px;
+        margin: 10px 0px;
+        @include image-flip();
+      }
     }
+}
+
+.header .right-toolbar {
+  display: none;
+  margin-right: 20px;
+  nav.icon-menu {
+    margin-left: auto;
   }
 }
 
@@ -49,19 +64,6 @@
     span {
       font-size: 14px;
       margin-top: 0.03em;
-    }
-  }
-}
-
-.logo {
-  a {
-    margin-left: auto;
-    margin-right: 20px;
-    i {
-      color: $white;
-      font-size: 30px;
-      margin: 10px 0px;
-      @include image-flip();
     }
   }
 }

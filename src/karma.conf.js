@@ -13,17 +13,25 @@ module.exports = function (config) {
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      captureConsole: true,
+      mocha: {
+        bail: true
+      }
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage/twitter-clone'),
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
+    browserConsoleLogOptions: {
+      terminal: true,
+      level: ""
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_LOG,
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false,

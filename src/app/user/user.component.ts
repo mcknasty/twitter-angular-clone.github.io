@@ -6,7 +6,7 @@ import { User } from '../user/user';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+//  styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit, OnDestroy {
   user: User = new User();

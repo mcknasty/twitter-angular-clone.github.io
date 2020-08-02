@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { declarations } from '../declarations';
+import { imports } from '../imports';
+import { TweetService } from './tweet.service';
 
-import { TweetService } from './tweets.service';
-
-describe('TweetService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+describe('Service: TweetService', () => {
+  beforeEach(() => TestBed.configureTestingModule({declarations, imports}));
 
   it('should be created', () => {
-    const service: TweetService = TestBed.get(TweetService);
-    expect(service).toBeTruthy();
+    const service: TweetService = TestBed.inject(TweetService);
+    expect(service).toBeDefined();
   });
 });
