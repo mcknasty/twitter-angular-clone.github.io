@@ -14,6 +14,9 @@ script:
   - ng lint
   - ng test
   - npm run deploy:gh-pages
+  - git add .
+  - git commit -m 'Generating Github pages'
+  - git push origin master
 deploy:
   strategy: git
   provider: pages
