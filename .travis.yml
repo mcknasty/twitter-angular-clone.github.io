@@ -12,7 +12,7 @@ before_script:
   - npm install -g @angular/cli
 script:
   - ng lint
-  - ng test --sourceMap=false --browsers=ChromeHeadless --watch=false
+  - ng test
   - npm run deploy:gh-pages
 deploy:
   strategy: git

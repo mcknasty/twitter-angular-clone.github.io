@@ -94,7 +94,10 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
+            ],
+            "browsers": "ChromeHeadless",
+            "watch": false,
+            "sourceMap": false
           }
         },
         "lint": {
