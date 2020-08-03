@@ -14,10 +14,10 @@ script:
   - ng lint
   - ng test
   - npm run deploy:gh-pages
-deploy:
-  strategy: git
-  provider: pages
-  github_token: $public_repo
-  local_dir: docs/twitter-angular-clone.github.io
-  on:
-    branch: master
+# deploy:
+#   strategy: git
+#   provider: pages
+#   github_token: $public_repo
+#   local_dir: docs/twitter-angular-clone.github.io
+#   on:
+#     branch: master
