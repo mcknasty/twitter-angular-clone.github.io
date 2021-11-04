@@ -3,24 +3,28 @@ import { declarations } from '../declarations';
 import { imports } from '../imports';
 import { TweetService } from './tweet.service';
 import { Tweet } from '../tweet/tweet';
+import { Observable, of } from 'rxjs';
+
 
 describe('Service: TweetService', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({declarations, imports});
-  }));
+  let service: TweetService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations, imports}).compileComponents();
+    service = TestBed.inject(TweetService);
+  });
 
-  it('The Tweet Service should be dependancy injected', inject([TweetService], (service: TweetService) => {
+  it('The Tweet Service should be dependancy injected', waitForAsync(() => {
     expect(service).toBeDefined();
   }));
 
-  it('The Tweet Service should be able to get a feed of tweets', inject([TweetService], async (service: TweetService) => {
+  it('The Tweet Service should be able to get a feed of tweets', waitForAsync(() => {
     expect(service).toBeDefined();
     service.getTweets().subscribe((tweets: Tweet[]) => {
       expect(tweets.length).toBeGreaterThan(0);
     });
   }));
 
-  it('The Tweet Service should be able to add a tweet', inject([TweetService], async (service: TweetService) => {
+  it('The Tweet Service should be able to add a tweet', waitForAsync(() => {
     const tweet = {
       id: generateId(),
       created: Date.now(),
@@ -34,10 +38,22 @@ describe('Service: TweetService', () => {
       expect(tweet.tweetText).toEqual('test test test');
     });
   }));
-  it('The Tweet Service should throw an error', inject([TweetService], async (service: TweetService) => {
+
+  it('The Tweet Service should throw an error', waitForAsync(() => {
     expect(service).toBeDefined();
-    await service.getTweet('adfdsa').subscribe((tweet: any) => {
-      expect(tweet).toBeUndefined();
+    const observable = of({
+      next: x => "Test harness testing log and code coverage",
+      error: err => "Service ended in an error",
+      complete: () => console.log('Observer got a complete notification'),
+      unsubscribe: () => {}
+    });
+
+    service.throwError<String>("Tweet Service")({message: "Test harness testing log and code coverage" }).subscribe(() => {
+      expect(true).toBeDefined();
+    });
+
+    service.throwError<Object>("Tweet Service", observable)("Test harness testing log and code coverage").subscribe(() => {
+      expect(true).toBeDefined();
     });
   }));
 });

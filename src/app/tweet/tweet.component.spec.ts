@@ -3,25 +3,24 @@ import { declarations } from '../declarations';
 import { imports } from '../imports';
 import { TweetComponent } from './tweet.component';
 
-describe('TweetComponent', () => {
+describe('Component: TweetComponent', () => {
   let component: TweetComponent;
   let fixture: ComponentFixture<TweetComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ ...declarations, TweetComponent ],
       imports
     })
     .compileComponents();
-  }));
+  });
 
-  beforeEach(() => {
+  beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(TweetComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  }));
 
-  it('The Tweet Component should be initialized.', () => {
+  it('The Tweet Component should be initialized.', waitForAsync(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });

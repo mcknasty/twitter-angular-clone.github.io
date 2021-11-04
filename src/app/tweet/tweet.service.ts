@@ -24,11 +24,11 @@ export class TweetService {
   getTweets(): Observable<Tweet[]> {
     return this.http.get<Tweet[]>(this.tweetUrl)
       .pipe(
-        catchError(this.handleError<Tweet[]>('getTweet', []))
+        catchError(this.handleError<Tweet[]>('getTweet', [])())
       );
   }
 
-  /** GET tweet by id. Will 404 if id not found */
+  /** GET tweet by id. Will 404 if id not found * /
   getTweet(id: string): Observable<Tweet> {
     const url = `${this.tweetUrl}/${id}`;
     return this.http.get<Tweet>(url).pipe(
@@ -49,23 +49,42 @@ export class TweetService {
     **/
   }
 
+  public throwError<T>(service: string, error?: any) :Function {
+    let func: Function;
+    if (error !== undefined) {
+      func = this.handleError<T>(service, error);
+    }
+    else {
+      func = this.handleError<T>(service);
+    }
+    return func;
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-   
+
+<<<<<<< HEAD
   private handleError<T>(operation = 'operation', result?: T) {
+=======
+  private handleError<T>(operation: String, result?: T) :Function {
+>>>>>>> ddeebb0... Updating test specs for further coverage and refactoring some minor css
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      if (typeof error === 'string') {
+        console.error(error); // log to console instead
+      }
+      else if (typeof error === 'object' && 'message' in error ){
+        console.error(error);
+        // TODO: better job of transforming error for user consumption
+        this.log(`${operation} failed: ${error.message}`);
+        return of(error as T);
+      }
 
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }
