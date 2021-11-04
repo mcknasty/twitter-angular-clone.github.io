@@ -26,7 +26,7 @@ export class TweetService implements OnInit {
   getTweets(): Observable<Tweet[]> {
     return this.http.get<Tweet[]>(this.tweetUrl)
       .pipe(tap(_ => {
-          this.log('fetched tweets');
+          //this.log('fetched tweets');
         }),
         catchError(this.handleError<Tweet[]>('getTweet', []))
       );
