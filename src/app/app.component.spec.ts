@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import {Router} from '@angular/router';
@@ -10,7 +10,7 @@ import { imports } from './imports';
 describe('AppComponent', () => {
   let router: Router;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ...imports,
@@ -36,7 +36,7 @@ describe('AppComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should render bird icon', async(() => {
+  it('should render bird icon', waitForAsync(() => {
     router = TestBed.inject(Router);
     router.initialNavigation();
     const fixture = TestBed.createComponent(AppComponent);
