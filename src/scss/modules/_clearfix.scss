@@ -3,7 +3,7 @@
   display: table;
 }
 .clear {
-  *zoom: 1;
+  zoom: 1;
   &:before {
     @extend %clear;
   }
