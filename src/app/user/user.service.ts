@@ -9,16 +9,13 @@ import { User } from './user';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService implements OnInit {
+export class UserService {
 
   private userUrl = 'api/users';  // URL to web api
 
-  ngOnInit() {
+  constructor(private http: HttpClient) {
     this.getUsers();
   }
-
-  constructor(
-    private http: HttpClient) { }
 
   /** GET users from the server */
   getUsers(): Observable<User[]> {

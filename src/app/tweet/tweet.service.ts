@@ -13,14 +13,12 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class TweetService implements OnInit {
+export class TweetService {
   private tweetUrl = 'api/tweets';  // URL to web api
 
-  ngOnInit() {
+  constructor(private http: HttpClient) {
     this.getTweets();
   }
-
-  constructor(private http: HttpClient) { }
 
   /** GET tweets from the server */
   getTweets(): Observable<Tweet[]> {
