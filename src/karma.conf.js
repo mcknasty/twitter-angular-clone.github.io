@@ -11,7 +11,8 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-verbose-reporter')
     ],
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
@@ -22,14 +23,14 @@ module.exports = function (config) {
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage/twitter-clone'),
-      reports: ['html', 'lcovonly', 'text-summary'],
+      reports: ['html', 'lcovonly', 'text'],
       fixWebpackSourcePaths: true
     },
     browserConsoleLogOptions: {
       terminal: true,
       level: ""
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'coverage-istanbul', "verbose"],
     port: 9876,
     colors: true,
     logLevel: config.LOG_LOG,
