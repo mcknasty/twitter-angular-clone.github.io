@@ -19,7 +19,7 @@ describe('MessagesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
+  it('The message component should be initialized', () => {
     expect(component).toBeTruthy();
   });
 });

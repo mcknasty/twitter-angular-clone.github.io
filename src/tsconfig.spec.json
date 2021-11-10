@@ -5,7 +5,10 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "target": "esnext",
+    "module": "esnext",
+    "sourceMap": true
   },
   "files": [
     "test.ts",

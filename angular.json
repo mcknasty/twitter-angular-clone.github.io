@@ -100,7 +100,7 @@
             ],
             "browsers": "ChromeHeadless",
             "watch": false,
-            "sourceMap": false
+            "sourceMap": true
           }
         },
         "lint": {

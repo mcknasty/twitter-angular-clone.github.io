@@ -127,6 +127,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy {
   }
 
   add(tweetText: string): void {
+    this.initNewTweet();
     this.newTweet = { ...this.newTweet, userId: this.user.id, tweetText };
     this.tweetService
       .addTweet(this.newTweet)

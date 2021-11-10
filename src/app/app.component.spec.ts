@@ -27,7 +27,7 @@ describe('AppComponent', () => {
 
   }));
 
-  it('should create the app', () => {
+  it('The app component should be initialized', () => {
     router = TestBed.inject(Router);
     router.initialNavigation();
     const fixture = TestBed.createComponent(AppComponent);
@@ -36,7 +36,7 @@ describe('AppComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should render bird icon', waitForAsync(() => {
+  it('The app component render a bird icon in the header of the page', waitForAsync(() => {
     router = TestBed.inject(Router);
     router.initialNavigation();
     const fixture = TestBed.createComponent(AppComponent);

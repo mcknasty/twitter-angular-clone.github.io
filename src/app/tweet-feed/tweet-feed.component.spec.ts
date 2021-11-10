@@ -21,7 +21,7 @@ describe('TweetFeedComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('The tweet feed component should be initialized.', () => {
     expect(component).toBeTruthy();
   });
 });

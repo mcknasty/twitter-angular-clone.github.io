@@ -21,7 +21,7 @@ describe('TweetComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('The Tweet Component should be initialized.', () => {
     expect(component).toBeTruthy();
   });
 });
