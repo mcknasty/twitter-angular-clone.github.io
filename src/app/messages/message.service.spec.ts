@@ -1,16 +1,20 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { declarations } from '../declarations';
 import { imports } from '../imports';
 import { MessageService } from './message.service';
 
-describe('MessageService', () => {
-  beforeEach(() => TestBed.configureTestingModule({declarations, imports}));
+describe('Service: MessageService', () => {
+  let service;
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations, imports, providers: [MessageService]}).compileComponents();
+    service = TestBed.inject(MessageService);
+  });
 
-  it('The message service should be dependancy injected', inject([MessageService], (service: MessageService) => {
+  it('The Message Service should be dependancy injected', waitForAsync(() => {
     expect(service).toBeDefined();
   }));
 
-  it('The message service should add a message', inject([MessageService], (service: MessageService) => {
+  it('The Message Service should add a message', waitForAsync(() => {
     expect(service).toBeDefined();
     service.add(`Hello world, it's me and I am ok!`);
     let messages = service.getMessages();
@@ -19,7 +23,7 @@ describe('MessageService', () => {
     service.clear();
   }));
 
-  it('The message service should be able to clear all messages', inject([MessageService], (service: MessageService) => {
+  it('The Message Service should be able to clear all messages', waitForAsync(() => {
     expect(service).toBeDefined();
     service.add(`Hello world, it's me and I am ok!`);
     let messages = service.getMessages();
@@ -28,5 +32,4 @@ describe('MessageService', () => {
     messages = service.getMessages();
     expect(messages).toHaveSize(0);
   }));
-
 });

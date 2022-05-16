@@ -8,7 +8,7 @@ import { User } from '../user/user';
   templateUrl: './user.component.html',
 //  styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnInit {
   user: User = new User();
   navigationSubscription: any;
   now: number = Date.now();
@@ -17,15 +17,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router
-  ) {
-    this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
-      if (e instanceof NavigationEnd) {
-        this.getUser();
-        this.now = Date.now();
-      }
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
@@ -38,12 +30,12 @@ export class UserComponent implements OnInit, OnDestroy {
         .subscribe(user => this.user = user);
   }
 
-  ngOnDestroy() {
-    // avoid memory leaks here by cleaning up after ourselves. If we
-    // don't then we will continue to run our initialiseInvites()
-    // method on every navigationEnd event.
-    if (this.navigationSubscription) {
-      this.navigationSubscription.unsubscribe();
-    }
-  }
+  // ngOnDestroy() {
+  //   // avoid memory leaks here by cleaning up after ourselves. If we
+  //   // don't then we will continue to run our initialiseInvites()
+  //   // method on every navigationEnd event.
+  //   if (this.navigationSubscription) {
+  //     this.navigationSubscription.unsubscribe();
+  //   }
+  // }
 }

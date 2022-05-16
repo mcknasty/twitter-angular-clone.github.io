@@ -3,7 +3,7 @@ import { declarations } from '../declarations';
 import { imports } from '../imports';
 import { UserComponent } from './user.component';
 
-describe('UserComponent', () => {
+describe('Component: UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
 
@@ -21,7 +21,7 @@ describe('UserComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('The User Component should be initialized', () => {
     expect(component).toBeTruthy();
   });
 });

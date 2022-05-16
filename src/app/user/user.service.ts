@@ -17,17 +17,40 @@ export class UserService {
     this.getUsers();
   }
 
+  initUser(): User {
+    return {
+      id: this.generateId(),
+      created: Date.now(),
+      updated: Date.now(),
+      name: '',
+      handle: '',
+      userName: '',
+      email: '',
+      plainPass: '',
+      token: '',
+      password: '',
+      lastLogin: 0
+    };
+  }
+
+  generateId(len: number = 0): string {
+    const dec2hex = (dec: number) => {
+      return ('0' + dec.toString(16)).substr(-2);
+    };
+    const arr = new Uint8Array((len || 40) / 2);
+    window.crypto.getRandomValues(arr);
+    return Array.from(arr, dec2hex).join('');
+  }
+
   /** GET users from the server */
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.userUrl)
-      .pipe(tap(_ => {
-          this.log('fetched users');
-        }),
+      .pipe(
         catchError(this.handleError<User[]>('getUser', []))
       );
   }
 
-  /** GET user by id. Return `undefined` when id not found */
+  /** GET user by id. Return `undefined` when id not found * /
   getUserNo404<Data>(id: number): Observable<User> {
     const url = `${this.userUrl}/?id=${id}`;
     return this.http.get<User[]>(url)
@@ -43,11 +66,18 @@ export class UserService {
 
   /** GET user by id. Will 404 if id not found */
   getUser(id: string): Observable<User> {
-    const url = `${this.userUrl}/${id}`;
-    return this.http.get<User>(url).pipe(
-      tap(_ => this.log(`fetched user id=${id}`)),
-      catchError(this.handleError<User>(`getUser id=${id}`))
-    );
+    if ( id ) {
+      const url = `${this.userUrl}/${id}`;
+      return this.http.get<User>(url).pipe(
+        tap(_ => this.log(`fetched user id=${id}`)),
+        catchError(this.handleError<User>(`getUser id=${id}`))
+      );
+    }
+    return of ( this.initUser() );
+  }
+
+  public throwError<T>(service: string, error) {
+    return this.handleError<T>(service, error);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

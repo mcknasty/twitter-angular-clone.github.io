@@ -30,7 +30,7 @@
     "crypto-js": "^4.0.0",
     "crypto-random-string": "^3.2.0",
     "hashids": "^2.2.1",
-    "karma-coverage": "^2.0.3",
+    "karma-coverage": "^2.2.0",
     "karma-sourcemap-loader": "^0.3.8",
     "karma-typescript": "^5.5.3",
     "karma-verbose-reporter": "0.0.6",

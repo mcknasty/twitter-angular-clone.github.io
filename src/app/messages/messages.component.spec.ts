@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MessagesComponent } from './messages.component';
 
-describe('MessagesComponent', () => {
+describe('Component: MessagesComponent', () => {
   let component: MessagesComponent;
   let fixture: ComponentFixture<MessagesComponent>;
 
@@ -19,7 +19,7 @@ describe('MessagesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('The message component should be initialized', () => {
+  it('The Message Component should be initialized', waitForAsync(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });
