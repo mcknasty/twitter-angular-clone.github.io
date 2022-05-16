@@ -42,9 +42,9 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-.angular/
-src/coverage/
+.angular
 .angular/*
+src/coverage
 src/coverage/*
 
 # System Files
