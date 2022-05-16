@@ -67,11 +67,8 @@ export class TweetService {
    * @param result - optional value to return as the observable result
    */
 
-<<<<<<< HEAD
-  private handleError<T>(operation = 'operation', result?: T) {
-=======
+
   private handleError<T>(operation: String, result?: T) :Function {
->>>>>>> ddeebb0... Updating test specs for further coverage and refactoring some minor css
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
