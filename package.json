@@ -9,7 +9,7 @@
     "test-cli": "ng test-cli --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy:gh-pages": "ng build --configuration production --output-path docs/  --base-href /twitter-angular-clone.github.io/"
+    "deploy:gh-pages": "ng build --configuration production --output-path docs/twitter-angular-clone.github.io  --base-href /twitter-angular-clone.github.io/"
   },
   "private": true,
   "dependencies": {
