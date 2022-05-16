@@ -38,7 +38,7 @@ import followers from '../../assets/mock-followers.json';
     ]),
   ]
 })
-export class TweetFeedComponent implements OnInit {
+export class TweetFeedComponent implements OnInit, OnDestroy  {
   tweets: Tweet[] = [];
   isOpen = false;
   hide = true;
@@ -51,7 +51,16 @@ export class TweetFeedComponent implements OnInit {
     public userService: UserService,
     public route: ActivatedRoute,
     public router: Router
-  ) {}
+  ) {
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.initNewTweet();
+        this.getTweets();
+        this.getUser();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.initNewTweet();
@@ -129,6 +138,15 @@ export class TweetFeedComponent implements OnInit {
     this.tweetService
       .addTweet(this.newTweet)
       .subscribe((tweet) => this.tweets.unshift(tweet));
+  }
+
+  ngOnDestroy(): void {
+    // avoid memory leaks here by cleaning up after ourselves. If we
+    // don't then we will continue to run our initialiseInvites()
+    // method on every navigationEnd event.
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
 
   /**
