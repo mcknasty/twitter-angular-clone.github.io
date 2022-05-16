@@ -9,11 +9,7 @@
     "test-cli": "ng test-cli --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
-<<<<<<< HEAD
     "deploy:gh-pages": "ng build --configuration production --output-path docs/twitter-angular-clone.github.io  --base-href /twitter-angular-clone.github.io/"
-=======
-    "deploy:gh-pages": "ng build --prod --output-path docs/  --base-href /twitter-angular-clone.github.io/"
->>>>>>> f8732f3... updating CI/CD pipeline to publish to a different directory
   },
   "private": true,
   "dependencies": {
