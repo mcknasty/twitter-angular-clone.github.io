@@ -30,7 +30,7 @@
     "hashids": "^2.2.1",
     "karma-coverage": "^2.0.3",
     "karma-verbose-reporter": "0.0.6",
-    "moment": "^2.27.0",
+    "moment": "^2.29.3",
     "ngx-moment": "^5.0.0",
     "rxjs": "^6.6.2",
     "rxjs-compat": "^6.6.2",
