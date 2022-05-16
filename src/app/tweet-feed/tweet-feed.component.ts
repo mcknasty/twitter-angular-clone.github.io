@@ -7,7 +7,7 @@ import {
   transition
 } from '@angular/animations';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { Tweet } from '../tweet/tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
