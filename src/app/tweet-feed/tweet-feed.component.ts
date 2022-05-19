@@ -118,8 +118,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
       .map(f => f.targetId);
   }
 
-  getUser(id: string = ''): void {
-    const idKey = (!id) ? this.route.snapshot.paramMap.get('id') : id;
+  getUser(): void {
+    const idKey = this.route.snapshot.paramMap.get('id');
     this.userService.getUser(idKey)
       .subscribe(user => {
         this.user = user;

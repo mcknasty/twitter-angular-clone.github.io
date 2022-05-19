@@ -13,7 +13,7 @@
   <article class="tweet">
     <div class="profile-description">
       <h3 class="profile-full-name">{{ user.name }}</h3>
-      <span class="profile-handle"><a routerLink="/user/{{user.id}}">{{ user.handle }}</a></span>
+      <span class="profile-handle"><a class="profile-link" routerLink="/user/{{user.id}}">{{ user.handle }}</a></span>
       <span class="time-since-tweet">{{ tweet.created | amTimeAgo:true }} ago</span>
     </div>
     <p class="tweet-text">
