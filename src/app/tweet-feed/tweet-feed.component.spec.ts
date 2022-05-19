@@ -12,7 +12,6 @@ import { UserService } from '../user/user.service';
 import { TweetService } from '../tweet/tweet.service';
 import { User } from '../user/user';
 import { DebugElement } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 
 describe('Component: TweetFeedComponent', () => {
   let fixture: ComponentFixture<TweetFeedComponent>;
@@ -21,7 +20,7 @@ describe('Component: TweetFeedComponent', () => {
   let users: UserService;
   let tweets: TweetService;
   let userComp: UserComponent;
-  let formBuilder: FormBuilder;
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -35,8 +34,7 @@ describe('Component: TweetFeedComponent', () => {
       providers: [
         { provide: ComponentFixtureAutoDetect, useValue: true },
         { provide: UserService },
-        { provide: TweetService },
-        { provide: FormBuilder }
+        { provide: TweetService }
       ]
     }).compileComponents();
   }));
@@ -44,7 +42,6 @@ describe('Component: TweetFeedComponent', () => {
   beforeEach(waitForAsync(() => {
     users = TestBed.inject(UserService);
     tweets = TestBed.inject(TweetService);
-    formBuilder = TestBed.inject(FormBuilder);
     fixture = TestBed.createComponent(MockTweetFeedComponent);
     native = fixture.nativeElement;
     debug = fixture.debugElement;
@@ -100,18 +97,11 @@ describe('Component: TweetFeedComponent', () => {
       fixture.whenStable().then(() => {
         let tweetFeed = fixture.debugElement.queryAll(By.css('.feed .tweet-text'));
         let tweetsArray = fixture.componentInstance.tweets;
-
-        //console.log(tweetFeed[0]);
-        //console.log(tweetsArray[0]);
-        //console.log(tweetsArray.findIndex((e) => e.tweetText === 'New Tweet! 123') > -1);
-
-        expect(tweetsArray.findIndex((e) => e.tweetText === 'New Tweet! 123')).toBeGreaterThan(-1);
+        expect(tweetsArray.findIndex((e) => e.tweetText === newTweetText)).toBeGreaterThan(-1);
         expect(tweetFeed[0].nativeElement.innerHTML).toContain(newTweetText);
         expect(tweetsArray[0].tweetText).toContain(newTweetText);
-
       });
     });
-    /**    **/
   }));
 });
 
