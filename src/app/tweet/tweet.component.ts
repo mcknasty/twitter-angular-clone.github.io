@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Tweet } from '../model/tweet';
+import { Tweet } from '../model/Tweet';
 import { User } from '../model/user';
 import { UserService } from '../user/user.service';
 

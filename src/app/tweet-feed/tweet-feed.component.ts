@@ -8,7 +8,7 @@ import {
 } from '@angular/animations';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { of } from 'rxjs';
-import { Tweet } from '../model/tweet';
+import { Tweet, TweetRecord, TweetPartial } from '../model/Tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
 import { User } from '../model/user';
@@ -67,8 +67,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
     this.getTweets();
   }
 
-  initNewTweet(): void {
-    this.newTweet = new Tweet();
+  initNewTweet(data?: Partial<TweetRecord | TweetPartial>): void {
+    this.newTweet = (data) ? new Tweet(data) : new Tweet();
   }
 
   getTweets(): void {
@@ -117,9 +117,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
 
   add(tweetText: string, id?: string) {
     const userId: string = (id !== undefined) ? id : this.user.id;
-    this.initNewTweet();
-    //this.newTweet = { ...this.newTweet, userId, tweetText };
-    this.newTweet.assign({userId, tweetText});
+    this.initNewTweet({ userId, tweetText });
     this.tweetService
       .addTweet(this.newTweet)
       .subscribe((tweet) => this.tweets.unshift(tweet));

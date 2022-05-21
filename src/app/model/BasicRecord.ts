@@ -18,7 +18,8 @@ class BasicRecord {
       }
       else if ( Object.keys(data).length < 3 ) {
         //throw some catch
-        let t = false;
+        const dString = JSON.stringify(data);
+        throw new Error(`Attempted to initialize a BasicRecord with a malformed object: ${dString}`);
       }
     }
     else {
@@ -53,11 +54,11 @@ class BasicRecord {
     return BasicRecord.impInterface(keys, data);
   }
 
-  public assign(data: any) {
+  protected assign(data: any) {
     Object.assign(this, data);
   }
 
-  public static getKeys(): Array<string> {
+  protected static getKeys(): Array<string> {
     //Todo:  Is there a function to return a list of variables from an interface?
     return [ 'id', 'created', 'updated' ];
   }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Tweet } from '../model/tweet';
+import { Tweet } from '../model/Tweet';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
