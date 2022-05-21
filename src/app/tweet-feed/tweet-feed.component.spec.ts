@@ -10,7 +10,7 @@ import { TweetFeedComponent } from './tweet-feed.component';
 import { TweetComponent } from '../tweet/tweet.component';
 import { UserService } from '../user/user.service';
 import { TweetService } from '../tweet/tweet.service';
-import { User } from '../user/user';
+import { User } from '../model/user';
 import { DebugElement } from '@angular/core';
 
 describe('Component: TweetFeedComponent', () => {

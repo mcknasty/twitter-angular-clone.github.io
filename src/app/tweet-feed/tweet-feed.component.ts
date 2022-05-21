@@ -8,10 +8,10 @@ import {
 } from '@angular/animations';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { of } from 'rxjs';
-import { Tweet } from '../tweet/tweet';
+import { Tweet } from '../model/tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
-import { User } from '../user/user';
+import { User } from '../model/user';
 import followers from '../../assets/mock-followers.json';
 
 
@@ -68,6 +68,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   }
 
   initNewTweet(): void {
+    /**
     this.newTweet = {
       id: this.generateId(),
       created: Date.now(),
@@ -75,6 +76,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
       tweetText: null,
       userId: null
     };
+    **/
+    this.newTweet = new Tweet();
   }
 
   generateId(len: number = 0): string {
@@ -133,7 +136,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   add(tweetText: string, id?: string) {
     const userId: string = (id !== undefined) ? id : this.user.id;
     this.initNewTweet();
-    this.newTweet = { ...this.newTweet, userId, tweetText };
+    //this.newTweet = { ...this.newTweet, userId, tweetText };
+    this.newTweet.assign({userId, tweetText});
     this.tweetService
       .addTweet(this.newTweet)
       .subscribe((tweet) => this.tweets.unshift(tweet));

@@ -2,7 +2,7 @@ import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { TweetService } from './tweet.service';
-import { Tweet } from '../tweet/tweet';
+import { Tweet } from '../model/tweet';
 import { Observable, of } from 'rxjs';
 
 
@@ -25,17 +25,14 @@ describe('Service: TweetService', () => {
   }));
 
   it('The Tweet Service should be able to add a tweet', waitForAsync(() => {
-    const tweet = {
-      id: generateId(),
-      created: Date.now(),
-      updated: Date.now(),
-      tweetText: 'test test test',
-      userId: generateId()
-    };
+    const newTweetText = 'test test test'
+    const tweet = new Tweet();
+    tweet.assign({userId: generateId(), tweetText: newTweetText});
+    console.log(tweet);
     expect(service).toBeDefined();
     service.addTweet(tweet).subscribe((tweet) => {
       expect(tweet).toBeDefined();
-      expect(tweet.tweetText).toEqual('test test test');
+      expect(tweet.tweetText).toEqual(newTweetText);
     });
   }));
 

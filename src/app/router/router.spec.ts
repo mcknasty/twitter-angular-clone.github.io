@@ -22,7 +22,6 @@ import { TweetFeedComponent } from '../tweet-feed/tweet-feed.component';
 import { TweetComponent } from '../tweet/tweet.component';
 import { UserService } from '../user/user.service';
 import { TweetService } from '../tweet/tweet.service';
-import { User } from '../user/user';
 import { UserComponent } from '../user/user.component';
 
 let comp: AppComponent;
