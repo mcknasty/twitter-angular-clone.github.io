@@ -2,7 +2,7 @@ import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { TweetService } from './tweet.service';
-import { Tweet } from '../model/tweet';
+import { Tweet } from '../model/Tweet';
 import { Observable, of } from 'rxjs';
 
 
@@ -26,9 +26,7 @@ describe('Service: TweetService', () => {
 
   it('The Tweet Service should be able to add a tweet', waitForAsync(() => {
     const newTweetText = 'test test test'
-    const tweet = new Tweet();
-    tweet.assign({userId: generateId(), tweetText: newTweetText});
-    console.log(tweet);
+    const tweet = new Tweet({userId: Tweet.generateId(), tweetText: newTweetText});
     expect(service).toBeDefined();
     service.addTweet(tweet).subscribe((tweet) => {
       expect(tweet).toBeDefined();
@@ -54,12 +52,3 @@ describe('Service: TweetService', () => {
     });
   }));
 });
-
-function generateId(len: number = 0): string {
-  const dec2hex = (dec: number) => {
-    return ('0' + dec.toString(16)).substr(-2);
-  };
-  const arr = new Uint8Array((len || 40) / 2);
-  window.crypto.getRandomValues(arr);
-  return Array.from(arr, dec2hex).join('');
-}
