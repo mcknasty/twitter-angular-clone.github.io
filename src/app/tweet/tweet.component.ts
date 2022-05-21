@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Tweet } from './tweet';
-import { User } from '../user/user';
+import { Tweet } from '../model/tweet';
+import { User } from '../model/user';
 import { UserService } from '../user/user.service';
 
 @Component({

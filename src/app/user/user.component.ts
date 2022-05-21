@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from '../user/user.service';
-import { User } from '../user/user';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-user',
