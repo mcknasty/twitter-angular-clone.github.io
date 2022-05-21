@@ -1,6 +1,6 @@
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
-import { declarations } from '../declarations';
-import { imports } from '../imports';
+import { declarations } from '../app/declarations';
+import { imports } from '../app/imports';
 import { UserService } from './user.service';
 import { Observable, of } from 'rxjs';
 

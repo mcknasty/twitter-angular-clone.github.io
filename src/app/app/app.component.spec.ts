@@ -3,7 +3,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, NavigationEnd } from '@angular/router';
-import { UserComponent } from './user/user.component';
+import { UserComponent } from '../user/user.component';
 import { AppComponent } from './app.component';
 import { declarations } from './declarations';
 import { imports } from './imports';

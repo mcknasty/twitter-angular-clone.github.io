@@ -13,17 +13,17 @@ import { DebugElement, Type } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { AppRoutes } from './routes';
-import { AppModule } from './app.module';
-import { AppComponent } from './app.component';
+import { AppModule } from '../app/app.module';
+import { AppComponent } from '../app/app.component';
 
-import { declarations } from './declarations';
-import { imports } from './imports';
-import { TweetFeedComponent } from './tweet-feed/tweet-feed.component';
-import { TweetComponent } from './tweet/tweet.component';
-import { UserService } from './user/user.service';
-import { TweetService } from './tweet/tweet.service';
-import { User } from './user/user';
-import { UserComponent } from './user/user.component';
+import { declarations } from '../app/declarations';
+import { imports } from '../app/imports';
+import { TweetFeedComponent } from '../tweet-feed/tweet-feed.component';
+import { TweetComponent } from '../tweet/tweet.component';
+import { UserService } from '../user/user.service';
+import { TweetService } from '../tweet/tweet.service';
+import { User } from '../user/user';
+import { UserComponent } from '../user/user.component';
 
 let comp: AppComponent;
 let fixture: ComponentFixture<AppComponent>;
