@@ -8,7 +8,7 @@ import {
 } from '@angular/animations';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { of } from 'rxjs';
-import { Tweet, TweetRecord, TweetPartial } from '../model/Tweet';
+import { TweetRecord, TweetSchema, TweetPartialSchema } from '../model/Tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
 import { User } from '../model/user';
@@ -38,11 +38,11 @@ import followers from '../../assets/mock-followers.json';
   ]
 })
 export class TweetFeedComponent implements OnInit, OnDestroy  {
-  tweets: Tweet[] = [];
+  tweets: TweetRecord[] = [];
   isOpen = false;
   hide = true;
   user: User;
-  newTweet: Tweet;
+  newTweet: TweetRecord;
   navigationSubscription: any;
 
   constructor(
@@ -67,8 +67,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
     this.getTweets();
   }
 
-  initNewTweet(data?: Partial<TweetRecord | TweetPartial>): void {
-    this.newTweet = (data) ? new Tweet(data) : new Tweet();
+  initNewTweet(data?: Partial<TweetSchema>): void {
+    this.newTweet = (data) ? new TweetRecord(data) : new TweetRecord();
   }
 
   getTweets(): void {
@@ -78,11 +78,11 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
 
   filterTweets(id: string) : void {
     this.tweetService.getTweets()
-      .subscribe((tweets: Tweet[]) => {
+      .subscribe((tweets: TweetRecord[]) => {
         const followed: string[] = this.getUsersFollowed(id);
         followed.push(id);
         this.tweets = tweets
-          .filter((tweet: Tweet) => followed.indexOf(tweet.userId) !== -1)
+          .filter((tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1)
           .slice(0, 20)
           .sort((a, b) => {
             if (a.created < b.created) {

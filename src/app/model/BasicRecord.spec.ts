@@ -1,9 +1,9 @@
-import { BasicRecord } from './BasicRecord'
+import { BasicRecord, Record } from './BasicRecord'
 
 describe('Model: Basic Record', () => {
   it('The Basic Record Model should be able to initialize a new populated basic record', () => {
     let blankRecord = new BasicRecord();
-    expect(BasicRecord.isBasicRecord(blankRecord)).toBeTrue();
+    expect(BasicRecord.instanceOf(blankRecord)).toBeTrue();
     expect(blankRecord instanceof BasicRecord).toBeTrue();
   });
 
@@ -13,7 +13,7 @@ describe('Model: Basic Record', () => {
     let updated = Date.now();
     let recordObj = { id, created, updated };
     let prevRecord = new BasicRecord(recordObj);
-    expect(BasicRecord.isBasicRecord(prevRecord)).toBeTrue();
+    expect(BasicRecord.instanceOf(prevRecord)).toBeTrue();
     expect(prevRecord instanceof BasicRecord).toBeTrue();
     expect(prevRecord.id).toEqual(id);
     expect(prevRecord.created).toEqual(created);
