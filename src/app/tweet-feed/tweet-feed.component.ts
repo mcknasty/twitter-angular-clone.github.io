@@ -13,7 +13,6 @@ import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import followers from '../../assets/mock-followers.json';
-//import { FormBuilder } from '@angular/forms';
 
 
 @Component({
