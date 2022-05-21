@@ -1,19 +1,38 @@
-interface BasicRecordInterFace {
+interface BasicRecordSchema {
   id: string;
   created: number;
   updated: number;
 }
 
-class BasicRecord {
+interface BasicRecordInterface {
+  initEmptyRecord(): Object;
+}
+
+abstract class AbstractBasicRecord {
+  protected static MemberVariblesNames: Array<string> =  [ 'id', 'created', 'updated' ];
+  protected static implements(keys: Array<string>, data: Object): boolean {
+    return keys.every((key) => Object.keys(data).includes(key));
+  }
+
+  public static instanceOf(data: Object, partial: boolean = false): boolean {
+    return this.implements(this.getKeys(), data);
+  }
+
+  protected static getKeys(): Array<string> {
+    //Todo:  Is there a function to return a list of variables from an interface?
+    return [ ...this.MemberVariblesNames ];
+  }
+}
+
+class BasicRecord extends AbstractBasicRecord implements BasicRecordInterface {
   public id: string;
   public created: number;
   public updated: number;
-  protected keys: Array<string>
 
-  constructor (data: Partial<BasicRecordInterFace> = null) {
-    this.keys = BasicRecord.getKeys();
+  constructor (data: Partial<BasicRecordSchema> = null) {
+    super();
     if ( data ) {
-      if ( BasicRecord.isBasicRecord(data) ) {
+      if ( BasicRecord.instanceOf(data) ) {
         Object.assign(this, data);
       }
       else if ( Object.keys(data).length < 3 ) {
@@ -27,7 +46,7 @@ class BasicRecord {
     }
   }
 
-  protected initEmptyRecord(): BasicRecordInterFace {
+  public initEmptyRecord(): BasicRecordSchema {
     const record = {
       id: BasicRecord.generateId(),
       created: Date.now(),
@@ -44,24 +63,18 @@ class BasicRecord {
     window.crypto.getRandomValues(arr);
     return Array.from(arr, dec2hex).join('');
   }
+}
 
-  public static impInterface(keys: Array<string>, data: any): boolean {
-    return keys.every((key) => Object.keys(data).includes(key));
+class Record extends BasicRecord {
+  public static instanceOf(data: Object, partial = false) {
+    return (partial) ? this.implements(this.getKeys(), data) : this.implements(this.getKeys(true), data);
   }
 
-  public static isBasicRecord(data: any): boolean {
-    const keys = BasicRecord.getKeys();
-    return BasicRecord.impInterface(keys, data);
-  }
-
-  protected assign(data: any) {
-    Object.assign(this, data);
-  }
-
-  protected static getKeys(): Array<string> {
+  protected static getKeys(callParent: boolean = false): Array<string> {
     //Todo:  Is there a function to return a list of variables from an interface?
-    return [ 'id', 'created', 'updated' ];
+    return (callParent) ? [ ...super.MemberVariblesNames, ...this.MemberVariblesNames ] : [ ...this.MemberVariblesNames ];
   }
 }
 
-export { BasicRecord, BasicRecordInterFace }
+
+export { Record, BasicRecord, BasicRecordSchema, BasicRecordInterface }

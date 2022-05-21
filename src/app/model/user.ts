@@ -1,4 +1,4 @@
-import { BasicRecord, BasicRecordInterFace } from './BasicRecord';
+import { BasicRecord, BasicRecordSchema } from './BasicRecord';
 import { UserAccount } from './userAccount';
 
 export interface UserBasic {
@@ -12,7 +12,7 @@ export interface UserBasic {
   password?: string;
 }
 
-export class User implements BasicRecordInterFace {
+export class User implements BasicRecordSchema {
   id = '';
   created = 0;
   updated = 0;

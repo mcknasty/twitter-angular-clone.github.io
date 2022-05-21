@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Tweet } from '../model/Tweet';
+import { TweetRecord } from '../model/Tweet';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,10 +19,10 @@ export class TweetService {
   }
 
   /** GET tweets from the server */
-  getTweets(): Observable<Tweet[]> {
-    return this.http.get<Tweet[]>(this.tweetUrl)
+  getTweets(): Observable<TweetRecord[]> {
+    return this.http.get<TweetRecord[]>(this.tweetUrl)
       .pipe(
-        catchError(this.handleError<Tweet[]>('getTweet', [])())
+        catchError(this.handleError<TweetRecord[]>('getTweet', [])())
       );
   }
 
@@ -37,8 +37,8 @@ export class TweetService {
   //////// Save methods //////////
 
   /** POST: add a new tweet to the server */
-  addTweet(tweet: Tweet): Observable<Tweet> {
-    return this.http.post<Tweet>(this.tweetUrl, tweet, httpOptions);
+  addTweet(tweet: TweetRecord): Observable<TweetRecord> {
+    return this.http.post<TweetRecord>(this.tweetUrl, tweet, httpOptions);
     //How does this line throw and error?
     /**
     return this.http.post<Tweet>(this.tweetUrl, tweet, httpOptions).pipe(
