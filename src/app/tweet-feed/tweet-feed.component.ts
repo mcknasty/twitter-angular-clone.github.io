@@ -68,25 +68,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   }
 
   initNewTweet(): void {
-    /**
-    this.newTweet = {
-      id: this.generateId(),
-      created: Date.now(),
-      updated: Date.now(),
-      tweetText: null,
-      userId: null
-    };
-    **/
     this.newTweet = new Tweet();
-  }
-
-  generateId(len: number = 0): string {
-    const dec2hex = (dec: number) => {
-      return ('0' + dec.toString(16)).substr(-2);
-    };
-    const arr = new Uint8Array((len || 40) / 2);
-    window.crypto.getRandomValues(arr);
-    return Array.from(arr, dec2hex).join('');
   }
 
   getTweets(): void {
@@ -160,12 +142,4 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   //   this.tweetService.deleteTweet(tweet).subscribe();
   // }
 
-  // ngOnDestroy(): void {
-  //   // avoid memory leaks here by cleaning up after ourselves. If we
-  //   // don't then we will continue to run our initialiseInvites()
-  //   // method on every navigationEnd event.
-  //   if (this.navigationSubscription) {
-  //     this.navigationSubscription.unsubscribe();
-  //   }
-  // }
 }

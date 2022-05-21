@@ -32,7 +32,7 @@ let location: SpyLocation;
 let users: UserService;
 let tweets: TweetService;
 
-describe('AppComponent & RouterTestingModule', () => {
+describe('Router Testing Module:', () => {
   const user1Id = '71ab267fc37caa55b9d8de7280daee18';
   const user2Id = '750891be3ef78dda51ea512d1726348e';
 
