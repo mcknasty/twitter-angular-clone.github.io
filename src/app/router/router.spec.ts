@@ -13,17 +13,16 @@ import { DebugElement, Type } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { AppRoutes } from './routes';
-import { AppModule } from './app.module';
-import { AppComponent } from './app.component';
+import { AppModule } from '../app/app.module';
+import { AppComponent } from '../app/app.component';
 
-import { declarations } from './declarations';
-import { imports } from './imports';
-import { TweetFeedComponent } from './tweet-feed/tweet-feed.component';
-import { TweetComponent } from './tweet/tweet.component';
-import { UserService } from './user/user.service';
-import { TweetService } from './tweet/tweet.service';
-import { User } from './user/user';
-import { UserComponent } from './user/user.component';
+import { declarations } from '../app/declarations';
+import { imports } from '../app/imports';
+import { TweetFeedComponent } from '../tweet-feed/tweet-feed.component';
+import { TweetComponent } from '../tweet/tweet.component';
+import { UserService } from '../user/user.service';
+import { TweetService } from '../tweet/tweet.service';
+import { UserComponent } from '../user/user.component';
 
 let comp: AppComponent;
 let fixture: ComponentFixture<AppComponent>;
@@ -33,7 +32,7 @@ let location: SpyLocation;
 let users: UserService;
 let tweets: TweetService;
 
-describe('AppComponent & RouterTestingModule', () => {
+describe('Router Testing Module:', () => {
   const user1Id = '71ab267fc37caa55b9d8de7280daee18';
   const user2Id = '750891be3ef78dda51ea512d1726348e';
 

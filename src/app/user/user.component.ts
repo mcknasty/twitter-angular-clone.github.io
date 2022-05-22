@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from '../user/user.service';
-import { User } from '../user/user';
+import { UserRecord } from '../model/User';
 
 @Component({
   selector: 'app-user',
@@ -9,7 +9,7 @@ import { User } from '../user/user';
 //  styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit, OnDestroy {
-  user: User = new User();
+  user: UserRecord = new UserRecord();
   navigationSubscription: any;
   now: number = Date.now();
 

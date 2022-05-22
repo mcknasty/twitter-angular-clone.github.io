@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Tweet } from './tweet';
-import { User } from '../user/user';
+import { TweetRecord } from '../model/Tweet';
+import { UserRecord } from '../model/User';
 import { UserService } from '../user/user.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { UserService } from '../user/user.service';
   styleUrls: ['./tweet.component.scss']
 })
 export class TweetComponent implements OnInit {
-  @Input() tweet: Tweet = new Tweet();
-  user: User = new User();
+  @Input() tweet: TweetRecord = new TweetRecord();
+  user: UserRecord = new UserRecord();
   now: number = Date.now();
 
   constructor(private userService: UserService) {}

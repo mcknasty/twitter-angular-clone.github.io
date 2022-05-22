@@ -8,12 +8,11 @@ import {
 } from '@angular/animations';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { of } from 'rxjs';
-import { Tweet } from '../tweet/tweet';
+import { TweetRecord, TweetSchema, TweetPartialSchema } from '../model/Tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
-import { User } from '../user/user';
+import { UserRecord } from '../model/User';
 import followers from '../../assets/mock-followers.json';
-//import { FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -39,11 +38,11 @@ import followers from '../../assets/mock-followers.json';
   ]
 })
 export class TweetFeedComponent implements OnInit, OnDestroy  {
-  tweets: Tweet[] = [];
+  tweets: TweetRecord[] = [];
   isOpen = false;
   hide = true;
-  user: User;
-  newTweet: Tweet;
+  user: UserRecord;
+  newTweet: TweetRecord;
   navigationSubscription: any;
 
   constructor(
@@ -68,23 +67,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
     this.getTweets();
   }
 
-  initNewTweet(): void {
-    this.newTweet = {
-      id: this.generateId(),
-      created: Date.now(),
-      updated: Date.now(),
-      tweetText: null,
-      userId: null
-    };
-  }
-
-  generateId(len: number = 0): string {
-    const dec2hex = (dec: number) => {
-      return ('0' + dec.toString(16)).substr(-2);
-    };
-    const arr = new Uint8Array((len || 40) / 2);
-    window.crypto.getRandomValues(arr);
-    return Array.from(arr, dec2hex).join('');
+  initNewTweet(data?: Partial<TweetSchema>): void {
+    this.newTweet = (data) ? new TweetRecord(data) : new TweetRecord();
   }
 
   getTweets(): void {
@@ -94,11 +78,11 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
 
   filterTweets(id: string) : void {
     this.tweetService.getTweets()
-      .subscribe((tweets: Tweet[]) => {
+      .subscribe((tweets: TweetRecord[]) => {
         const followed: string[] = this.getUsersFollowed(id);
         followed.push(id);
         this.tweets = tweets
-          .filter((tweet: Tweet) => followed.indexOf(tweet.userId) !== -1)
+          .filter((tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1)
           .slice(0, 20)
           .sort((a, b) => {
             if (a.created < b.created) {
@@ -133,8 +117,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
 
   add(tweetText: string, id?: string) {
     const userId: string = (id !== undefined) ? id : this.user.id;
-    this.initNewTweet();
-    this.newTweet = { ...this.newTweet, userId, tweetText };
+    this.initNewTweet({ userId, tweetText });
     this.tweetService
       .addTweet(this.newTweet)
       .subscribe((tweet) => this.tweets.unshift(tweet));
@@ -157,12 +140,4 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   //   this.tweetService.deleteTweet(tweet).subscribe();
   // }
 
-  // ngOnDestroy(): void {
-  //   // avoid memory leaks here by cleaning up after ourselves. If we
-  //   // don't then we will continue to run our initialiseInvites()
-  //   // method on every navigationEnd event.
-  //   if (this.navigationSubscription) {
-  //     this.navigationSubscription.unsubscribe();
-  //   }
-  // }
 }

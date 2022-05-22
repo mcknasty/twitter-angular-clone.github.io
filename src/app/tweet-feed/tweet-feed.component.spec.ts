@@ -3,14 +3,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { UserComponent } from '../user/user.component';
-import { AppComponent } from '../app.component';
-import { declarations } from '../declarations';
-import { imports } from '../imports';
+import { AppComponent } from '../app/app.component';
+import { declarations } from '../app/declarations';
+import { imports } from '../app/imports';
 import { TweetFeedComponent } from './tweet-feed.component';
 import { TweetComponent } from '../tweet/tweet.component';
 import { UserService } from '../user/user.service';
 import { TweetService } from '../tweet/tweet.service';
-import { User } from '../user/user';
+import { UserRecord } from '../model/User';
+import { TweetRecord } from '../model/Tweet';
 import { DebugElement } from '@angular/core';
 
 describe('Component: TweetFeedComponent', () => {

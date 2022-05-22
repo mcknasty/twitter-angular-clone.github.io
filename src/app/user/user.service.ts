@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { User } from './user';
+import { UserRecord } from '../model/User';
 
 @Injectable({
   providedIn: 'root'
@@ -17,36 +17,15 @@ export class UserService {
     this.getUsers();
   }
 
-  initUser(): User {
-    return {
-      id: this.generateId(),
-      created: Date.now(),
-      updated: Date.now(),
-      name: '',
-      handle: '',
-      userName: '',
-      email: '',
-      plainPass: '',
-      token: '',
-      password: '',
-      lastLogin: 0
-    };
-  }
-
-  generateId(len: number = 0): string {
-    const dec2hex = (dec: number) => {
-      return ('0' + dec.toString(16)).substr(-2);
-    };
-    const arr = new Uint8Array((len || 40) / 2);
-    window.crypto.getRandomValues(arr);
-    return Array.from(arr, dec2hex).join('');
+  initUser(): UserRecord {
+    return new UserRecord();
   }
 
   /** GET users from the server */
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.userUrl)
+  getUsers(): Observable<UserRecord[]> {
+    return this.http.get<UserRecord[]>(this.userUrl)
       .pipe(
-        catchError(this.handleError<User[]>('getUser', []))
+        catchError(this.handleError<UserRecord[]>('getUser', []))
       );
   }
 
@@ -65,12 +44,12 @@ export class UserService {
   }
 
   /** GET user by id. Will 404 if id not found */
-  getUser(id: string): Observable<User> {
+  getUser(id: string): Observable<UserRecord> {
     if ( id ) {
       const url = `${this.userUrl}/${id}`;
-      return this.http.get<User>(url).pipe(
+      return this.http.get<UserRecord>(url).pipe(
         tap(_ => this.log(`fetched user id=${id}`)),
-        catchError(this.handleError<User>(`getUser id=${id}`))
+        catchError(this.handleError<UserRecord>(`getUser id=${id}`))
       );
     }
     return of ( this.initUser() );
