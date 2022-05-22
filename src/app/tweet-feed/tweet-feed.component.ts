@@ -11,7 +11,7 @@ import { of } from 'rxjs';
 import { TweetRecord, TweetSchema, TweetPartialSchema } from '../model/Tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
-import { User } from '../model/user';
+import { UserRecord } from '../model/User';
 import followers from '../../assets/mock-followers.json';
 
 
@@ -41,7 +41,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   tweets: TweetRecord[] = [];
   isOpen = false;
   hide = true;
-  user: User;
+  user: UserRecord;
   newTweet: TweetRecord;
   navigationSubscription: any;
 

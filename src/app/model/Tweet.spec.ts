@@ -26,7 +26,7 @@ describe('Model: Tweet Record', () => {
 
   it('The Tweeet Record Model should be to initialize a new Tweet Record with only the user id and the text of the tweet', () => {
     let userId = TweetRecord.generateId();
-    let tweetText = 'Testing once again!'
+    let tweetText = 'Testing once again!';
     let partialTweet = { userId, tweetText };
     expect(TweetRecord.instanceOf(partialTweet, true)).toBeTrue();
     let newTweet = new TweetRecord(partialTweet);
