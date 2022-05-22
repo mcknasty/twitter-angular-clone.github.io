@@ -1,13 +1,18 @@
 # Twitter Clone
-[![Build Status](https://app.travis-ci.com/mcknasty/twitter-angular-clone.github.io.svg?branch=master)](https://app.travis-ci.com/mcknasty/twitter-angular-clone.github.io)
+[![CircleCI](https://circleci.com/gh/mcknasty/twitter-angular-clone.github.io.svg?style=svg)](https://circleci.com/github/mcknasty/twitter-angular-clone.github.io)
+[![codecov](https://codecov.io/gh/mcknasty/twitter-angular-clone.github.io/branch/master/graph/badge.svg?token=21SB7HS2S2)](https://codecov.io/gh/mcknasty/twitter-angular-clone.github.io)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/mcknasty/twitter-angular-clone.github.io.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mcknasty/twitter-angular-clone.github.io/context:javascript)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/mcknasty/twitter-angular-clone.github.io.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mcknasty/twitter-angular-clone.github.io/alerts/)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
+
+
+This project's initial template was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
 
 ## About
 This project was created with the following features:
 
   - Mobile first css framework. Views for [desktop](#desktop), [tablet](#tablet) and [mobile devices](/#phone). :thumbsup:
-  - [Angular 8 typescript framework](https://angular.io/). :thumbsup:
+  - [Angular 13 typescript framework](https://angular.io/). :thumbsup:
   - [Angular Animations](https://angular.io/guide/animations). :thumbsup:
   - [CSS Flex container layouts](https://css-tricks.com/snippets/css/a-guide-to-flexbox/). :thumbsup:
   - [Font Awesome Icons](https://github.com/FortAwesome/Font-Awesome). :thumbsup:
@@ -23,18 +28,27 @@ Install angular cli with the following command:
  npm install -g @angular/cli
 ```
 
-Clone the project to a convenient directory path.
+Clone the project to a convenient directory path then change into the repository's directories
 ```
   git clone git@github.com:mcknasty/twitter-angular-clone.github.io.git
+  cd twitter-angular-clone.github.io
+```
+
+Install the node module dependencies
+```
+npm intall
 ```
 
 ### Development server
 
-Run `ng serve` from with in the repository directory for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm run start` from with in the repository directory for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Note if you are running inside a virtual machine or a docker container you might to forward some ports in order to access the above url.
+
+### Running Unit Tests
+Run `npm run test`
 
 ### Build
 
-Run `ng build` from with in the repository directory to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `npm run build` from the root repository directory to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Screenshots
 
