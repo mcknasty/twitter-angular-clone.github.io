@@ -32,7 +32,7 @@ class UserRecord extends Record implements BasicRecordInterface {
       if ( UserRecord.instanceOf(data) ) {
         Object.assign(this, data);
       }
-      else if ( UserRecord.instanceOf(data, true) ) {
+      else if ( UserRecord.partialInstanceOf(data) ) {
         const record = { ...this.initEmptyRecord(), ...data}
         Object.assign(this, record);
       }

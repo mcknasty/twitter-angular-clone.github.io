@@ -70,6 +70,10 @@ class Record extends BasicRecord {
     return (partial) ? this.implements(this.getKeys(), data) : this.implements(this.getKeys(true), data);
   }
 
+  public static partialInstanceOf(data: Object) {
+    return this.instanceOf(data, true);
+  }
+
   protected static getKeys(callParent: boolean = false): Array<string> {
     //Todo:  Is there a function to return a list of variables from an interface?
     return (callParent) ? [ ...super.MemberVariblesNames, ...this.MemberVariblesNames ] : [ ...this.MemberVariblesNames ];

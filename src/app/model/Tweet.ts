@@ -18,7 +18,7 @@ class TweetRecord extends Record implements BasicRecordInterface {
       if ( TweetRecord.instanceOf(data) ) {
         Object.assign(this, data);
       }
-      else if ( TweetRecord.instanceOf(data, true) ) {
+      else if ( TweetRecord.partialInstanceOf(data) ) {
         const record = { ...this.initEmptyRecord(), ...data}
         Object.assign(this, record);
       }

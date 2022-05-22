@@ -3,6 +3,7 @@ import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { UserService } from './user.service';
 import { Observable, of } from 'rxjs';
+import { UserRecord } from '../model/User';
 
 describe('Service: UserService', () => {
   beforeEach(() => TestBed.configureTestingModule({declarations, imports}));
@@ -11,15 +12,20 @@ describe('Service: UserService', () => {
     const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
   });
-  it('The User Service should throw an error', inject([UserService], async (service: UserService) => {
+  it('The User Service should throw an error', waitForAsync(() => {
+    const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
-    const observable = of({
-      next: x => "Test harness testing log and code coverage",
-      error: err => "Service ended in an error",
-      complete: () => console.log('Observer got a complete notification'),
-      unsubscribe: () => {}
+    const user = new UserRecord();
+    const userArr = [user, user];
+    const message1 = 'Something Went Wrong Test Harness: Just a test ;-) It will be ok. This was suppose to happen';
+    const message2 = 'Something Went Wrong Test Harness: Just a test ;-) It will be ok.  This was suppose to happen again';
+    service.throwError<UserRecord>(message1, user).subscribe((e) => {
+      console.error(e);
+      expect(true).toBeDefined();
     });
-    service.throwError<any>("User Service", observable)({message: "Test harness testing log and code coverage"}).subscribe(() => {
+
+    service.throwError<UserRecord[]>(message2, userArr).subscribe((e) => {
+      console.error(e);
       expect(true).toBeDefined();
     });
   }));
