@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { TweetRecord } from '../model/Tweet';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content Type': 'application/json' })
 };
 
 @Injectable({
@@ -22,70 +22,43 @@ export class TweetService {
   getTweets(): Observable<TweetRecord[]> {
     return this.http.get<TweetRecord[]>(this.tweetUrl)
       .pipe(
-        catchError(this.handleError<TweetRecord[]>('getTweet', [])())
+        catchError(this.handleError<TweetRecord[]>('getTweet', []))
       );
   }
 
-  /** GET tweet by id. Will 404 if id not found * /
-  getTweet(id: string): Observable<Tweet> {
+/**   ** /
+  getTweet(id: string): Observable<TweetRecord> {
     const url = `${this.tweetUrl}/${id}`;
-    return this.http.get<Tweet>(url).pipe(
-      catchError(this.handleError<Tweet>(`getTweet id=${id}`))
+    return this.http.get<TweetRecord>(url).pipe(
+      catchError(this.handleError<TweetRecord>(`getTweet id=${id}`, new TweetRecord()))
     );
   }
-
-  //////// Save methods //////////
+/**   **/
 
   /** POST: add a new tweet to the server */
   addTweet(tweet: TweetRecord): Observable<TweetRecord> {
-    return this.http.post<TweetRecord>(this.tweetUrl, tweet, httpOptions);
-    //How does this line throw and error?
-    /**
-    return this.http.post<Tweet>(this.tweetUrl, tweet, httpOptions).pipe(
-      catchError(this.handleError<Tweet>('addTweet'))
+    return this.http.post<TweetRecord>(this.tweetUrl, tweet, httpOptions).pipe(
+      catchError(this.handleError<TweetRecord>('addTweet', new TweetRecord()))
     );
-    **/
   }
 
-  public throwError<T>(service: string, error?: any) :Function {
-    let func: Function;
-    if (error !== undefined) {
-      func = this.handleError<T>(service, error);
-    }
-    else {
-      func = this.handleError<T>(service);
-    }
-    return func;
+  /**
+   *  Interface for the test harness
+   */
+  public throwError<T>(message: string, result: T) {
+    return this.handleError<T>(message, result)(message);
   }
 
   /**
    * Handle Http operation that failed.
    * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
+   * @param operation   name of the operation that failed
+   * @param result   optional value to return as the observable result
    */
-
-
-  private handleError<T>(operation: String, result?: T) :Function {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      if (typeof error === 'string') {
-        console.error(error); // log to console instead
-      }
-      else if (typeof error === 'object' && 'message' in error ){
-        console.error(error);
-        // TODO: better job of transforming error for user consumption
-        this.log(`${operation} failed: ${error.message}`);
-        return of(error as T);
-      }
-
-      return of(result as T);
-    };
-  }
-
-  /** Log a TweetService message with the MessageService */
-  private log(message: string) {
-    console.log(message);
-  }
+   private handleError<T>(message: string, result: T) {
+     return (error: any): Observable<T> => {
+       console.error(`UserService encountered an error: ${message} error: ${error}`)
+       return of ( result as T );
+     }
+   }
 }

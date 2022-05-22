@@ -36,18 +36,10 @@ describe('Service: TweetService', () => {
 
   it('The Tweet Service should throw an error', waitForAsync(() => {
     expect(service).toBeDefined();
-    const observable = of({
-      next: x => "Test harness testing log and code coverage",
-      error: err => "Service ended in an error",
-      complete: () => console.log('Observer got a complete notification'),
-      unsubscribe: () => {}
-    });
-
-    service.throwError<String>("Tweet Service")({message: "Test harness testing log and code coverage" }).subscribe(() => {
-      expect(true).toBeDefined();
-    });
-
-    service.throwError<Object>("Tweet Service", observable)("Test harness testing log and code coverage").subscribe(() => {
+    const tweet = new TweetRecord();
+    const message1 = 'Something Went Wrong Test Harness: Just a test ;-) It will be ok. This was suppose to happen';
+    service.throwError<TweetRecord>(message1, tweet).subscribe((e) => {
+      console.error(e);
       expect(true).toBeDefined();
     });
   }));

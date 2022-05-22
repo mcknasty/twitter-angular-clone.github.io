@@ -28,7 +28,7 @@ describe('Model: Tweet Record', () => {
     let userId = TweetRecord.generateId();
     let tweetText = 'Testing once again!';
     let partialTweet = { userId, tweetText };
-    expect(TweetRecord.instanceOf(partialTweet, true)).toBeTrue();
+    expect(TweetRecord.partialInstanceOf(partialTweet)).toBeTrue();
     let newTweet = new TweetRecord(partialTweet);
     expect(TweetRecord.instanceOf(newTweet)).toBeTrue();
     expect(newTweet instanceof TweetRecord).toBeTrue();
