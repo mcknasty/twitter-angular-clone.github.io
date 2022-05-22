@@ -56,7 +56,7 @@ describe('Model: User Record', () => {
       name, handle, userName, email,
       plainPass, token, password, lastLogin
     };
-    expect(UserRecord.instanceOf(partialUser, true)).toBeTrue();
+    expect(UserRecord.partialInstanceOf(partialUser)).toBeTrue();
 
     let newUser = new UserRecord(partialUser);
     expect(UserRecord.instanceOf(newUser)).toBeTrue();

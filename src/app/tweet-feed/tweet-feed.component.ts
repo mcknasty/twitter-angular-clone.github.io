@@ -115,6 +115,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
     this.hide = !this.hide;
   }
 
+  //add(tweetText: string, id?: string)
   add(tweetText: string, id?: string) {
     const userId: string = (id !== undefined) ? id : this.user.id;
     this.initNewTweet({ userId, tweetText });

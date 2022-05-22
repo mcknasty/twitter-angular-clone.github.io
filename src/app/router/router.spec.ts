@@ -78,8 +78,52 @@ describe('Router Testing Module:', () => {
         link.click();
         advance();
         fixture.whenStable().then(() => {
-        expectPathToBe(`/user/${user2Id}`);
-        expectElementOf(UserComponent);
+          expectPathToBe(`/user/${user2Id}`);
+          expectElementOf(UserComponent);
+        });
+      });
+    });
+  }));
+
+  it("The App should be to add a new tweet utilizing the user id in the url", waitForAsync(() => {
+    createComponent();
+    advance();
+    fixture.whenStable().then(() => {
+      users = TestBed.inject(UserService);
+      tweets = TestBed.inject(TweetService);
+      const TweetFeed = TestBed.createComponent(TweetFeedComponent);
+      TweetFeed.detectChanges();
+      TweetFeed.whenStable().then(() => {
+        //Open the Drawer
+        const debug = TweetFeed.debugElement;
+        const instance = TweetFeed.componentInstance;
+        let linkDes = debug.query(By.css('.feed-header .button'));
+        linkDes.triggerEventHandler('click', null);
+        TweetFeed.detectChanges();
+
+        TweetFeed.whenStable().then(() => {
+          let newTweetText: string = 'New Tweet! 123';
+          let drawerClosed = debug.query(By.css('.display-none'));
+          expect(drawerClosed).toBeNull();
+
+          //Add some text to the compose tweet text area
+          let textBox = debug.query(By.css('#new-tweet'));
+          textBox.nativeElement.value = newTweetText;
+          textBox.nativeElement.innerHTML = newTweetText;
+          textBox.nativeElement.dispatchEvent(new Event('input'));
+          TweetFeed.detectChanges();
+
+          //Click the submit button
+          let submit = debug.query(By.css('#submit-tweet'));
+          submit.nativeElement.dispatchEvent(new Event('click'));
+          TweetFeed.detectChanges();
+          TweetFeed.whenStable().then(() => {
+            let tweetFeed = debug.queryAll(By.css('.feed .tweet-text'));
+            let tweetsArray = instance.tweets;
+            expect(tweetsArray.findIndex((e) => e.tweetText === newTweetText)).toBeGreaterThan(-1);
+            expect(tweetFeed[0].nativeElement.innerHTML).toContain(newTweetText);
+            expect(tweetsArray[0].tweetText).toContain(newTweetText);
+          });
         });
       });
     });

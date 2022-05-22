@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { of, Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-
+import { catchError } from 'rxjs/operators';
 import { UserRecord } from '../model/User';
 
 @Injectable({
@@ -25,21 +23,7 @@ export class UserService {
   getUsers(): Observable<UserRecord[]> {
     return this.http.get<UserRecord[]>(this.userUrl)
       .pipe(
-        catchError(this.handleError<UserRecord[]>('getUser', []))
-      );
-  }
-
-  /** GET user by id. Return `undefined` when id not found * /
-  getUserNo404<Data>(id: number): Observable<User> {
-    const url = `${this.userUrl}/?id=${id}`;
-    return this.http.get<User[]>(url)
-      .pipe(
-        map(users => users[0]), // returns a {0|1} element array
-        tap(h => {
-          const outcome = h ? `fetched` : `did not find`;
-          this.log(`${outcome} user id=${id}`);
-        }),
-        catchError(this.handleError<User>(`getUser id=${id}`))
+        catchError(this.handleError<UserRecord[]>('function: getUser', []))
       );
   }
 
@@ -48,33 +32,20 @@ export class UserService {
     if ( id ) {
       const url = `${this.userUrl}/${id}`;
       return this.http.get<UserRecord>(url).pipe(
-        tap(_ => this.log(`fetched user id=${id}`)),
-        catchError(this.handleError<UserRecord>(`getUser id=${id}`))
+        catchError(this.handleError<UserRecord>(`getUser function: id=${id}`, this.initUser()))
       );
     }
     return of ( this.initUser() );
   }
 
-  public throwError<T>(service: string, error) {
-    return this.handleError<T>(service, error);
+  public throwError<T>(message: string, result: T) {
+    return this.handleError<T>(message, result)(message);
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(message: string, result: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-  /** Log a UserService message with the MessageService */
-  private log(message: string) {
-    // console.log(message);
+      console.error(`UserService encountered an error: ${message} error: ${error}`)
+      return of ( result as T );
+    }
   }
 }
