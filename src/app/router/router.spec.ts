@@ -1,25 +1,19 @@
 // For more examples:
 //   https://github.com/angular/angular/blob/master/modules/@angular/router/test/integration.spec.ts
 
-import { waitForAsync, ComponentFixture, TestBed, tick, fakeAsync, ComponentFixtureAutoDetect } from '@angular/core/testing';
-
+import { waitForAsync, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SpyLocation } from '@angular/common/testing';
-
-import { Router, RouterLinkWithHref } from '@angular/router';
-
+import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { DebugElement, Type } from '@angular/core';
+import { Type } from '@angular/core';
 import { Location } from '@angular/common';
-
 import { AppRoutes } from './routes';
 import { AppModule } from '../app/app.module';
 import { AppComponent } from '../app/app.component';
-
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { TweetFeedComponent } from '../tweet-feed/tweet-feed.component';
-import { TweetComponent } from '../tweet/tweet.component';
 import { UserService } from '../user/user.service';
 import { TweetService } from '../tweet/tweet.service';
 import { UserComponent } from '../user/user.component';
