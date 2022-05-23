@@ -36,7 +36,7 @@ Clone the project to a convenient directory path then change into the repository
 
 Install the node module dependencies
 ```
-npm intall
+npm install
 ```
 
 ### Development server
