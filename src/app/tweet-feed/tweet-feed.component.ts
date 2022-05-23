@@ -7,8 +7,7 @@ import {
   transition
 } from '@angular/animations';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { of } from 'rxjs';
-import { TweetRecord, TweetSchema, TweetPartialSchema } from '../model/Tweet';
+import { TweetRecord, TweetSchema } from '../model/Tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
 import { UserRecord } from '../model/User';

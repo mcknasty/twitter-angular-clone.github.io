@@ -1,5 +1,6 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
+var HEADLESS = true;
 let reporters = ['progress', 'kjhtml', 'coverage-istanbul', "verbose"];
 var hflag = (typeof HEADLESS == "undefined") ? false : true;
 process.env.CHROME_BIN = (hflag) ? require('puppeteer').executablePath() : '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'

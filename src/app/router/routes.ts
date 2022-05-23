@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { UserComponent } from '../user/user.component';
 
 export const AppRoutes: Routes = [
