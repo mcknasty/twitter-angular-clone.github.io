@@ -28,7 +28,7 @@
     "crypto-random-string": "^3.2.0",
     "hashids": "^2.2.1",
     "moment": "^2.29.3",
-    "ngx-moment": "^5.0.0",
+    "ngx-moment": "^6.0.2",
     "rxjs": "^6.6.2",
     "rxjs-compat": "^6.6.2",
     "source-map": "^0.7.3",
