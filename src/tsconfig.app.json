@@ -2,10 +2,7 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": [],
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "types": ["node"],
     "sourceMap": true,
     "newLine": "LF"
   },
