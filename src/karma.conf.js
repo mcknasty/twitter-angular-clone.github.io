@@ -34,7 +34,7 @@ module.exports = function (config) {
         seed: '4321',
         oneFailurePerSpec: true,
         stopOnSpecFailure: true,
-        timeoutInterval: 360000
+        timeoutInterval: 180000
       }
       /**                **/
     },
@@ -77,8 +77,8 @@ module.exports = function (config) {
     },
     concurrency: 3,
     singleRun: false,
-    browserDisconnectTimeout : 360000,
-    browserNoActivityTimeout: 360000,
+    browserDisconnectTimeout : 180000,
+    browserNoActivityTimeout: 180000,
     //restartOnFileChange: true,
     /**                          ** /
     browserDisconnectTimeout : 10000,
