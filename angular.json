@@ -83,7 +83,7 @@
             "browserTarget": "twitter-clone:build"
           }
         },
-        "test-cli": {
+        "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
@@ -93,37 +93,11 @@
             "styles": [
               "src/styles.scss"
             ],
-            "sourceMap": {
-              "scripts": true,
-              "styles": false,
-              "vendor": true
-            },
             "scripts": [],
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
-           "browsers": "WindowsChrome",
-           "watch": false,
-           "sourceMap": true
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma-cli.conf.js",
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-           "browsers": "ChromeHeadless",
            "watch": false,
            "sourceMap": true
           }
