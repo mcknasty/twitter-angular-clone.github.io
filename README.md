@@ -11,7 +11,7 @@ This project's initial template was generated with [Angular CLI](https://github.
 ## About
 This project was created with the following features:
 
-  - Mobile first css framework. Views for [desktop](#desktop), [tablet](#tablet) and [mobile devices](/#phone). :thumbsup:
+  - Mobile first css framework. Views for [desktop](#desktop), [tablet](#tablet) and [mobile devices](#phone). :thumbsup:
   - [Angular 13 typescript framework](https://angular.io/). :thumbsup:
   - [Angular Animations](https://angular.io/guide/animations). :thumbsup:
   - [CSS Flex container layouts](https://css-tricks.com/snippets/css/a-guide-to-flexbox/). :thumbsup:
