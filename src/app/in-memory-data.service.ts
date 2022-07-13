@@ -1,4 +1,4 @@
-import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { InMemoryDbService, HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
 
 import tweets from '../assets/mock-tweets.json';
@@ -8,7 +8,7 @@ import followers from '../assets/mock-followers.json';
 @Injectable({
   providedIn: 'root',
 })
-export class InMemoryDataService implements InMemoryDbService {
+class InMemoryDataService implements InMemoryDbService {
   private db: object;
 
   constructor() {
@@ -29,3 +29,9 @@ export class InMemoryDataService implements InMemoryDbService {
   // }
   // Todo: Do I need a get id function?
 }
+
+const InMemoryService = HttpClientInMemoryWebApiModule.forRoot(
+  InMemoryDataService, { dataEncapsulation: false }
+)
+
+export { InMemoryService }

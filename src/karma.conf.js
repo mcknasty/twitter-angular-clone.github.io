@@ -1,10 +1,10 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
-var HEADLESS = true;
-let reporters = ['progress', 'kjhtml', 'coverage-istanbul', "verbose"];
-var hflag = (typeof HEADLESS == "undefined") ? false : true;
-process.env.CHROME_BIN = (hflag) ? require('puppeteer').executablePath() : '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'
-
+process.env.NODE_OPTIONS = "--max-old-space-size=8192";
+process.env.NODE_ENV = 'production';
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+Error.stackTraceLimit = 0;
+let reporters = ['coverage', 'verbose', 'progress'];
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -13,7 +13,6 @@ module.exports = function (config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma'),
       require('karma-verbose-reporter'),
       require('karma-typescript'),
@@ -22,24 +21,35 @@ module.exports = function (config) {
       require('karma-scss-preprocessor')
     ],
     preprocessors: {
-      'src/**/*': ['sourcemap', 'coverage'],
-      'test/**/*': ['sourcemap'],
-      "**/*.ts": "karma-typescript",
-      '**/*.js': ['sourcemap'],
-      'src/**/*.scss': ['scss']
+      "**/*.ts": ["karma-typescript", 'coverage'],
+      '**/*.js': 'sourcemap',
+      'src/**/*.scss': 'scss'
     },
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
       captureConsole: true,
-      mocha: {
-        bail: true
+      /**                 **/
+      jasmine: {
+        random: true,
+        seed: '4321',
+        oneFailurePerSpec: true,
+        stopOnSpecFailure: true,
+        timeoutInterval: 360000
       }
+      /**                **/
     },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, '../coverage/twitter-clone'),
-      reports: ['html', 'lcovonly', 'text'],
+    /**   **/
+    coverageReporter: {
+      dir: require('path').join(__dirname, './coverage/twitter-clone'),
+      subdir: '.',
+      reporters: [
+        { type: 'lcov' },
+        { type: 'text-summary' },
+        { type: 'text' }
+      ],
       fixWebpackSourcePaths: true
     },
+    /**     **/
     browserConsoleLogOptions: {
       terminal: true,
       level: ""
@@ -49,14 +59,37 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_LOG,
     autoWatch: true,
-    browsers: ['ChromeHeadless', 'WindowsChrome'],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
       WindowsChrome: {
         base: 'Chrome',
         chromeDataDir: 'D:\\'
+      },
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: [
+          '--headless',
+          '--disable-gpu',
+          '--no-sandbox',
+          '--remote-debugging-port=9222',
+        ]
       }
     },
+    concurrency: 3,
     singleRun: false,
-    restartOnFileChange: true
+    browserDisconnectTimeout : 360000,
+    browserNoActivityTimeout: 360000,
+    //restartOnFileChange: true,
+    /**                          ** /
+    browserDisconnectTimeout : 10000,
+    browserDisconnectTolerance : 10,
+    browserNoActivityTimeout : 4*60*1000,
+    //browserNoActivityTimeout: 9000,
+
+    browserDisconnectTimeout : 10000,
+    browserDisconnectTolerance : 1,
+    //browserNoActivityTimeout : 4*60*1000,
+    //captureTimeout : 4*60*1000
+    /**                          **/
   });
 };

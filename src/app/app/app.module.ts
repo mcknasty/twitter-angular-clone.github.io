@@ -4,8 +4,8 @@ import { declarations } from './declarations';
 import { imports } from './imports';
 
 @NgModule({
-  declarations,
-  imports,
+  declarations: [ ...declarations ],
+  imports: [ ... imports ],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -28,7 +28,7 @@ describe('Component: AppComponent', () => {
 
   }));
 
-  it('The App Component should be initialized', waitForAsync(() => {
+  it('The App Component should be initialized', (done) => {
     const url = '/user/71ab267fc37caa55b9d8de7280daee18';
     let router = TestBed.inject(Router);
     router.initialNavigation();
@@ -41,6 +41,7 @@ describe('Component: AppComponent', () => {
         fixture.detectChanges();
         const component = fixture.nativeElement;
         expect(component).toBeDefined();
+        done();
       }
       else {
         expect(false).toBeTrue();
@@ -48,10 +49,9 @@ describe('Component: AppComponent', () => {
     }, (error) => {
       console.log(error);
     })
+  });
 
-  }));
-
-  it('The App Component render a bird icon in the header of the page', waitForAsync(() => {
+  it('The App Component render a bird icon in the header of the page', (done) => {
     const url = '/user/71ab267fc37caa55b9d8de7280daee18';
     let router = TestBed.inject(Router);
     router.initialNavigation();
@@ -66,6 +66,7 @@ describe('Component: AppComponent', () => {
           const component = fixture.nativeElement;
           const icon = component.querySelector('i.fab.fa-twitter');
           expect(icon).toBeDefined();
+          done();
         });
       }
       else {
@@ -74,5 +75,5 @@ describe('Component: AppComponent', () => {
     }, (error) => {
       console.log(error);
     })
-  }));
+  });
 });

@@ -30,7 +30,6 @@ describe('Router Testing Module:', () => {
   const user1Id = '71ab267fc37caa55b9d8de7280daee18';
   const user2Id = '750891be3ef78dda51ea512d1726348e';
 
-
   beforeEach(waitForAsync(() => {
     TestBed
         .configureTestingModule({
@@ -49,16 +48,18 @@ describe('Router Testing Module:', () => {
         .compileComponents();
   }));
 
-  it("The App should rediect to an arbitary user's page on loading", waitForAsync(() => {
-       createComponent();
-       advance();  // wait for async data to arrive
-       page.fixture.whenStable().then(() => {
-         expectPathToBe(`/user/${user1Id}`, 'after initialNavigation()');
-         expectElementOf(UserComponent);
-       });
-     }));
+  it("The App should rediect to an arbitary user's page on loading", (done) => {
+    createComponent();
+    advance();  // wait for async data to arrive
+    page.fixture.whenStable().then(() => {
+     expectPathToBe(`/user/${user1Id}`, 'after initialNavigation()');
+     expectElementOf(UserComponent);
+     done();
+    });
+  });
 
-  it("The App should be able to navigate to another user's profile from thier username link", waitForAsync(() => {
+  //it("The App should be able to navigate to another user's profile from thier username link", waitForAsync(() => {
+  it("The App should be able to navigate to another user's profile from thier username link", (done) => {
     createComponent();
     advance();
     fixture.whenStable().then(() => {
@@ -74,12 +75,14 @@ describe('Router Testing Module:', () => {
         fixture.whenStable().then(() => {
           expectPathToBe(`/user/${user2Id}`);
           expectElementOf(UserComponent);
+          done();
         });
       });
     });
-  }));
+  });
 
-  it("The App should be to add a new tweet utilizing the user id in the url", waitForAsync(() => {
+//  it("The App should be to add a new tweet utilizing the user id in the url", waitForAsync(() => {
+  it("The App should be to add a new tweet utilizing the user id in the url", (done) => {
     createComponent();
     advance();
     fixture.whenStable().then(() => {
@@ -117,11 +120,12 @@ describe('Router Testing Module:', () => {
             expect(tweetsArray.findIndex((e) => e.tweetText === newTweetText)).toBeGreaterThan(-1);
             expect(tweetFeed[0].nativeElement.innerHTML).toContain(newTweetText);
             expect(tweetsArray[0].tweetText).toContain(newTweetText);
+            done();
           });
         });
       });
     });
-  }));
+  });
 });
 
 ////// Helpers /////////
