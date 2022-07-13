@@ -21,7 +21,7 @@
     "@angular/router": "~13.3.8",
     "@angular/language-service": "~13.3.8",
     "angular-in-memory-web-api": "~0.13.0",
-    "ajv": "^6.12.6",
+    "ajv": "^8.11.0",
     "core-js": "^3.19.1",
     "crypto": "^1.0.1",
     "crypto-js": "^4.0.0",
