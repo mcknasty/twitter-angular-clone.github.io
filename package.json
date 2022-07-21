@@ -62,7 +62,7 @@
     "karma-coverage": "^2.2.0",
     "karma-sourcemap-loader": "^0.3.8",
     "karma-typescript": "^5.5.3",
-    "karma-verbose-reporter": "0.0.6",
+    "karma-verbose-reporter": "0.0.8",
     "karma-webpack": "^5.0.0",
     "coverage": "^0.4.1",
     "node-sass": "^7.0.1",
