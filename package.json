@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~13.3.8",
     "@angular/platform-browser-dynamic": "~13.3.8",
     "@angular/router": "~13.3.8",
-    "@angular/language-service": "~13.3.8",
+    "@angular/language-service": "~14.1.0",
     "angular-in-memory-web-api": "~0.13.0",
     "ajv": "^8.11.0",
     "core-js": "^3.19.1",
