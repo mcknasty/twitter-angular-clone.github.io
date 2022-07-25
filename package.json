@@ -22,7 +22,7 @@
     "@angular/language-service": "~14.1.0",
     "angular-in-memory-web-api": "~0.13.0",
     "ajv": "^8.11.0",
-    "core-js": "^3.19.1",
+    "core-js": "^3.24.0",
     "crypto": "^1.0.1",
     "crypto-js": "^4.0.0",
     "crypto-random-string": "^5.0.0",
