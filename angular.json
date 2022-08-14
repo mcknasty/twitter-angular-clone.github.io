@@ -2,7 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
     "analytics": "11d1fd1d-4910-427a-b05f-04d5948eeec7",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -98,8 +100,8 @@
               "src/favicon.ico",
               "src/assets"
             ],
-           "watch": false,
-           "sourceMap": true
+            "watch": false,
+            "sourceMap": true
           }
         },
         "lint": {
