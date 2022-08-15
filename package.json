@@ -34,7 +34,7 @@
     "source-map": "^0.7.3",
     "tslib": "^2.0.0",
     "uuid": "^8.3.0",
-    "yargs-parser": "^15.0.1",
+    "yargs-parser": "^21.1.1",
     "zone.js": "~0.11.8"
   },
   "devDependencies": {
