@@ -11,11 +11,6 @@ const imports = [
   BrowserModule,
   AppRoutingModule,
   HttpClientModule,
-  /**  ** /
-  HttpClientInMemoryWebApiModule.forRoot(
-    InMemoryDataService, { dataEncapsulation: false }
-  ),
-  /**  **/
   InMemoryService,
   MomentModule.forRoot({
     relativeTimeThresholdOptions: {

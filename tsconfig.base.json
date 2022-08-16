@@ -2,8 +2,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "newLine": "LF",
     "declaration": false,
     "module": "esnext",
     "moduleResolution": "node",
@@ -15,11 +15,17 @@
     "esModuleInterop": true,
     "noImplicitAny": false,
     "typeRoots": [
-      "node_modules/@types"
+      "@types",
+      "@types/node",
+      "@types/jasmine"
     ],
     "lib": [
       "es2018",
       "dom"
+    ],
+    "types": [
+      "node", 
+      "jasmine"
     ]
   }
 }

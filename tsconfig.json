@@ -11,10 +11,7 @@
       "path": "./src/tsconfig.app.json"
     },
     {
-      "path": "./src/tsconfig.spec.json"
-    },
-    {
-      "path": "./e2e/tsconfig.e2e.json"
+      "path": "./src/karma/tsconfig.spec.json"
     }
   ]
 }
