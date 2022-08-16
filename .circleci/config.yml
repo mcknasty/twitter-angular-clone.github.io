@@ -35,7 +35,7 @@ jobs:
           pkg-manager: npm
 #      - run:
 #          name: Install angular cli
-#          command: sudo npm install -g @angular/cli 
+#          command: sudo npm install -g @angular/cli
       - run:
           name: Run lint
           command: npm run lint
