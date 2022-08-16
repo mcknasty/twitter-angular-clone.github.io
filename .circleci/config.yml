@@ -36,15 +36,12 @@ jobs:
       - run:
           name: Install angular cli
           command: sudo npm install -g @angular/cli 
-  lint:
       - run:
           name: Run lint
           command: npm run lint
-  test-build:
       - run:
           name: Run E2E tests
           command: npm run build
-  test-E2E:
       - run:
           name: Run E2E tests
           command: npm run test-cli
@@ -58,11 +55,5 @@ workflows:
   complete-build:
     jobs:
       - setup
-      - lint
-        requires: setup
-      - test-build
-        requires: setup
-      - test-E2E
-        requires: setup
       # For running simple node tests, you could optionally use the node/test job from the orb to replicate and replace the job above in fewer lines.
       # - node/test
