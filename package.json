@@ -49,7 +49,7 @@
     "@angular/compiler-cli": "~14.1.2",
     "@types/jasmine": "^4.0.3",
     "@types/jasminewd2": "^2.0.10",
-    "@types/node": "^18.7.3",
+    "@types/node": "^18.7.5",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "coverage": "^0.4.1",
