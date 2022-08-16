@@ -40,7 +40,7 @@ jobs:
           name: Run lint
           command: npm run lint
       - run:
-          name: Run E2E tests
+          name: Run Compile Test
           command: npm run build
       - run:
           name: Run E2E tests
