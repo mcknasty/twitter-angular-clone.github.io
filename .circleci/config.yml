@@ -9,16 +9,16 @@ orbs:
   node: circleci/node@4.7
   codecov: codecov/codecov@3.1.1
 
+executors:
+  angular-build:
+    docker:
+      - image: talktotrev/angular-build:1.0
+    working_directory: /root/project
+
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   setup:
-        # These next lines define a Docker executor: https://circleci.com/docs/2.0/executor-types/
-    # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/node
-    docker:
-      - image: talktotrev/angular-build:1.0
-    # Then run your tests!
-    # CircleCI will report the results back to your VCS provider.
+    executor: angular-build
     steps:
       # Checkout the code as the first step.
       - checkout
@@ -27,15 +27,27 @@ jobs:
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
+      - persist_to_workspace:
+          root: /root/project
+          paths: 
+            - /root/project
+  npm-cli:
+    executor: angular-build
+    parameters:
+      message:
+        type: string
+      command:
+        type: string
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /root/project
       - run:
-          name: Run lint
-          command: npm run lint
-      - run:
-          name: Run Compile Test
-          command: npm run build
-      - run:
-          name: Run E2E tests
-          command: npm run test-cli
+          name: << parameters.message >>
+          command: << parameters.command >>
+  codecov:
+    executor: angular-build
+    steps:
       - codecov/upload
 
 workflows:
@@ -46,5 +58,21 @@ workflows:
   complete-build:
     jobs:
       - setup
+      - npm-cli:
+          message: Run lint
+          command: npm run lint
+          requires: 
+            - setup
+      - npm-cli:
+          message: Compile Typescript and SASS
+          command: npm run build
+          requires: 
+            - setup
+      - npm-cli:
+          message: Run Unit and End to End Tests
+          command: npm run test-cli
+          requires: 
+            - setup
+      - codecov
       # For running simple node tests, you could optionally use the node/test job from the orb to replicate and replace the job above in fewer lines.
       # - node/test
