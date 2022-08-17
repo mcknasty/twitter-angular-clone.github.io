@@ -48,6 +48,9 @@ jobs:
   codecov:
     executor: angular-build
     steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /root/project
       - codecov/upload
   local-build:
     docker:
@@ -89,27 +92,32 @@ workflows:
                 - master
                 - /feature/.*/
       - npm-cli:
+          name: lint
           message: Lint Check Typescript Files
           command: npm run lint
           requires: 
             - setup
       - npm-cli:
+          name: compile
           message: Compile Typescript and SASS
           command: npm run build
           requires: 
             - setup
+            - lint
       - npm-cli:
+          name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
           requires: 
             - setup
+            - lint
+            - compile
       - codecov:
-          filters:
-            branches:
-              only: 
-                - develop
-                - master
-                - /feature/.*/
+          requires: 
+            - setup
+            - lint
+            - compile
+            - unit-test
   local-cli-build:
     jobs:
       - local-build:
