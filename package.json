@@ -8,7 +8,8 @@
     "test": "npx ng test --code-coverage",
     "test-cli": "npx ng test --karma-config=src/karma/karma-cli.conf.js --code-coverage",
     "lint": "npx ng lint",
-    "deploy:gh-pages": "npx ng build --configuration production --output-path docs  --base-href https://mcknasty.github.io/twitter-angular-clone.github.io/"
+    "deploy:gh-pages": "npx ng build --configuration production --output-path docs  --base-href https://mcknasty.github.io/twitter-angular-clone.github.io/",
+    "circleci:local": "circleci local execute -v $(pwd):/tmp/repo --job local-build"
   },
   "private": true,
   "dependencies": {
