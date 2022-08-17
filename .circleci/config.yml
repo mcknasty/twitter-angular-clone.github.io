@@ -118,7 +118,6 @@ workflows:
             - lint
             - compile
             - unit-test
-
   local-cli-build:
     jobs:
       - local-build:
