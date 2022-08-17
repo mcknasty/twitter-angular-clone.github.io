@@ -45,15 +45,12 @@ jobs:
       - run:
           name: << parameters.message >>
           command: << parameters.command >>
-  unit-test:
+  codecov:
     executor: angular-build
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: /root/project
-      - run:
-          name: Run Unit and End to End Tests
-          command: npm run test-cli
       - codecov/upload
   local-build:
     docker:
@@ -107,17 +104,21 @@ workflows:
           requires: 
             - setup
             - lint
-      - unit-test:
+      - npm-cli:
+          name: unit-test
+          message: Run Unit and End to End Tests
+          command: npm run test-cli
           requires: 
             - setup
             - lint
             - compile
-          filters:
-            branches:
-              only: 
-                - develop
-                - master
-                - /feature/.*/
+      - codecov:
+          requires: 
+            - setup
+            - lint
+            - compile
+            - unit-test
+
   local-cli-build:
     jobs:
       - local-build:
