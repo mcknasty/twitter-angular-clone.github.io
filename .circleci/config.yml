@@ -30,7 +30,7 @@ jobs:
       - persist_to_workspace:
           root: /root/project
           paths: 
-            - /root/project
+            - ./
   npm-cli:
     executor: angular-build
     parameters:
