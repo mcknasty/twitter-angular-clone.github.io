@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": [
-    "projects/**/*"
+    "projects/**/*",
+    "node_modules/**/*"
   ],
   "overrides": [
     {
@@ -10,7 +11,7 @@
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.base.json"
+          "src/tsconfig.app.json"
         ],
         "createDefaultProgram": true
       },
