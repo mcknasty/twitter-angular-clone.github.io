@@ -72,6 +72,24 @@ jobs:
       - run:
           name: Run Unit and End to End Tests
           command: npm run test
+  pages-build:
+    executor: angular-build
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /root/project
+      - add_ssh_keys:
+          fingerprints:
+            - "00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3"
+      - run:
+          name: Install and configure dependencies
+          command: npm install -g --silent gh-pages@2.0.1 &&
+            git config user.email "ci-build@nowhere.net" &&
+            git config user.name "ci-build"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dist docs --message "[skip ci] New deploy to github pages"
+
 
 
 
@@ -90,6 +108,7 @@ workflows:
               only: 
                 - develop
                 - master
+                - /features/.*/
                 - /feature/.*/
                 - /dependabot/.*/
       - npm-cli:
@@ -127,3 +146,38 @@ workflows:
               ignore: /.*/
       # For running simple node tests, you could optionally use the node/test job from the orb to replicate and replace the job above in fewer lines.
       # - node/test
+  gh-pages:
+    jobs:
+      - setup:
+          filters:
+            branches:
+              only: 
+                - master
+      - npm-cli:
+          name: lint
+          message: Lint Check Typescript Files
+          command: npm run lint
+          requires: 
+            - setup
+      - npm-cli:
+          name: compile
+          message: Compile Typescript and SASS
+          command: npm run build
+          requires: 
+            - setup
+            - lint
+      - npm-cli:
+          name: unit-test
+          message: Run Unit and End to End Tests
+          command: npm run test-cli
+          requires: 
+            - setup
+            - lint
+            - compile
+      - pages-build:
+          requires: 
+            - setup
+            - lint
+            - compile
+            - unit-test
+
