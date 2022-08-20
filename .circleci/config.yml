@@ -107,8 +107,8 @@ workflows:
             branches:
               only: 
                 - develop
-                #- /features/.*/
-                #- /feature/.*/
+                - /features/.*/
+                - /feature/.*/
                 - /dependabot/.*/
       - npm-cli:
           name: lint
@@ -152,7 +152,6 @@ workflows:
             branches:
               only: 
                 - master
-                - feature/test-gh-pages-deploy
       - npm-cli:
           name: lint
           message: Lint Check Typescript Files
