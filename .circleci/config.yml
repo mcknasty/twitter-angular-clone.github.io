@@ -83,9 +83,7 @@ jobs:
             - "00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3"
       - run:
           name: Adding Github to Known Hosts File
-          command: touch ~/.ssh/known_hosts && echo $github_ssh_key >> ~/.ssh/known_hosts
-          enviroment:
-            github_ssh_key: github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+          command: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Congifure CI git user
           command: git config user.email "ci-build@nowhere.net" &&
