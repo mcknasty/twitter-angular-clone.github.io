@@ -106,8 +106,8 @@ workflows:
           filters:
             branches:
               only: 
-                - /develop
-                - /master
+                - develop
+                - master
                 - /features/.*/
                 - /feature/.*/
                 - /dependabot/.*/
