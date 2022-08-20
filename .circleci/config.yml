@@ -91,7 +91,7 @@ workflows:
                 - develop
                 - master
                 - /feature/.*/
-                - /dependabot/*
+                - /dependabot/.*/
       - npm-cli:
           name: lint
           message: Lint Check Typescript Files
