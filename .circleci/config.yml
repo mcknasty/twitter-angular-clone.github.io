@@ -82,18 +82,18 @@ jobs:
           fingerprints:
             - "00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3"
       - run:
-          name: Install and configure dependencies
-          command: npm install -g --silent gh-pages@2.0.1 &&
-            git config user.email "ci-build@nowhere.net" &&
+          name: Adding Github to Known Hosts File
+          command: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Congifure CI git user
+          command: git config user.email "ci-build@nowhere.net" &&
             git config user.name "ci-build"
       - run:
-          name: Deploy docs to gh-pages branch
-          command: gh-pages --dist docs --message "[skip ci] New deploy to github pages"
-
-
-
-
-
+          name: Build Github Pages Artifacts
+          command: npm run build:gh-pages
+      - run:
+          name: Deploy Application to Github Pages branch
+          command: npm run deploy:gh-pages
 workflows:
   # Below is the definition of your workflow.
   # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the jobs above.
@@ -107,7 +107,6 @@ workflows:
             branches:
               only: 
                 - develop
-                - master
                 - /features/.*/
                 - /feature/.*/
                 - /dependabot/.*/
