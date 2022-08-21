@@ -92,7 +92,7 @@ jobs:
           command: git config user.email "ci-build@nowhere.net" && git config user.name "ci-build"
       - run:
           name: Build and Deploy to Github Pages Branch
-          command: npm run build:gh-pages
+          command: npm run gh-pages:build
 
 workflows:
   # Below is the definition of your workflow.
