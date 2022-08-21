@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { UserService } from '../user/user.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+
 import { UserRecord } from '../model/User';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html',
-//  styleUrls: ['./user.component.scss']
+  templateUrl: './user.component.html'
+  //  styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit, OnDestroy {
   user: UserRecord = new UserRecord();
@@ -33,9 +34,8 @@ export class UserComponent implements OnInit, OnDestroy {
 
   getUser(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if ( id )
-      this.userService.getUser(id)
-        .subscribe(user => this.user = user);
+    if (id)
+      this.userService.getUser(id).subscribe((user) => (this.user = user));
   }
 
   ngOnDestroy(): void {

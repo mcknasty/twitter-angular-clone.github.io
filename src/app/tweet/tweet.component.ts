@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
 import { TweetRecord } from '../model/Tweet';
 import { UserRecord } from '../model/User';
 import { UserService } from '../user/user.service';
@@ -20,7 +21,8 @@ export class TweetComponent implements OnInit {
   }
 
   getUser(): void {
-    this.userService.getUser(this.tweet.userId)
-      .subscribe(user => this.user = user);
+    this.userService
+      .getUser(this.tweet.userId)
+      .subscribe((user) => (this.user = user));
   }
 }

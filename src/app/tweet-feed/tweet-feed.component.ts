@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  trigger,
+  animate,
   state,
   style,
-  animate,
-  transition
+  transition,
+  trigger
 } from '@angular/animations';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+
+import followers from '../../assets/data/mock-followers.json';
 import { TweetRecord, TweetSchema } from '../model/Tweet';
+import { UserRecord } from '../model/User';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
-import { UserRecord } from '../model/User';
-import followers from '../../assets/mock-followers.json';
-
 
 @Component({
   selector: 'app-tweet-feed',
@@ -21,22 +21,24 @@ import followers from '../../assets/mock-followers.json';
   animations: [
     trigger('openClose', [
       // ...
-      state('open', style({
-        opacity: 1,
-      })),
-      state('closed', style({
-        opacity: 0,
-      })),
-      transition('open => closed', [
-        animate('2s')
-      ]),
-      transition('closed => open', [
-        animate('1s')
-      ]),
-    ]),
+      state(
+        'open',
+        style({
+          opacity: 1
+        })
+      ),
+      state(
+        'closed',
+        style({
+          opacity: 0
+        })
+      ),
+      transition('open => closed', [animate('2s')]),
+      transition('closed => open', [animate('1s')])
+    ])
   ]
 })
-export class TweetFeedComponent implements OnInit, OnDestroy  {
+export class TweetFeedComponent implements OnInit, OnDestroy {
   tweets: TweetRecord[] = [];
   isOpen = false;
   hide = true;
@@ -67,7 +69,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   }
 
   initNewTweet(data?: Partial<TweetSchema>): void {
-    this.newTweet = (data) ? new TweetRecord(data) : new TweetRecord();
+    this.newTweet = data ? new TweetRecord(data) : new TweetRecord();
   }
 
   getTweets(): void {
@@ -75,38 +77,34 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
     this.filterTweets(id);
   }
 
-  filterTweets(id: string) : void {
-    this.tweetService.getTweets()
-      .subscribe((tweets: TweetRecord[]) => {
-        const followed: string[] = this.getUsersFollowed(id);
-        followed.push(id);
-        this.tweets = tweets
-          .filter((tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1)
-          .slice(0, 20)
-          .sort((a, b) => {
-            if (a.created < b.created) {
-              return 1;
-            }
-            if (a.created > b.created) {
-              return -1;
-            }
-            return 0;
-          });
-      });
+  filterTweets(id: string): void {
+    this.tweetService.getTweets().subscribe((tweets: TweetRecord[]) => {
+      const followed: string[] = this.getUsersFollowed(id);
+      followed.push(id);
+      this.tweets = tweets
+        .filter((tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1)
+        .slice(0, 20)
+        .sort((a, b) => {
+          if (a.created < b.created) {
+            return 1;
+          }
+          if (a.created > b.created) {
+            return -1;
+          }
+          return 0;
+        });
+    });
   }
 
   getUsersFollowed(userId: string): string[] {
-    return followers
-      .filter(f => userId === f.userId)
-      .map(f => f.targetId);
+    return followers.filter((f) => userId === f.userId).map((f) => f.targetId);
   }
 
   getUser(): void {
     const idKey = this.route.snapshot.paramMap.get('id');
-    this.userService.getUser(idKey)
-      .subscribe(user => {
-        this.user = user;
-      });
+    this.userService.getUser(idKey).subscribe((user) => {
+      this.user = user;
+    });
   }
 
   toggle(): void {
@@ -116,7 +114,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
 
   //add(tweetText: string, id?: string)
   add(tweetText: string, id?: string) {
-    const userId: string = (id !== undefined) ? id : this.user.id;
+    const userId: string = id !== undefined ? id : this.user.id;
     this.initNewTweet({ userId, tweetText });
     this.tweetService
       .addTweet(this.newTweet)
@@ -139,5 +137,4 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   //   this.tweets = this.tweets.filter(t => t !== tweet);
   //   this.tweetService.deleteTweet(tweet).subscribe();
   // }
-
 }

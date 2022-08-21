@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { UserComponent } from './user.component';
@@ -9,10 +10,9 @@ describe('Component: UserComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ...declarations, UserComponent ],
+      declarations: [...declarations, UserComponent],
       imports
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

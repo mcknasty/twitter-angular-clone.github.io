@@ -4,6 +4,5 @@ const { conf } = require('./karma-conf-obj');
 let reporters = ['coverage'];
 conf.reporters = reporters;
 module.exports = function (config) {
-  conf.logLevel = config.LOG_LOG,
-  config.set(conf);
-}
+  (conf.logLevel = config.LOG_LOG), config.set(conf);
+};

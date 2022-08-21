@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>43/43</span>
+                <span class='fraction'>41/41</span>
             </div>
         
             
@@ -203,10 +203,9 @@
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a>
-<a name='L144'></a><a href='#L144'>144</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L141'></a><a href='#L141'>141</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -285,7 +284,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
@@ -304,15 +302,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">630x</span>
-<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -348,22 +343,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  trigger,
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
+  animate,
   state,
   style,
-  animate,
-  transition
+  transition,
+  trigger
 } from '@angular/animations';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+&nbsp;
+import followers from '../../assets/data/mock-followers.json';
 import { TweetRecord, TweetSchema } from '../model/Tweet';
+import { UserRecord } from '../model/User';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
-import { UserRecord } from '../model/User';
-import followers from '../../assets/mock-followers.json';
-&nbsp;
 &nbsp;
 @Component({
   selector: 'app-tweet-feed',
@@ -372,22 +366,24 @@ import followers from '../../assets/mock-followers.json';
   animations: [
     trigger('openClose', [
       // ...
-      state('open', style({
-        opacity: 1,
-      })),
-      state('closed', style({
-        opacity: 0,
-      })),
-      transition('open =&gt; closed', [
-        animate('2s')
-      ]),
-      transition('closed =&gt; open', [
-        animate('1s')
-      ]),
-    ]),
+      state(
+        'open',
+        style({
+          opacity: 1
+        })
+      ),
+      state(
+        'closed',
+        style({
+          opacity: 0
+        })
+      ),
+      transition('open =&gt; closed', [animate('2s')]),
+      transition('closed =&gt; open', [animate('1s')])
+    ])
   ]
 })
-export class TweetFeedComponent implements OnInit, OnDestroy  {
+export class TweetFeedComponent implements OnInit, OnDestroy {
   tweets: TweetRecord[] = [];
   isOpen = false;
   hide = true;
@@ -418,7 +414,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   }
 &nbsp;
   initNewTweet(data?: Partial&lt;TweetSchema&gt;): void {
-    this.newTweet = (data) ? new TweetRecord(data) : new TweetRecord();
+    this.newTweet = data ? new TweetRecord(data) : new TweetRecord();
   }
 &nbsp;
   getTweets(): void {
@@ -426,38 +422,34 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
     this.filterTweets(id);
   }
 &nbsp;
-  filterTweets(id: string) : void {
-    this.tweetService.getTweets()
-      .subscribe((tweets: TweetRecord[]) =&gt; {
-        const followed: string[] = this.getUsersFollowed(id);
-        followed.push(id);
-        this.tweets = tweets
-          .filter((tweet: TweetRecord) =&gt; followed.indexOf(tweet.userId) !== -1)
-          .slice(0, 20)
-          .sort((a, b) =&gt; {
-            if (a.created &lt; b.created) {
-              return 1;
-            }
-            if (a.created &gt; b.created) {
-              return -1;
-            }
-            return 0;
-          });
-      });
+  filterTweets(id: string): void {
+    this.tweetService.getTweets().subscribe((tweets: TweetRecord[]) =&gt; {
+      const followed: string[] = this.getUsersFollowed(id);
+      followed.push(id);
+      this.tweets = tweets
+        .filter((tweet: TweetRecord) =&gt; followed.indexOf(tweet.userId) !== -1)
+        .slice(0, 20)
+        .sort((a, b) =&gt; {
+          if (a.created &lt; b.created) {
+            return 1;
+          }
+          if (a.created &gt; b.created) {
+            return -1;
+          }
+          return 0;
+        });
+    });
   }
 &nbsp;
   getUsersFollowed(userId: string): string[] {
-    return followers
-      .filter(f =&gt; userId === f.userId)
-      .map(f =&gt; f.targetId);
+    return followers.filter((f) =&gt; userId === f.userId).map((f) =&gt; f.targetId);
   }
 &nbsp;
   getUser(): void {
     const idKey = this.route.snapshot.paramMap.get('id');
-    this.userService.getUser(idKey)
-      .subscribe(user =&gt; {
-        this.user = user;
-      });
+    this.userService.getUser(idKey).subscribe((user) =&gt; {
+      this.user = user;
+    });
   }
 &nbsp;
   toggle(): void {
@@ -467,7 +459,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
 &nbsp;
   //add(tweetText: string, id?: string)
   add(tweetText: string, id?: string) {
-    const userId: string = (id !== undefined) ? id : this.user.id;
+    const userId: string = id !== undefined ? id : this.user.id;
     this.initNewTweet({ userId, tweetText });
     this.tweetService
       .addTweet(this.newTweet)
@@ -490,7 +482,6 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
   //   this.tweets = this.tweets.filter(t =&gt; t !== tweet);
   //   this.tweetService.deleteTweet(tweet).subscribe();
   // }
-&nbsp;
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -499,7 +490,7 @@ export class TweetFeedComponent implements OnInit, OnDestroy  {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-08-16T16:37:11.892Z
+                at 2022-08-21T01:58:46.039Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

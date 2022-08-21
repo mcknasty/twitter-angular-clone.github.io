@@ -114,7 +114,18 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -124,7 +135,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
@@ -145,9 +155,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">205x</span>
 <span class="cline-any cline-yes">198x</span>
 <span class="cline-any cline-yes">198x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,22 +179,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">212x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { of, Observable } from 'rxjs';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+&nbsp;
 import { UserRecord } from '../model/User';
 &nbsp;
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-&nbsp;
-  private userUrl = 'api/users';  // URL to web api
+  private userUrl = 'api/users'; // URL to web api
 &nbsp;
   constructor(private http: HttpClient) {
     this.getUsers();
@@ -188,7 +208,8 @@ export class UserService {
 &nbsp;
   /** GET users from the server */
   getUsers(): Observable&lt;UserRecord[]&gt; {
-    return this.http.get&lt;UserRecord[]&gt;(this.userUrl)
+    return this.http
+      .get&lt;UserRecord[]&gt;(this.userUrl)
       .pipe(
         catchError(this.handleError&lt;UserRecord[]&gt;('function: getUser', []))
       );
@@ -196,13 +217,20 @@ export class UserService {
 &nbsp;
   /** GET user by id. Will 404 if id not found */
   getUser(id: string): Observable&lt;UserRecord&gt; {
-    if ( id ) {
+    if (id) {
       const url = `${this.userUrl}/${id}`;
-      return this.http.get&lt;UserRecord&gt;(url).pipe(
-        catchError(this.handleError&lt;UserRecord&gt;(`getUser function: id=${id}`, this.initUser()))
-      );
+      return this.http
+        .get&lt;UserRecord&gt;(url)
+        .pipe(
+          catchError(
+            this.handleError&lt;UserRecord&gt;(
+              `getUser function: id=${id}`,
+              this.initUser()
+            )
+          )
+        );
     }
-    return of ( this.initUser() );
+    return of(this.initUser());
   }
 &nbsp;
   public throwError&lt;T&gt;(message: string, result: T) {
@@ -211,9 +239,11 @@ export class UserService {
 &nbsp;
   private handleError&lt;T&gt;(message: string, result: T) {
     return (error: any): Observable&lt;T&gt; =&gt; {
-      console.error(`UserService encountered an error: ${message} error: ${error}`)
-      return of ( result as T );
-    }
+      console.error(
+        `UserService encountered an error: ${message} error: ${error}`
+      );
+      return of(result as T);
+    };
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -223,7 +253,7 @@ export class UserService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-08-16T16:37:11.892Z
+                at 2022-08-21T01:58:46.039Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
