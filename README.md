@@ -1,6 +1,7 @@
 # Twitter Clone
 [![CircleCI](https://circleci.com/gh/mcknasty/twitter-angular-clone.github.io.svg?style=svg)](https://app.circleci.com/pipelines/github/mcknasty)
 [![codecov](https://codecov.io/gh/mcknasty/twitter-angular-clone.github.io/branch/master/graph/badge.svg?token=21SB7HS2S2)](https://codecov.io/gh/mcknasty/twitter-angular-clone.github.io)
+[![CodeQL](https://github.com/mcknasty/twitter-angular-clone.github.io/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mcknasty/twitter-angular-clone.github.io/actions/workflows/codeql-analysis.yml)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/mcknasty/twitter-angular-clone.github.io.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mcknasty/twitter-angular-clone.github.io/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/mcknasty/twitter-angular-clone.github.io.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mcknasty/twitter-angular-clone.github.io/alerts/)
 
