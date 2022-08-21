@@ -1,9 +1,9 @@
 import { InMemoryDbService, HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
 
-import tweets from '../assets/mock-tweets.json';
-import users from '../assets/mock-users.json';
-import followers from '../assets/mock-followers.json';
+import tweets from '../assets/data/mock-tweets.json';
+import users from '../assets/data/mock-users.json';
+import followers from '../assets/data/mock-followers.json';
 
 @Injectable({
   providedIn: 'root',

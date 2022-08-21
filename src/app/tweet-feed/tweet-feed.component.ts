@@ -11,7 +11,7 @@ import { TweetRecord, TweetSchema } from '../model/Tweet';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
 import { UserRecord } from '../model/User';
-import followers from '../../assets/mock-followers.json';
+import followers from '../../assets/data/mock-followers.json';
 
 
 @Component({
