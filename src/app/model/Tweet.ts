@@ -1,4 +1,4 @@
-import { Record, BasicRecordSchema, BasicRecordInterface } from './BasicRecord';
+import { BasicRecordInterface, BasicRecordSchema, Record } from './BasicRecord';
 
 interface TweetPartialSchema {
   tweetText: string | null;
@@ -10,24 +10,23 @@ type TweetSchema = TweetPartialSchema & BasicRecordSchema;
 class TweetRecord extends Record implements BasicRecordInterface {
   public tweetText: string;
   public userId: string;
-  protected static MemberVariblesNames: Array<string> = [ 'tweetText', 'userId' ];
+  protected static MemberVariblesNames: Array<string> = ['tweetText', 'userId'];
 
-  constructor ( data?: Partial<TweetSchema> ) {
+  constructor(data?: Partial<TweetSchema>) {
     super();
     if (data) {
-      if ( TweetRecord.instanceOf(data) ) {
+      if (TweetRecord.instanceOf(data)) {
         Object.assign(this, data);
-      }
-      else if ( TweetRecord.partialInstanceOf(data) ) {
-        const record = { ...this.initEmptyRecord(), ...data}
+      } else if (TweetRecord.partialInstanceOf(data)) {
+        const record = { ...this.initEmptyRecord(), ...data };
         Object.assign(this, record);
-      }
-      else if ( Object.keys(data).length < 2 ){
+      } else if (Object.keys(data).length < 2) {
         const dString = JSON.stringify(data);
-        throw new Error(`Attempted to initialize a Tweet Record with a malformed object: ${dString}`);
+        throw new Error(
+          `Attempted to initialize a Tweet Record with a malformed object: ${dString}`
+        );
       }
-    }
-    else {
+    } else {
       Object.assign(this, this.initEmptyRecord());
     }
   }
@@ -43,4 +42,4 @@ class TweetRecord extends Record implements BasicRecordInterface {
   }
 }
 
-export { TweetRecord, TweetPartialSchema, TweetSchema }
+export { TweetRecord, TweetPartialSchema, TweetSchema };

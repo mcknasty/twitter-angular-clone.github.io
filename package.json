@@ -8,7 +8,8 @@
     "build": "npx ng build",
     "test": "npx ng test --code-coverage",
     "test-cli": "npx ng test --karma-config=src/karma/karma-cli.conf.js --code-coverage",
-    "lint": "npx ng lint",
+    "lint": "npx eslint 'src/**/*.{ts,tsx}' --quiet --fix",
+    "format": "npx prettier 'src/**/*.{ts,tsx}' --write",
     "gh-pages:build": "npm run gh-pages:clean && npm run gh-pages:bundle && npm run gh-pages:deploy",
     "gh-pages:bundle": "npx ng build --configuration production --output-path docs  --base-href https://mcknasty.github.io/twitter-angular-clone.github.io/",
     "gh-pages:deploy": "npx gh-pages --dotfiles --message '[skip ci] New deploy to github pages' --dist docs/ --branch gh-pages",
@@ -48,6 +49,10 @@
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.4.2",
+    "eslint-plugin-prettier": "^4.2.1",
+    "gh-pages": "2.0.1",
     "jasmine-core": "^4.3.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "^6.3.16",
@@ -57,9 +62,9 @@
     "karma-jasmine-html-reporter": "^2.0.0",
     "karma-typescript": "^5.5.3",
     "karma-verbose-reporter": "0.0.8",
+    "prettier": "^2.7.1",
     "puppeteer": "^16.2.0",
     "ts-node": "~10.9.1",
-    "typescript": "^4.7.4",
-    "gh-pages": "2.0.1"
+    "typescript": "^4.7.4"
   }
 }

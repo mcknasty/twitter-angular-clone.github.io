@@ -2,30 +2,39 @@ import { UserRecord } from './User';
 
 describe('Model: User Record', () => {
   it('The User Record Model should be able to initialize a new populated User record', () => {
-    let blankUser = new UserRecord();
+    const blankUser = new UserRecord();
     expect(UserRecord.instanceOf(blankUser)).toBeTrue();
     expect(blankUser instanceof UserRecord).toBeTrue();
   });
 
   it('The User Record Model should be able accept data for a previously initialized User record', () => {
-    let id = UserRecord.generateId();
-    let created = Date.now();
-    let updated = Date.now();
-    let name = 'Tray Parker';
-    let handle = 'TDiddyParkingLotBoy';
-    let userName = 'tillTomorrowTrey';
-    let email = 'tillTomorrowTrey@gmail.com';
-    let plainPass = 'plainPass';
-    let token = 'token';
-    let password = 'password';
-    let lastLogin = Date.now();
+    const id = UserRecord.generateId();
+    const created = Date.now();
+    const updated = Date.now();
+    const name = 'Tray Parker';
+    const handle = 'TDiddyParkingLotBoy';
+    const userName = 'tillTomorrowTrey';
+    const email = 'tillTomorrowTrey@gmail.com';
+    const plainPass = 'plainPass';
+    const token = 'token';
+    const password = 'password';
+    const lastLogin = Date.now();
 
-    let recordObj = {
-      id, created, updated, name, handle, userName,
-      email, plainPass, token, password, lastLogin
+    const recordObj = {
+      id,
+      created,
+      updated,
+      name,
+      handle,
+      userName,
+      email,
+      plainPass,
+      token,
+      password,
+      lastLogin
     };
 
-    let prevRecord = new UserRecord(recordObj);
+    const prevRecord = new UserRecord(recordObj);
     expect(UserRecord.instanceOf(prevRecord)).toBeTrue();
     expect(prevRecord instanceof UserRecord).toBeTrue();
 
@@ -43,22 +52,28 @@ describe('Model: User Record', () => {
   });
 
   it('The User Record Model should be to initialize a new User Record with only a some of the user variables', () => {
-    let name = 'Tray Parker';
-    let handle = 'TDiddyParkingLotBoy';
-    let userName = 'tillTomorrowTrey';
-    let email = 'tillTomorrowTrey@gmail.com';
-    let plainPass = 'plainPass';
-    let token = 'token';
-    let password = 'password';
-    let lastLogin = Date.now();
+    const name = 'Tray Parker';
+    const handle = 'TDiddyParkingLotBoy';
+    const userName = 'tillTomorrowTrey';
+    const email = 'tillTomorrowTrey@gmail.com';
+    const plainPass = 'plainPass';
+    const token = 'token';
+    const password = 'password';
+    const lastLogin = Date.now();
 
-    let partialUser = {
-      name, handle, userName, email,
-      plainPass, token, password, lastLogin
+    const partialUser = {
+      name,
+      handle,
+      userName,
+      email,
+      plainPass,
+      token,
+      password,
+      lastLogin
     };
     expect(UserRecord.partialInstanceOf(partialUser)).toBeTrue();
 
-    let newUser = new UserRecord(partialUser);
+    const newUser = new UserRecord(partialUser);
     expect(UserRecord.instanceOf(newUser)).toBeTrue();
     expect(newUser instanceof UserRecord).toBeTrue();
 
@@ -73,10 +88,10 @@ describe('Model: User Record', () => {
   });
 
   it('The User Record Model should be able to throw an error when initializing with a malformed object', () => {
-    let id = UserRecord.generateId();
-    let recordObj = { id };
+    const id = UserRecord.generateId();
+    const recordObj = { id };
     try {
-      let prevRecord = new UserRecord(recordObj);
+      const prevRecord = new UserRecord(recordObj);
     } catch (e) {
       expect(e).toBeDefined();
       console.error(e);

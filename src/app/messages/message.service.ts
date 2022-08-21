@@ -13,6 +13,6 @@ export class MessageService {
   }
 
   getMessages() {
-    return [ ...this.messages ];
+    return [...this.messages];
   }
 }

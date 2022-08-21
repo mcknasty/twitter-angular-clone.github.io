@@ -25,11 +25,15 @@
           "options": {
             "aot": true,
             "outputPath": "dist/twitter-clone",
+            "resourcesOutputPath": "assets",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": [],
+            "assets": [
+              "src/assets/fonts",
+              "src/assets/data"
+            ],
             "styles": [
               "src/scss/styles.scss"
             ],
@@ -93,7 +97,10 @@
               "src/scss/styles.scss"
             ],
             "scripts": [],
-            "assets": [],
+            "assets": [
+              "src/assets/fonts",
+              "src/assets/data"
+            ],
             "watch": false,
             "sourceMap": true
           }

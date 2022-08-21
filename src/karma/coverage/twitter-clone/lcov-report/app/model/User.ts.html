@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/26</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -125,7 +125,13 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,23 +155,30 @@
 <span class="cline-any cline-yes">399x</span>
 <span class="cline-any cline-yes">399x</span>
 <span class="cline-any cline-yes">399x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">399x</span>
 <span class="cline-any cline-yes">399x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,7 +187,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">796x</span>
 <span class="cline-any cline-yes">796x</span>
 <span class="cline-any cline-yes">6368x</span>
 <span class="cline-any cline-yes">796x</span>
@@ -187,7 +199,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Record, BasicRecordSchema, BasicRecordInterface } from './BasicRecord';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { BasicRecordInterface, BasicRecordSchema, Record } from './BasicRecord';
 &nbsp;
 interface UserPartialSchema {
   name: string | null;
@@ -212,33 +224,39 @@ class UserRecord extends Record implements BasicRecordInterface {
   public password = '';
   public lastLogin = 0;
 &nbsp;
-  protected static MemberVariblesNames: Array&lt;string&gt;
-    = [ 'name', 'handle', 'userName', 'email', 'plainPass', 'token', 'password', 'lastLogin' ];
+  protected static MemberVariblesNames: Array&lt;string&gt; = [
+    'name',
+    'handle',
+    'userName',
+    'email',
+    'plainPass',
+    'token',
+    'password',
+    'lastLogin'
+  ];
 &nbsp;
-  constructor( data?: Partial&lt;UserSchema&gt; ) {
+  constructor(data?: Partial&lt;UserSchema&gt;) {
     super();
-    if ( data ) {
-      if ( UserRecord.instanceOf(data) ) {
+    if (data) {
+      if (UserRecord.instanceOf(data)) {
         Object.assign(this, data);
-      }
-      else if ( UserRecord.partialInstanceOf(data) ) {
-        const record = { ...this.initEmptyRecord(), ...data}
+      } else if (UserRecord.partialInstanceOf(data)) {
+        const record = { ...this.initEmptyRecord(), ...data };
         Object.assign(this, record);
-      }
-      else if ( Object.keys(data).length &lt; 8 ){
+      } else if (Object.keys(data).length &lt; 8) {
         const dString = JSON.stringify(data);
-        throw new Error(`Attempted to initialize a User Record with a malformed object: ${dString}`);
+        throw new Error(
+          `Attempted to initialize a User Record with a malformed object: ${dString}`
+        );
       }
-    }
-    else {
+    } else {
       Object.assign(this, this.initEmptyRecord());
     }
   }
 &nbsp;
   public initEmptyRecord(): any {
-    let blank = {};
-    for(const e of UserRecord.getKeys())
-      blank[e] = null;
+    const blank = {};
+    for (const e of UserRecord.getKeys()) blank[e] = null;
     const basicRecord = super.initEmptyRecord();
     const record = {
       ...basicRecord,
@@ -248,7 +266,7 @@ class UserRecord extends Record implements BasicRecordInterface {
   }
 }
 &nbsp;
-export { UserRecord, UserPartialSchema, UserSchema }
+export { UserRecord, UserPartialSchema, UserSchema };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -256,7 +274,7 @@ export { UserRecord, UserPartialSchema, UserSchema }
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-08-16T16:37:11.892Z
+                at 2022-08-21T01:58:46.039Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

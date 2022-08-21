@@ -1,12 +1,15 @@
-import { InMemoryDbService, HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
+import {
+  HttpClientInMemoryWebApiModule,
+  InMemoryDbService
+} from 'angular-in-memory-web-api';
 
+import followers from '../assets/data/mock-followers.json';
 import tweets from '../assets/data/mock-tweets.json';
 import users from '../assets/data/mock-users.json';
-import followers from '../assets/data/mock-followers.json';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 class InMemoryDataService implements InMemoryDbService {
   private db: object;
@@ -31,7 +34,8 @@ class InMemoryDataService implements InMemoryDbService {
 }
 
 const InMemoryService = HttpClientInMemoryWebApiModule.forRoot(
-  InMemoryDataService, { dataEncapsulation: false }
-)
+  InMemoryDataService,
+  { dataEncapsulation: false }
+);
 
-export { InMemoryService }
+export { InMemoryService };

@@ -1,15 +1,18 @@
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
-import { declarations } from '../app/declarations';
-import { imports } from '../app/imports';
-import { TweetService } from './tweet.service';
-import { TweetRecord } from '../model/Tweet';
 import { Observable, of } from 'rxjs';
 
+import { declarations } from '../app/declarations';
+import { imports } from '../app/imports';
+import { TweetRecord } from '../model/Tweet';
+import { TweetService } from './tweet.service';
 
 describe('Service: TweetService', () => {
   let service: TweetService;
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations, imports}).compileComponents();
+    TestBed.configureTestingModule({
+      declarations,
+      imports
+    }).compileComponents();
     service = TestBed.inject(TweetService);
   });
 
@@ -25,8 +28,11 @@ describe('Service: TweetService', () => {
   }));
 
   it('The Tweet Service should be able to add a tweet', waitForAsync(() => {
-    const newTweetText = 'test test test'
-    const tweet = new TweetRecord({userId: TweetRecord.generateId(), tweetText: newTweetText});
+    const newTweetText = 'test test test';
+    const tweet = new TweetRecord({
+      userId: TweetRecord.generateId(),
+      tweetText: newTweetText
+    });
     expect(service).toBeDefined();
     service.addTweet(tweet).subscribe((tweet) => {
       expect(tweet).toBeDefined();
@@ -37,7 +43,8 @@ describe('Service: TweetService', () => {
   it('The Tweet Service should throw an error', waitForAsync(() => {
     expect(service).toBeDefined();
     const tweet = new TweetRecord();
-    const message1 = 'Something Went Wrong Test Harness: Just a test ;-) It will be ok. This was suppose to happen';
+    const message1 =
+      'Something Went Wrong Test Harness: Just a test ;-) It will be ok. This was suppose to happen';
     service.throwError<TweetRecord>(message1, tweet).subscribe((e) => {
       console.error(e);
       expect(true).toBeDefined();

@@ -1,4 +1,5 @@
 import { TestBed, inject, waitForAsync } from '@angular/core/testing';
+
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { MessageService } from './message.service';
@@ -6,7 +7,11 @@ import { MessageService } from './message.service';
 describe('Service: MessageService', () => {
   let service;
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations, imports, providers: [MessageService]}).compileComponents();
+    TestBed.configureTestingModule({
+      declarations,
+      imports,
+      providers: [MessageService]
+    }).compileComponents();
     service = TestBed.inject(MessageService);
   });
 
@@ -17,9 +22,9 @@ describe('Service: MessageService', () => {
   it('The Message Service should add a message', waitForAsync(() => {
     expect(service).toBeDefined();
     service.add(`Hello world, it's me and I am ok!`);
-    let messages = service.getMessages();
+    const messages = service.getMessages();
     expect(messages).toHaveSize(1);
-    expect(messages[0]).toBe(`Hello world, it's me and I am ok!`)
+    expect(messages[0]).toBe(`Hello world, it's me and I am ok!`);
     service.clear();
   }));
 

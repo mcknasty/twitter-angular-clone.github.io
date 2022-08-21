@@ -1,22 +1,28 @@
 // For more examples:
 //   https://github.com/angular/angular/blob/master/modules/@angular/router/test/integration.spec.ts
 
-import { waitForAsync, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { SpyLocation } from '@angular/common/testing';
-import { Router } from '@angular/router';
-import { By } from '@angular/platform-browser';
-import { Type } from '@angular/core';
 import { Location } from '@angular/common';
-import { AppRoutes } from './routes';
-import { AppModule } from '../app/app.module';
+import { SpyLocation } from '@angular/common/testing';
+import { Type } from '@angular/core';
+import {
+  ComponentFixture,
+  ComponentFixtureAutoDetect,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { AppComponent } from '../app/app.component';
+import { AppModule } from '../app/app.module';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { TweetFeedComponent } from '../tweet-feed/tweet-feed.component';
-import { UserService } from '../user/user.service';
 import { TweetService } from '../tweet/tweet.service';
 import { UserComponent } from '../user/user.component';
+import { UserService } from '../user/user.service';
+import { AppRoutes } from './routes';
 
 let comp: AppComponent;
 let fixture: ComponentFixture<AppComponent>;
@@ -31,30 +37,28 @@ describe('Router Testing Module:', () => {
   const user2Id = '750891be3ef78dda51ea512d1726348e';
 
   beforeEach(waitForAsync(() => {
-    TestBed
-        .configureTestingModule({
-          imports: [
-            ...imports,
-            AppModule,
-            RouterTestingModule.withRoutes(AppRoutes),
-          ],
-          declarations: [ ...declarations, MockTweetFeedComponent ],
-          providers: [
-             { provide: ComponentFixtureAutoDetect, useValue: true },
-             { provide: UserService },
-             { provide: TweetService }
-           ]
-        })
-        .compileComponents();
+    TestBed.configureTestingModule({
+      imports: [
+        ...imports,
+        AppModule,
+        RouterTestingModule.withRoutes(AppRoutes)
+      ],
+      declarations: [...declarations, MockTweetFeedComponent],
+      providers: [
+        { provide: ComponentFixtureAutoDetect, useValue: true },
+        { provide: UserService },
+        { provide: TweetService }
+      ]
+    }).compileComponents();
   }));
 
   it("The App should rediect to an arbitary user's page on loading", (done) => {
     createComponent();
-    advance();  // wait for async data to arrive
+    advance(); // wait for async data to arrive
     page.fixture.whenStable().then(() => {
-     expectPathToBe(`/user/${user1Id}`, 'after initialNavigation()');
-     expectElementOf(UserComponent);
-     done();
+      expectPathToBe(`/user/${user1Id}`, 'after initialNavigation()');
+      expectElementOf(UserComponent);
+      done();
     });
   });
 
@@ -68,8 +72,10 @@ describe('Router Testing Module:', () => {
       const TweetFeed = TestBed.createComponent(MockTweetFeedComponent);
       TweetFeed.detectChanges();
       TweetFeed.whenStable().then(() => {
-        let tweetUsers = TweetFeed.debugElement.queryAll(By.css('.feed .profile-link'));
-        let link = tweetUsers[1].nativeElement;
+        const tweetUsers = TweetFeed.debugElement.queryAll(
+          By.css('.feed .profile-link')
+        );
+        const link = tweetUsers[1].nativeElement;
         link.click();
         advance();
         fixture.whenStable().then(() => {
@@ -81,8 +87,8 @@ describe('Router Testing Module:', () => {
     });
   });
 
-//  it("The App should be to add a new tweet utilizing the user id in the url", waitForAsync(() => {
-  it("The App should be to add a new tweet utilizing the user id in the url", (done) => {
+  //  it("The App should be to add a new tweet utilizing the user id in the url", waitForAsync(() => {
+  it('The App should be to add a new tweet utilizing the user id in the url', (done) => {
     createComponent();
     advance();
     fixture.whenStable().then(() => {
@@ -94,31 +100,35 @@ describe('Router Testing Module:', () => {
         //Open the Drawer
         const debug = TweetFeed.debugElement;
         const instance = TweetFeed.componentInstance;
-        let linkDes = debug.query(By.css('.feed-header .button'));
+        const linkDes = debug.query(By.css('.feed-header .button'));
         linkDes.triggerEventHandler('click', null);
         TweetFeed.detectChanges();
 
         TweetFeed.whenStable().then(() => {
-          let newTweetText: string = 'New Tweet! 123';
-          let drawerClosed = debug.query(By.css('.display-none'));
+          const newTweetText = 'New Tweet! 123';
+          const drawerClosed = debug.query(By.css('.display-none'));
           expect(drawerClosed).toBeNull();
 
           //Add some text to the compose tweet text area
-          let textBox = debug.query(By.css('#new-tweet'));
+          const textBox = debug.query(By.css('#new-tweet'));
           textBox.nativeElement.value = newTweetText;
           textBox.nativeElement.innerHTML = newTweetText;
           textBox.nativeElement.dispatchEvent(new Event('input'));
           TweetFeed.detectChanges();
 
           //Click the submit button
-          let submit = debug.query(By.css('#submit-tweet'));
+          const submit = debug.query(By.css('#submit-tweet'));
           submit.nativeElement.dispatchEvent(new Event('click'));
           TweetFeed.detectChanges();
           TweetFeed.whenStable().then(() => {
-            let tweetFeed = debug.queryAll(By.css('.feed .tweet-text'));
-            let tweetsArray = instance.tweets;
-            expect(tweetsArray.findIndex((e) => e.tweetText === newTweetText)).toBeGreaterThan(-1);
-            expect(tweetFeed[0].nativeElement.innerHTML).toContain(newTweetText);
+            const tweetFeed = debug.queryAll(By.css('.feed .tweet-text'));
+            const tweetsArray = instance.tweets;
+            expect(
+              tweetsArray.findIndex((e) => e.tweetText === newTweetText)
+            ).toBeGreaterThan(-1);
+            expect(tweetFeed[0].nativeElement.innerHTML).toContain(
+              newTweetText
+            );
             expect(tweetsArray[0].tweetText).toContain(newTweetText);
             done();
           });
@@ -135,7 +145,7 @@ describe('Router Testing Module:', () => {
  * Wait a tick, then detect changes, and tick again
  */
 function advance(): void {
-  fixture.detectChanges();  // update view
+  fixture.detectChanges(); // update view
 }
 
 function createComponent() {
@@ -169,15 +179,13 @@ class Page {
 
 function expectPathToBe(path: string, expectationFailOutput?: any) {
   expect(location.path())
-  .withContext(expectationFailOutput || 'location.path()')
-  .toEqual(path);
+    .withContext(expectationFailOutput || 'location.path()')
+    .toEqual(path);
 }
 
 function expectElementOf(type: Type<any>): any {
   const el = fixture.debugElement.query(By.directive(type));
-  expect(el)
-    .withContext(`expected an element for ${type.name}`)
-    .toBeTruthy();
+  expect(el).withContext(`expected an element for ${type.name}`).toBeTruthy();
   return el;
 }
 
@@ -192,7 +200,10 @@ class MockTweetFeedComponent extends TweetFeedComponent {
 
   getId(): string {
     const path = location.path().split('/');
-    const id: string = (Array.isArray(path) &&  path?.[2] ) ? path[2] : '71ab267fc37caa55b9d8de7280daee18';
+    const id: string =
+      Array.isArray(path) && path?.[2]
+        ? path[2]
+        : '71ab267fc37caa55b9d8de7280daee18';
     return id;
   }
 }
