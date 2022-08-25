@@ -52,7 +52,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.4.2",
     "eslint-plugin-prettier": "^4.2.1",
-    "gh-pages": "2.0.1",
+    "gh-pages": "4.0.0",
     "jasmine-core": "^4.3.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "^6.3.16",
