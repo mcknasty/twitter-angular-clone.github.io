@@ -33,7 +33,11 @@ module.exports.conf = {
   coverageReporter: {
     dir: require('path').join(__dirname, '../coverage/twitter-clone'),
     subdir: '.',
-    reporters: [{ type: 'lcov' }, { type: 'text-summary' }, { type: 'text' }],
+    reporters: [
+      { type: 'lcovonly' },
+      { type: 'text-summary' },
+      { type: 'text' }
+    ],
     fixWebpackSourcePaths: true
   },
   browserConsoleLogOptions: {
