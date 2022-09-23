@@ -52,7 +52,7 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: /root/project
       - codecov/upload:
-          file: ./src/coverage
+          file: src/coverage/lcov.info
   local-build:
     docker:
       - image: talktotrev/angular-build:1.0
