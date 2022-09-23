@@ -56,7 +56,7 @@ jobs:
           paths:
             - ./
       - codecov/upload:
-          file: /root/project/src/coverage/lcov.info
+          file: /root/project/src/coverage
   local-build:
     docker:
       - image: talktotrev/angular-build:1.0
