@@ -31,7 +31,7 @@ module.exports.conf = {
     }
   },
   coverageReporter: {
-    dir: require('path').join(__dirname, '../coverage/twitter-clone'),
+    dir: require('path').join(__dirname, '../coverage'),
     subdir: '.',
     reporters: [
       { type: 'lcovonly' },
