@@ -7,7 +7,7 @@ orbs:
   # Orbs reduce the amount of configuration required for common tasks.
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@4.7
-  codecov: codecov/codecov@3.1.1
+  codecov: codecov/codecov@3.2.3
 
 executors:
   angular-build:
@@ -29,7 +29,7 @@ jobs:
           pkg-manager: npm
       - persist_to_workspace:
           root: /root/project
-          paths: 
+          paths:
             - ./
   npm-cli:
     executor: angular-build
@@ -45,6 +45,10 @@ jobs:
       - run:
           name: << parameters.message >>
           command: << parameters.command >>
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - ./
   codecov:
     executor: angular-build
     steps:
@@ -52,6 +56,10 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: /root/project
       - codecov/upload
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - ./
   local-build:
     docker:
       - image: talktotrev/angular-build:1.0
@@ -62,7 +70,7 @@ jobs:
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: npm         
+          pkg-manager: npm
       - run:
           name: Lint Check Typescript Files
           command: npm run lint
@@ -80,7 +88,7 @@ jobs:
           at: /root/project
       - add_ssh_keys:
           fingerprints:
-            - "00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3"
+            - '00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3'
       - run:
           name: Adding Github to Known Hosts File
           command: ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -105,7 +113,7 @@ workflows:
       - setup:
           filters:
             branches:
-              only: 
+              only:
                 - develop
                 - /features/.*/
                 - /feature/.*/
@@ -114,25 +122,25 @@ workflows:
           name: lint
           message: Lint Check Typescript Files
           command: npm run lint
-          requires: 
+          requires:
             - setup
       - npm-cli:
           name: compile
           message: Compile Typescript and SASS
           command: npm run build
-          requires: 
+          requires:
             - setup
             - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
-          requires: 
+          requires:
             - setup
             - lint
             - compile
       - codecov:
-          requires: 
+          requires:
             - setup
             - lint
             - compile
@@ -150,33 +158,32 @@ workflows:
       - setup:
           filters:
             branches:
-              only: 
+              only:
                 - master
       - npm-cli:
           name: lint
           message: Lint Check Typescript Files
           command: npm run lint
-          requires: 
+          requires:
             - setup
       - npm-cli:
           name: compile
           message: Compile Typescript and SASS
           command: npm run build
-          requires: 
+          requires:
             - setup
             - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
-          requires: 
+          requires:
             - setup
             - lint
             - compile
       - pages-build:
-          requires: 
+          requires:
             - setup
             - lint
             - compile
             - unit-test
-
