@@ -59,8 +59,7 @@ jobs:
           root: /root/project
           paths:
             - ./
-      - codecov/upload:
-          file: /root/project/src/coverage
+      - codecov/upload
   local-build:
     docker:
       - image: talktotrev/angular-build:1.0
