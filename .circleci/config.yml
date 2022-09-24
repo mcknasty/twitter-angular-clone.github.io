@@ -42,24 +42,24 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: /home/circleci/project
+      - run:
+          name: << parameters.message >>
+          command: << parameters.command >>
       - persist_to_workspace:
           root: /home/circleci/project
           paths:
             - ./
-      - run:
-          name: << parameters.message >>
-          command: << parameters.command >>
   codecov:
     executor: angular-build
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: /home/circleci/project
+      - codecov/upload
       - persist_to_workspace:
           root: /home/circleci/project
           paths:
             - ./
-      - codecov/upload
   local-build:
     docker:
       - image: talktotrev/angular-build:1.0
