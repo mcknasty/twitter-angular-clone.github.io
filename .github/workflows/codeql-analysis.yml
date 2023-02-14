@@ -13,17 +13,17 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ master, develop, features/.*/, feature/.*/ ]
+    branches: [ master, develop, features/.*/, feature/.*/, pkg-updates ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ master, develop, features/.*/, feature/.*/ ]
+    branches: [ master, develop, features/.*/, feature/.*/, pkg-updates ]
   schedule:
     - cron: '25 23 * * 5'
 
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: talktotrev/angular-build:1.0
     permissions:
       actions: read
       contents: read
@@ -52,8 +52,8 @@ jobs:
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    #- name: Autobuild
+    #  uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
@@ -62,9 +62,11 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    #- run: |
-    #   make bootstrap
-    #   make release
+    - run: |
+        npm install
+        npm run lint
+        npm run build
+        npm run test
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
