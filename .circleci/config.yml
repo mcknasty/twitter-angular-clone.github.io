@@ -13,7 +13,7 @@ executors:
   angular-build:
     docker:
       - image: talktotrev/angular-build:1.1.0
-    working_directory: /root/project
+    working_directory: /home/circleci/project
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
@@ -28,7 +28,7 @@ jobs:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
       - persist_to_workspace:
-          root: /root/project
+          root: /home/circleci/project
           paths:
             - ./
   npm-cli:
@@ -41,12 +41,12 @@ jobs:
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - run:
           name: << parameters.message >>
           command: << parameters.command >>
       - persist_to_workspace:
-          root: /root/project
+          root: /home/circleci/project
           paths:
             - ./
   codecov:
@@ -54,10 +54,10 @@ jobs:
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - codecov/upload
       - persist_to_workspace:
-          root: /root/project
+          root: /home/circleci/project
           paths:
             - ./
   local-build:
@@ -85,7 +85,7 @@ jobs:
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - add_ssh_keys:
           fingerprints:
             - '00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3'
