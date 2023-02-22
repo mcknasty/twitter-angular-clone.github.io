@@ -13,6 +13,7 @@ executors:
   angular-build:
     docker:
       - image: talktotrev/angular-build:1.1.0
+        user: circleci
     working_directory: /home/circleci/project
 
 jobs:
