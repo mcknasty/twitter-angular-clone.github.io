@@ -21,7 +21,8 @@ jobs:
     executor: angular-build
     steps:
       # Checkout the code as the first step.
-      - checkout
+      - checkout:
+          path: /home/circleci/project
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
@@ -188,4 +189,3 @@ workflows:
             - lint
             - compile
             - unit-test
-            
