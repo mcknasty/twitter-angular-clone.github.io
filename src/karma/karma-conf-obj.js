@@ -82,7 +82,3 @@ module.exports.conf = {
   //captureTimeout : 4*60*1000
   /**                          **/
 };
-
-// per https://pptr.dev/guides/configuration
-// module.exports.cacheDirectory = join('~', 'project', '.cache', 'puppeteer');
-
