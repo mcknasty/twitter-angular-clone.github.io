@@ -12,27 +12,32 @@ orbs:
 executors:
   angular-build:
     docker:
-      - image: talktotrev/angular-build:1.0
-    working_directory: /root/project
+      - image: talktotrev/angular-build:1.1.0
+        user: circleci
+    working_directory: /home/circleci/project
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   setup:
     executor: angular-build
+    working_directory: /home/circleci/project
     steps:
       # Checkout the code as the first step.
-      - checkout
+      - checkout:
+          path: /home/circleci/project
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
       - persist_to_workspace:
-          root: /root/project
+          root: /home/circleci
           paths:
-            - ./
+            - .cache/puppeteer
+            - project
   npm-cli:
     executor: angular-build
+    working_directory: /home/circleci/project
     parameters:
       message:
         type: string
@@ -41,28 +46,32 @@ jobs:
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - run:
           name: << parameters.message >>
           command: << parameters.command >>
       - persist_to_workspace:
-          root: /root/project
+          root: /home/circleci
           paths:
-            - ./
+            - .cache/puppeteer
+            - project
   codecov:
     executor: angular-build
+    working_directory: /home/circleci/project
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - codecov/upload
       - persist_to_workspace:
-          root: /root/project
+          root: /home/circleci
           paths:
-            - ./
+            - .cache/puppeteer
+            - project
   local-build:
+    working_directory: /home/circleci/project
     docker:
-      - image: talktotrev/angular-build:1.0
+      - image: talktotrev/angular-build:1.1.0
     steps:
       # Checkout the code as the first step.
       - checkout
@@ -81,11 +90,12 @@ jobs:
           name: Run Unit and End to End Tests
           command: npm run test
   pages-build:
+    working_directory: /home/circleci/project
     executor: angular-build
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - add_ssh_keys:
           fingerprints:
             - '00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3'

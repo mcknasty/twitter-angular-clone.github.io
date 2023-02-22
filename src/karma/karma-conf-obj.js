@@ -1,3 +1,5 @@
+const { join } = require('path');
+
 process.env.NODE_OPTIONS = '--max-old-space-size=8192';
 process.env.NODE_ENV = 'production';
 process.env.CHROME_BIN = require('puppeteer').executablePath();
@@ -80,3 +82,7 @@ module.exports.conf = {
   //captureTimeout : 4*60*1000
   /**                          **/
 };
+
+// per https://pptr.dev/guides/configuration
+module.exports.cacheDirectory = join('~', '.cache', 'puppeteer');
+
