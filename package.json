@@ -14,7 +14,7 @@
     "gh-pages:bundle": "npx ng build --configuration production --output-path docs  --base-href https://mcknasty.github.io/twitter-angular-clone.github.io/",
     "gh-pages:deploy": "npx gh-pages --dotfiles --message '[skip ci] New deploy to github pages' --dist docs/ --branch gh-pages",
     "gh-pages:clean": "rm -rdf docs && mkdir docs && touch docs/.gitkeep && mkdir docs/assets && touch docs/assets/.gitkeep",
-    "circleci:local": "circleci local execute -v $(pwd):/tmp/repo --job local-build",
+    "circleci:local": "circleci local execute -v $(pwd):/tmp/repo local-build",
     "circleci:validate": "circleci config validate"
   },
   "private": true,
