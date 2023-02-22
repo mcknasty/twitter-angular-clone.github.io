@@ -31,9 +31,10 @@ jobs:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: /home/circleci
           paths:
-            - ./
+            - .cache/puppeteer
+            - project
   npm-cli:
     executor: angular-build
     working_directory: /home/circleci/project
@@ -50,9 +51,10 @@ jobs:
           name: << parameters.message >>
           command: << parameters.command >>
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: /home/circleci
           paths:
-            - ./
+            - .cache/puppeteer
+            - project
   codecov:
     executor: angular-build
     working_directory: /home/circleci/project
@@ -62,13 +64,14 @@ jobs:
           at: /home/circleci/project
       - codecov/upload
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: /home/circleci
           paths:
-            - ./
+            - .cache/puppeteer
+            - project
   local-build:
     working_directory: /home/circleci/project
     docker:
-      - image: talktotrev/angular-build:1.0
+      - image: talktotrev/angular-build:1.1.0
     steps:
       # Checkout the code as the first step.
       - checkout
