@@ -84,5 +84,5 @@ module.exports.conf = {
 };
 
 // per https://pptr.dev/guides/configuration
-module.exports.cacheDirectory = join('~', '.cache', 'puppeteer');
+// module.exports.cacheDirectory = join('~', 'project', '.cache', 'puppeteer');
 
