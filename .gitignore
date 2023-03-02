@@ -52,3 +52,5 @@ src/coverage/*
 Thumbs.db
 #package-lock.json
 .gitignore
+
+.cache/puppeteer/

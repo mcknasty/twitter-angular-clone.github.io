@@ -12,7 +12,7 @@ orbs:
 executors:
   angular-build:
     docker:
-      - image: talktotrev/angular-build:1.1.0
+      - image: talktotrev/angular-test:1.0.0
         user: circleci
     working_directory: /home/circleci/project
 
@@ -20,24 +20,24 @@ jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   setup:
     executor: angular-build
-    working_directory: /home/circleci/project
+    working_directory: /home/circleci/project/src
     steps:
       # Checkout the code as the first step.
       - checkout:
-          path: /home/circleci/project
+          path: /home/circleci/project/src
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
       - persist_to_workspace:
-          root: /home/circleci
+          root: /home/circleci/project
           paths:
             - .cache/puppeteer
-            - project
+            - src
   npm-cli:
     executor: angular-build
-    working_directory: /home/circleci/project
+    working_directory: /home/circleci/project/src
     parameters:
       message:
         type: string
@@ -48,13 +48,14 @@ jobs:
           # Must be absolute path or relative path from working_directory
           at: /home/circleci/project
       - run:
+          shell: /bin/bash -exo pipefail -lc
           name: << parameters.message >>
           command: << parameters.command >>
       - persist_to_workspace:
-          root: /home/circleci
+          root: /home/circleci/project
           paths:
             - .cache/puppeteer
-            - project
+            - src
   codecov:
     executor: angular-build
     working_directory: /home/circleci/project
@@ -64,29 +65,36 @@ jobs:
           at: /home/circleci/project
       - codecov/upload
       - persist_to_workspace:
-          root: /home/circleci
+          root: /home/circleci/project
           paths:
             - .cache/puppeteer
-            - project
+            - src
   local-build:
     working_directory: /home/circleci/project
     docker:
-      - image: talktotrev/angular-build:1.1.0
+      - image: angular-test:latest
     steps:
       # Checkout the code as the first step.
       - checkout
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
-      - node/install-packages:
+      #- node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: npm
+      #    pkg-manager: npm
       - run:
+          shell: /bin/bash -exo pipefail -lc
+          name: NPM install
+          command: npm i
+      - run:
+          shell: /bin/bash -exo pipefail -lc
           name: Lint Check Typescript Files
           command: npm run lint
       - run:
+          shell: /bin/bash -exo pipefail -lc
           name: Compile Typescript and SASS
           command: npm run build
       - run:
+          shell: /bin/bash -exo pipefail -lc
           name: Run Unit and End to End Tests
           command: npm run test
   pages-build:
