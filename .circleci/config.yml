@@ -158,8 +158,6 @@ workflows:
       - codecov:
           requires:
             - setup
-            - lint
-            - compile
             - unit-test
   local-cli-build:
     jobs:
@@ -197,6 +195,4 @@ workflows:
       - pages-build:
           requires:
             - setup
-            - lint
-            - compile
             - unit-test
