@@ -112,7 +112,7 @@ jobs:
           command: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Adding Github Pages NPM Package
-          command: npm install -g --silent gh-pages@2.0.1
+          command: npm install gh-pages@2.0.1
       - run:
           name: Congifure CI git user
           command: git config user.email "ci-build@nowhere.net" && git config user.name "ci-build"
