@@ -154,10 +154,9 @@ workflows:
           message: Run Unit and End to End Tests
           command: npm run test-cli
           requires:
-            - setup
+            - lint
       - codecov:
           requires:
-            - setup
             - unit-test
   local-cli-build:
     jobs:
@@ -191,8 +190,7 @@ workflows:
           message: Run Unit and End to End Tests
           command: npm run test-cli
           requires:
-            - setup
+            - lint
       - pages-build:
           requires:
-            - setup
             - unit-test
