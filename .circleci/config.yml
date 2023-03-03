@@ -58,7 +58,7 @@ jobs:
             - src
   codecov:
     executor: angular-build
-    working_directory: /home/circleci/project
+    working_directory: /home/circleci/project/src
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
