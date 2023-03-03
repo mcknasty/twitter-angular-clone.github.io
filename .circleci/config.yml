@@ -114,7 +114,7 @@ jobs:
           name: Adding Github Pages NPM Package
           command: npm install gh-pages@2.0.1
       - run:
-          name: Congifure CI git user
+          name: Configure CI git user
           command: git config user.email "ci-build@nowhere.net" && git config user.name "ci-build"
       - run:
           name: Build and Deploy to Github Pages Branch
