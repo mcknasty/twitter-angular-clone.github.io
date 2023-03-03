@@ -98,7 +98,7 @@ jobs:
           name: Run Unit and End to End Tests
           command: npm run test
   pages-build:
-    working_directory: /home/circleci/project
+    working_directory: /home/circleci/project/src
     executor: angular-build
     steps:
       - attach_workspace:
