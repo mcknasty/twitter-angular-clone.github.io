@@ -112,9 +112,9 @@ jobs:
           command: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Adding Github Pages NPM Package
-          command: npm install -g --silent gh-pages@2.0.1
+          command: npm install gh-pages@2.0.1
       - run:
-          name: Congifure CI git user
+          name: Configure CI git user
           command: git config user.email "ci-build@nowhere.net" && git config user.name "ci-build"
       - run:
           name: Build and Deploy to Github Pages Branch
@@ -149,20 +149,15 @@ workflows:
           command: npm run build
           requires:
             - setup
-            - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
           requires:
             - setup
-            - lint
-            - compile
       - codecov:
           requires:
             - setup
-            - lint
-            - compile
             - unit-test
   local-cli-build:
     jobs:
@@ -191,18 +186,13 @@ workflows:
           command: npm run build
           requires:
             - setup
-            - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
           requires:
             - setup
-            - lint
-            - compile
       - pages-build:
           requires:
             - setup
-            - lint
-            - compile
             - unit-test
