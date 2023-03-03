@@ -149,15 +149,12 @@ workflows:
           command: npm run build
           requires:
             - setup
-            - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
           requires:
             - setup
-            - lint
-            - compile
       - codecov:
           requires:
             - setup
@@ -191,15 +188,12 @@ workflows:
           command: npm run build
           requires:
             - setup
-            - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
           requires:
             - setup
-            - lint
-            - compile
       - pages-build:
           requires:
             - setup
