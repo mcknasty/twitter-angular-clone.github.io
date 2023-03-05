@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MomentModule } from 'ngx-moment';
+import { NgPipesModule } from 'ngx-pipes';
 
 import { InMemoryService } from '../in-memory-data.service';
 import { AppRoutingModule } from '../router/routing.module';
@@ -12,11 +12,7 @@ const imports = [
   AppRoutingModule,
   HttpClientModule,
   InMemoryService,
-  MomentModule.forRoot({
-    relativeTimeThresholdOptions: {
-      m: 59
-    }
-  }),
+  NgPipesModule,
   BrowserAnimationsModule,
   CommonModule
 ];
