@@ -117,7 +117,7 @@ workflows:
                 - /features/.*/
                 - /feature/.*/
                 - /dependabot/.*/
-                - pkg-updates
+                - pkg-update
       - npm-cli:
           name: lint
           message: Lint Check Typescript Files
