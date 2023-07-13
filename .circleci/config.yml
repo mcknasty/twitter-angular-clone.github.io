@@ -1,38 +1,34 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
+---
 version: 2.1
 
 orbs:
-  # The Node.js orb contains a set of prepackaged CircleCI configuration you can utilize
-  # Orbs reduce the amount of configuration required for common tasks.
-  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@4.7
-  codecov: codecov/codecov@3.1.1
+  codecov: codecov/codecov@3.2.3
 
 executors:
   angular-build:
     docker:
-      - image: talktotrev/angular-build:1.0
-    working_directory: /root/project
+      - image: talktotrev/angular-test:1.0.0
+        user: circleci
+    working_directory: /home/circleci/project
 
 jobs:
-  # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   setup:
     executor: angular-build
+    working_directory: /home/circleci/project/src
     steps:
-      # Checkout the code as the first step.
-      - checkout
-      # Next, the node orb's install-packages step will install the dependencies from a package.json.
-      # The orb install-packages step will also automatically cache them for faster future runs.
+      - checkout:
+          path: /home/circleci/project/src
       - node/install-packages:
-          # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
       - persist_to_workspace:
-          root: /root/project
-          paths: 
-            - ./
+          root: /home/circleci/project
+          paths:
+            - .cache/puppeteer
+            - src
   npm-cli:
     executor: angular-build
+    working_directory: /home/circleci/project/src
     parameters:
       message:
         type: string
@@ -40,103 +36,108 @@ jobs:
         type: string
     steps:
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - run:
+          shell: /bin/bash -exo pipefail -lc
           name: << parameters.message >>
           command: << parameters.command >>
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - .cache/puppeteer
+            - src
   codecov:
     executor: angular-build
+    working_directory: /home/circleci/project/src
     steps:
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - codecov/upload
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - .cache/puppeteer
+            - src
   local-build:
+    working_directory: /home/circleci/project
     docker:
-      - image: talktotrev/angular-build:1.0
+      - image: angular-test:latest
     steps:
-      # Checkout the code as the first step.
       - checkout
-      # Next, the node orb's install-packages step will install the dependencies from a package.json.
-      # The orb install-packages step will also automatically cache them for faster future runs.
-      - node/install-packages:
-          # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: npm         
       - run:
+          shell: /bin/bash -exo pipefail -lc
+          name: NPM install
+          command: npm i
+      - run:
+          shell: /bin/bash -exo pipefail -lc
           name: Lint Check Typescript Files
           command: npm run lint
       - run:
+          shell: /bin/bash -exo pipefail -lc
           name: Compile Typescript and SASS
           command: npm run build
       - run:
+          shell: /bin/bash -exo pipefail -lc
           name: Run Unit and End to End Tests
           command: npm run test
   pages-build:
+    working_directory: /home/circleci/project/src
     executor: angular-build
     steps:
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: /root/project
+          at: /home/circleci/project
       - add_ssh_keys:
           fingerprints:
-            - "00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3"
+            - '00:d0:ec:83:70:ec:78:07:91:60:3b:69:a7:40:08:a3'
       - run:
           name: Adding Github to Known Hosts File
           command: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Adding Github Pages NPM Package
-          command: npm install -g --silent gh-pages@2.0.1
+          command: npm install gh-pages@2.0.1
       - run:
-          name: Congifure CI git user
-          command: git config user.email "ci-build@nowhere.net" && git config user.name "ci-build"
+          name: Configure CI git user email
+          command: git config user.email "ci-build@nowhere.net"
+      - run:
+          name: Configure CI git user name
+          command: git config user.name "ci-build"
       - run:
           name: Build and Deploy to Github Pages Branch
           command: npm run gh-pages:build
 
 workflows:
-  # Below is the definition of your workflow.
-  # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the jobs above.
-  # CircleCI will run this workflow on every commit.
-  # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   version: 2
   circleci-build:
     jobs:
       - setup:
           filters:
             branches:
-              only: 
+              only:
                 - develop
                 - /features/.*/
                 - /feature/.*/
                 - /dependabot/.*/
-                - pkg-update
+                - pkg-updates
       - npm-cli:
           name: lint
           message: Lint Check Typescript Files
           command: npm run lint
-          requires: 
+          requires:
             - setup
       - npm-cli:
           name: compile
           message: Compile Typescript and SASS
           command: npm run build
-          requires: 
+          requires:
             - setup
-            - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
-          requires: 
-            - setup
+          requires:
             - lint
-            - compile
       - codecov:
-          requires: 
-            - setup
-            - lint
-            - compile
+          requires:
             - unit-test
   local-cli-build:
     jobs:
@@ -144,40 +145,31 @@ workflows:
           filters:
             branches:
               ignore: /.*/
-      # For running simple node tests, you could optionally use the node/test job from the orb to replicate and replace the job above in fewer lines.
-      # - node/test
   gh-pages:
     jobs:
       - setup:
           filters:
             branches:
-              only: 
+              only:
                 - master
       - npm-cli:
           name: lint
           message: Lint Check Typescript Files
           command: npm run lint
-          requires: 
+          requires:
             - setup
       - npm-cli:
           name: compile
           message: Compile Typescript and SASS
           command: npm run build
-          requires: 
+          requires:
             - setup
-            - lint
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
           command: npm run test-cli
-          requires: 
-            - setup
+          requires:
             - lint
-            - compile
       - pages-build:
-          requires: 
-            - setup
-            - lint
-            - compile
+          requires:
             - unit-test
-

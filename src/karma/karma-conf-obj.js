@@ -1,3 +1,5 @@
+const { join } = require('path');
+
 process.env.NODE_OPTIONS = '--max-old-space-size=8192';
 process.env.NODE_ENV = 'production';
 process.env.CHROME_BIN = require('puppeteer').executablePath();
@@ -31,9 +33,13 @@ module.exports.conf = {
     }
   },
   coverageReporter: {
-    dir: require('path').join(__dirname, './coverage/twitter-clone'),
+    dir: require('path').join(__dirname, '../coverage'),
     subdir: '.',
-    reporters: [{ type: 'lcov' }, { type: 'text-summary' }, { type: 'text' }],
+    reporters: [
+      { type: 'lcovonly' },
+      { type: 'text-summary' },
+      { type: 'text' }
+    ],
     fixWebpackSourcePaths: true
   },
   browserConsoleLogOptions: {
@@ -76,3 +82,7 @@ module.exports.conf = {
   //captureTimeout : 4*60*1000
   /**                          **/
 };
+
+// per https://pptr.dev/guides/configuration
+// module.exports.cacheDirectory = join('~', 'project', '.cache', 'puppeteer');
+

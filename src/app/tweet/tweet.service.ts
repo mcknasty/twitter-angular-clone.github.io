@@ -58,7 +58,7 @@ export class TweetService {
    * @param result   optional value to return as the observable result
    */
   private handleError<T>(message: string, result: T) {
-    return (error: any): Observable<T> => {
+    return (error: unknown): Observable<T> => {
       console.error(
         `UserService encountered an error: ${message} error: ${error}`
       );

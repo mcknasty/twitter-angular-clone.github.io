@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
+import { TweetComponent } from './tweet.component';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
-import { TweetComponent } from './tweet.component';
 
 describe('Component: TweetComponent', () => {
   let component: TweetComponent;

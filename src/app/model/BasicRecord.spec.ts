@@ -1,4 +1,4 @@
-import { BasicRecord, Record } from './BasicRecord';
+import { BasicRecord } from './BasicRecord';
 
 describe('Model: Basic Record', () => {
   it('The Basic Record Model should be able to initialize a new populated basic record', () => {
@@ -24,7 +24,7 @@ describe('Model: Basic Record', () => {
     const id = BasicRecord.generateId();
     const recordObj = { id };
     try {
-      const prevRecord = new BasicRecord(recordObj);
+      new BasicRecord(recordObj);
     } catch (e) {
       expect(e).toBeDefined();
       console.error(e);

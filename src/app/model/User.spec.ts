@@ -91,7 +91,7 @@ describe('Model: User Record', () => {
     const id = UserRecord.generateId();
     const recordObj = { id };
     try {
-      const prevRecord = new UserRecord(recordObj);
+      new UserRecord(recordObj);
     } catch (e) {
       expect(e).toBeDefined();
       console.error(e);

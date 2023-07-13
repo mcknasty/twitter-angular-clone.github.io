@@ -10,7 +10,7 @@
 # /docs/twitter-angular-clone.github.io/.gitkeep
 
 # dependencies
-/node_modules
+node_modules
 
 # profiling files
 chrome-profiler-events.json
@@ -52,3 +52,5 @@ src/coverage/*
 Thumbs.db
 #package-lock.json
 .gitignore
+
+.cache/puppeteer/

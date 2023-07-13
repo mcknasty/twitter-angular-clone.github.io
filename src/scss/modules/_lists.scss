@@ -30,35 +30,3 @@ ul.hash-tag-cloud a {
 ul.footer-links a {
   @include clickable-link($med-grey3, $light-blue);
 }
-
-.mobile-menu {
-   width: 200px;
-   $border: 1px solid $light-grey;
-   &:hover ul, &:focus ul {
-     display: block;
-   }
-   ul {
-     display: none;
-     font-size: 16px;
-     background: $dark-blue;
-     border-left: $border;
-     border-right: $border;
-     margin-left: 15px;
-     li {
-       border-bottom: $border;
-       padding: 10px 10px;
-       a.active span {
-        text-decoration: underline;
-       }
-       i {
-         font-size: 16px;
-         padding-right: 10px;
-       }
-     }
-   }
-   i.menu-active-icon {
-    font-size: 30px;
-    margin: 10px 20px;
-    @include clickable-icon-link($white, $light-blue, $med-grey);
-  }
-}
