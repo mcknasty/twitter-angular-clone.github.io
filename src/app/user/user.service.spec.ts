@@ -1,15 +1,14 @@
-import { TestBed, inject, waitForAsync } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
+import { UserService } from './user.service';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { UserRecord } from '../model/User';
-import { UserService } from './user.service';
 
 describe('Service: UserService', () => {
   beforeEach(() => TestBed.configureTestingModule({ declarations, imports }));
 
-  it('The User Service should be dependancy injected', () => {
+  it('The User Service should be dependency injected', () => {
     const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
   });

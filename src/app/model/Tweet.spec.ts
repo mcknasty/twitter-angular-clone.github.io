@@ -38,7 +38,7 @@ describe('Model: Tweet Record', () => {
     const id = TweetRecord.generateId();
     const recordObj = { id };
     try {
-      const prevRecord = new TweetRecord(recordObj);
+      new TweetRecord(recordObj);
     } catch (e) {
       expect(e).toBeDefined();
       console.error(e);

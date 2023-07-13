@@ -23,7 +23,7 @@ class UserRecord extends Record implements BasicRecordInterface {
   public password = '';
   public lastLogin = 0;
 
-  protected static MemberVariblesNames: Array<string> = [
+  protected static override MemberVariablesNames: Array<string> = [
     'name',
     'handle',
     'userName',
@@ -53,9 +53,12 @@ class UserRecord extends Record implements BasicRecordInterface {
     }
   }
 
-  public initEmptyRecord(): any {
-    const blank = {};
-    for (const e of UserRecord.getKeys()) blank[e] = null;
+  public override initEmptyRecord(): Partial<BasicRecordSchema> {
+    const blank: { [key: string]: unknown } = {};
+    // for (const e: key of UserRecord of UserRecord.getKeys()) blank[e] = null;
+    UserRecord.getKeys().forEach((key: string) => {
+      blank[key] = null;
+    });
     const basicRecord = super.initEmptyRecord();
     const record = {
       ...basicRecord,

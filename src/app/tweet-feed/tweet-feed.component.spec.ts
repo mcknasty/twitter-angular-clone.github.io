@@ -3,27 +3,17 @@ import {
   ComponentFixture,
   ComponentFixtureAutoDetect,
   TestBed,
-  async,
-  fakeAsync,
-  flush,
-  inject,
-  tick,
   waitForAsync
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { AppComponent } from '../app/app.component';
-import { declarations } from '../app/declarations';
+import { TweetFeedComponent } from './tweet-feed.component';
 import { imports } from '../app/imports';
-import { TweetRecord } from '../model/Tweet';
-import { UserRecord } from '../model/User';
 import { TweetComponent } from '../tweet/tweet.component';
 import { TweetService } from '../tweet/tweet.service';
 import { UserComponent } from '../user/user.component';
 import { UserService } from '../user/user.service';
-import { TweetFeedComponent } from './tweet-feed.component';
 
 describe('Component: TweetFeedComponent', () => {
   beforeEach(waitForAsync(() => {
@@ -53,19 +43,19 @@ describe('Component: TweetFeedComponent', () => {
   }));
 
   it('The Tweet Feed Component should be initialized.', (done) => {
-    const users: UserService = TestBed.inject(UserService);
-    const tweets: TweetService = TestBed.inject(TweetService);
+    TestBed.inject(UserService);
+    TestBed.inject(TweetService);
     const fixture: ComponentFixture<TweetFeedComponent> =
       TestBed.createComponent(MockTweetFeedComponent);
     const native: HTMLElement = fixture.nativeElement;
-    const debug = fixture.debugElement;
+    fixture.debugElement;
     expect(native).toBeInstanceOf(HTMLElement);
     done();
   });
 
   it("The Tweet Feed Component's textarea should toggle open and close.", (done) => {
-    const users: UserService = TestBed.inject(UserService);
-    const tweets: TweetService = TestBed.inject(TweetService);
+    TestBed.inject(UserService);
+    TestBed.inject(TweetService);
     const fixture: ComponentFixture<TweetFeedComponent> =
       TestBed.createComponent(MockTweetFeedComponent);
     const native: HTMLElement = fixture.nativeElement;
@@ -92,11 +82,10 @@ describe('Component: TweetFeedComponent', () => {
 
   //it("The Tweet Feed Component should be able to add a new tweet.", waitForAsync(() => {
   it('The Tweet Feed Component should be able to add a new tweet.', (done) => {
-    const users: UserService = TestBed.inject(UserService);
-    const tweets: TweetService = TestBed.inject(TweetService);
+    TestBed.inject(UserService);
+    TestBed.inject(TweetService);
     const fixture: ComponentFixture<TweetFeedComponent> =
       TestBed.createComponent(MockTweetFeedComponent);
-    const native: HTMLElement = fixture.nativeElement;
     const debug = fixture.debugElement;
     //Open the Drawer
     const linkDes = debug.query(By.css('.feed-header .button'));
@@ -136,11 +125,11 @@ describe('Component: TweetFeedComponent', () => {
 });
 
 class MockTweetFeedComponent extends TweetFeedComponent {
-  getTweets(): void {
+  override getTweets(): void {
     const id = '71ab267fc37caa55b9d8de7280daee18';
     super.filterTweets(id);
   }
-  add(tweetText: string) {
+  override add(tweetText: string) {
     const id = '71ab267fc37caa55b9d8de7280daee18';
     super.add(tweetText, id);
   }

@@ -9,7 +9,7 @@ interface BasicRecordInterface {
 }
 
 abstract class AbstractBasicRecord {
-  protected static MemberVariblesNames: Array<string> = [
+  protected static MemberVariablesNames: Array<string> = [
     'id',
     'created',
     'updated'
@@ -21,25 +21,22 @@ abstract class AbstractBasicRecord {
     return keys.every((key) => Object.keys(data).includes(key));
   }
 
-  public static instanceOf(
-    data: AbstractBasicRecord,
-    partial = false
-  ): boolean {
+  public static instanceOf(data: AbstractBasicRecord): boolean {
     return this.implements(this.getKeys(), data);
   }
 
   protected static getKeys(): Array<string> {
     //Todo:  Is there a function to return a list of variables from an interface?
-    return [...this.MemberVariblesNames];
+    return [...this.MemberVariablesNames];
   }
 }
 
 class BasicRecord extends AbstractBasicRecord implements BasicRecordInterface {
-  public id: string;
-  public created: number;
-  public updated: number;
+  public id!: string;
+  public created!: number;
+  public updated!: number;
 
-  constructor(data: Partial<BasicRecordSchema> = null) {
+  constructor(data: Partial<BasicRecordSchema> | null = null) {
     super();
     if (data) {
       if (BasicRecord.instanceOf(data)) {
@@ -56,7 +53,7 @@ class BasicRecord extends AbstractBasicRecord implements BasicRecordInterface {
     }
   }
 
-  public initEmptyRecord(): BasicRecordSchema {
+  public initEmptyRecord(): Partial<BasicRecordSchema> {
     const record = {
       id: BasicRecord.generateId(),
       created: Date.now(),
@@ -76,7 +73,8 @@ class BasicRecord extends AbstractBasicRecord implements BasicRecordInterface {
 }
 
 class Record extends BasicRecord {
-  public static instanceOf(data: AbstractBasicRecord, partial = false) {
+  // eslint-disable-next-line prettier/prettier
+  public static override instanceOf(data: AbstractBasicRecord, partial = false) {
     return partial
       ? this.implements(this.getKeys(), data)
       : this.implements(this.getKeys(true), data);
@@ -86,11 +84,11 @@ class Record extends BasicRecord {
     return this.instanceOf(data, true);
   }
 
-  protected static getKeys(callParent = false): Array<string> {
+  protected static override getKeys(callParent = false): Array<string> {
     //Todo:  Is there a function to return a list of variables from an interface?
     return callParent
-      ? [...super.MemberVariblesNames, ...this.MemberVariblesNames]
-      : [...this.MemberVariblesNames];
+      ? [...super.MemberVariablesNames, ...this.MemberVariablesNames]
+      : [...this.MemberVariablesNames];
   }
 }
 
