@@ -1,8 +1,6 @@
 # Twitter Clone
 [![CircleCI](https://circleci.com/gh/mcknasty/twitter-angular-clone.github.io.svg?style=svg)](https://app.circleci.com/pipelines/github/mcknasty)
 [![codecov](https://codecov.io/gh/mcknasty/twitter-angular-clone.github.io/branch/master/graph/badge.svg?token=21SB7HS2S2)](https://codecov.io/gh/mcknasty/twitter-angular-clone.github.io)
-[![CodeQL](https://github.com/mcknasty/twitter-angular-clone.github.io/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mcknasty/twitter-angular-clone.github.io/actions/workflows/codeql-analysis.yml)
-
 
 This project's initial template was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
 
