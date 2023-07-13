@@ -30,20 +30,17 @@ export class UserService {
 
   /** GET user by id. Will 404 if id not found */
   getUser(id: string): Observable<UserRecord> {
-    if (id) {
-      const url = `${this.userUrl}/${id}`;
-      return this.http
-        .get<UserRecord>(url)
-        .pipe(
-          catchError(
-            this.handleError<UserRecord>(
-              `getUser function: id=${id}`,
-              this.initUser()
-            )
+    const url = `${this.userUrl}/${id}`;
+    return this.http
+      .get<UserRecord>(url)
+      .pipe(
+        catchError(
+          this.handleError<UserRecord>(
+            `getUser function: id=${id}`,
+            this.initUser()
           )
-        );
-    }
-    return of(this.initUser());
+        )
+      );
   }
 
   public throwError<T>(message: string, result: T) {
@@ -51,7 +48,7 @@ export class UserService {
   }
 
   private handleError<T>(message: string, result: T) {
-    return (error: any): Observable<T> => {
+    return (error: unknown): Observable<T> => {
       console.error(
         `UserService encountered an error: ${message} error: ${error}`
       );

@@ -1,10 +1,9 @@
-import { TestBed, inject, waitForAsync } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
+import { TweetService } from './tweet.service';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { TweetRecord } from '../model/Tweet';
-import { TweetService } from './tweet.service';
 
 describe('Service: TweetService', () => {
   let service: TweetService;
@@ -16,7 +15,7 @@ describe('Service: TweetService', () => {
     service = TestBed.inject(TweetService);
   });
 
-  it('The Tweet Service should be dependancy injected', waitForAsync(() => {
+  it('The Tweet Service should be dependency injected', waitForAsync(() => {
     expect(service).toBeDefined();
   }));
 

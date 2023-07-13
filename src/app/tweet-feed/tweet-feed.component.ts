@@ -5,8 +5,9 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 import followers from '../../assets/data/mock-followers.json';
 import { TweetRecord, TweetSchema } from '../model/Tweet';
@@ -38,22 +39,24 @@ import { UserService } from '../user/user.service';
     ])
   ]
 })
-export class TweetFeedComponent implements OnInit, OnDestroy {
+export class TweetFeedComponent implements OnInit {
   tweets: TweetRecord[] = [];
   isOpen = false;
   hide = true;
-  user: UserRecord;
-  newTweet: TweetRecord;
-  navigationSubscription: any;
+  user!: UserRecord;
+  newTweet!: TweetRecord;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  navigationSubscription!: any;
 
   constructor(
     public tweetService: TweetService,
     public userService: UserService,
     public route: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    public locationService: Location
   ) {
-    this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
+    this.navigationSubscription = this.router.events.subscribe((e: unknown) => {
+      // If it is a NavigationEnd event re-initialize the component
       if (e instanceof NavigationEnd) {
         this.initNewTweet();
         this.getTweets();
@@ -73,8 +76,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy {
   }
 
   getTweets(): void {
-    const id: string = this.route.snapshot.paramMap.get('id');
-    this.filterTweets(id);
+    const id: string | null = this.route.snapshot.paramMap.get('id');
+    if (id) this.filterTweets(id);
   }
 
   filterTweets(id: string): void {
@@ -101,10 +104,13 @@ export class TweetFeedComponent implements OnInit, OnDestroy {
   }
 
   getUser(): void {
-    const idKey = this.route.snapshot.paramMap.get('id');
-    this.userService.getUser(idKey).subscribe((user) => {
-      this.user = user;
-    });
+    // const idKey = this.route.snapshot.paramMap.get('id');
+    const idKey = this.locationService.path().split('/')[2];
+
+    if (idKey)
+      this.userService.getUser(idKey).subscribe((user) => {
+        this.user = user;
+      });
   }
 
   toggle(): void {
@@ -112,9 +118,8 @@ export class TweetFeedComponent implements OnInit, OnDestroy {
     this.hide = !this.hide;
   }
 
-  //add(tweetText: string, id?: string)
-  add(tweetText: string, id?: string) {
-    const userId: string = id !== undefined ? id : this.user.id;
+  add(tweetText: string, id = '') {
+    const userId: string = id === '' ? this.user.id : id;
     this.initNewTweet({ userId, tweetText });
     this.tweetService
       .addTweet(this.newTweet)
@@ -123,7 +128,6 @@ export class TweetFeedComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // avoid memory leaks here by cleaning up after ourselves. If we
-    // don't then we will continue to run our initialiseInvites()
     // method on every navigationEnd event.
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();

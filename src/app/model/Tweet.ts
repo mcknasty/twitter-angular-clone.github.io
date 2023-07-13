@@ -8,9 +8,10 @@ interface TweetPartialSchema {
 type TweetSchema = TweetPartialSchema & BasicRecordSchema;
 
 class TweetRecord extends Record implements BasicRecordInterface {
-  public tweetText: string;
-  public userId: string;
-  protected static MemberVariblesNames: Array<string> = ['tweetText', 'userId'];
+  public tweetText!: string;
+  public userId!: string;
+  // eslint-disable-next-line prettier/prettier
+  protected static override MemberVariablesNames: Array<string> = ['tweetText', 'userId'];
 
   constructor(data?: Partial<TweetSchema>) {
     super();
@@ -31,7 +32,8 @@ class TweetRecord extends Record implements BasicRecordInterface {
     }
   }
 
-  public initEmptyRecord(userId = null, tweetText = null): TweetSchema {
+  // eslint-disable-next-line prettier/prettier
+  public override initEmptyRecord(userId = null, tweetText = null): Partial<BasicRecordSchema> {
     const basicRecord = super.initEmptyRecord();
     const record = {
       ...basicRecord,

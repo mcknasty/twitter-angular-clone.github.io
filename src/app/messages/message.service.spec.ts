@@ -1,11 +1,11 @@
-import { TestBed, inject, waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
+import { MessageService } from './message.service';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
-import { MessageService } from './message.service';
 
 describe('Service: MessageService', () => {
-  let service;
+  let service: MessageService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations,
@@ -15,7 +15,7 @@ describe('Service: MessageService', () => {
     service = TestBed.inject(MessageService);
   });
 
-  it('The Message Service should be dependancy injected', waitForAsync(() => {
+  it('The Message Service should be dependency injected', waitForAsync(() => {
     expect(service).toBeDefined();
   }));
 

@@ -1,13 +1,15 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
-import { ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { NavigationEnd, Router } from '@angular/router';
+import {
+  TestBed,
+  waitForAsync,
+  ComponentFixtureAutoDetect
+} from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
 
-import { UserComponent } from '../user/user.component';
 import { AppComponent } from './app.component';
 import { declarations } from './declarations';
 import { imports } from './imports';
+import { UserComponent } from '../user/user.component';
 
 describe('Component: AppComponent', () => {
   beforeEach(waitForAsync(() => {
@@ -41,7 +43,6 @@ describe('Component: AppComponent', () => {
     p.then(
       (success) => {
         if (success) {
-          const ne = of(new NavigationEnd(0, url, url));
           const fixture = TestBed.createComponent(AppComponent);
           fixture.detectChanges();
           const component = fixture.nativeElement;
@@ -66,7 +67,6 @@ describe('Component: AppComponent', () => {
     p.then(
       (success) => {
         if (success) {
-          const ne = of(new NavigationEnd(0, url, url));
           const fixture = TestBed.createComponent(AppComponent);
           fixture.detectChanges();
           fixture.whenStable().then(() => {

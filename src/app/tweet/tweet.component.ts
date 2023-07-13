@@ -15,7 +15,7 @@ export class TweetComponent implements OnInit {
   @Input() tweet: TweetRecord = new TweetRecord();
   user: UserRecord = new UserRecord();
   now: number = Date.now();
-  created: Date;
+  created!: Date;
 
   constructor(private userService: UserService) {}
 

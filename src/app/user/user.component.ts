@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { UserRecord } from '../model/User';
@@ -7,10 +7,10 @@ import { UserService } from '../user/user.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html'
-  //  styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnInit {
   user: UserRecord = new UserRecord();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   navigationSubscription: any;
   now: number = Date.now();
 
@@ -19,11 +19,11 @@ export class UserComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router
   ) {
-    this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
+    this.navigationSubscription = this.router.events.subscribe((e: unknown) => {
+      // If it is a NavigationEnd event re-initialize the component
       if (e instanceof NavigationEnd) {
-        this.getUser();
         this.now = Date.now();
+        this.getUser();
       }
     });
   }
@@ -36,14 +36,5 @@ export class UserComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get('id');
     if (id)
       this.userService.getUser(id).subscribe((user) => (this.user = user));
-  }
-
-  ngOnDestroy(): void {
-    // avoid memory leaks here by cleaning up after ourselves. If we
-    // don't then we will continue to run our initialiseInvites()
-    // method on every navigationEnd event.
-    if (this.navigationSubscription) {
-      this.navigationSubscription.unsubscribe();
-    }
   }
 }
