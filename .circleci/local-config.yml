@@ -1,0 +1,112 @@
+---
+#  See Test Splinting:
+#  https://circleci.com/docs/parallelism-faster-jobs/#manual-allocation
+#
+#  Need to read more about this command: circleci tests run
+#  https://circleci.com/docs/parallelism-faster-jobs/#the-tests-run-command
+#
+#  This build use extensive use of parameters
+#  https://circleci.com/docs/reusing-config/#using-the-parameters-declaration
+#
+
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7
+  codecov: codecov/codecov@3.2.3
+
+parameters:
+  working_dir:
+    type: string
+    default: /home/circleci/project/src
+  workspace:
+    type: string
+    default: /home/circleci/project
+  docker-image:
+    type: string
+    default: talktotrev/angular-test:1.0.0
+  docker-user:
+    type: string
+    default: circleci
+  cloud-build:
+    type: boolean
+    default: true
+
+commands:
+  cloud-setup:
+    steps:
+      - checkout:
+          path: << pipeline.parameters.working_dir >>
+      - node/install-packages:
+          pkg-manager: npm
+      - persist_to_workspace:
+          root: << pipeline.parameters.workspace >>
+          paths:
+            - .cache/puppeteer
+            - src
+  npm-cmd:
+    parameters:
+      message:
+        type: string
+      command:
+        type: string
+    steps:
+      - when:
+          condition: << pipeline.parameters.cloud-build >>
+          steps:
+            - attach_workspace:
+                at: << pipeline.parameters.workspace >>
+      - run:
+          shell: /bin/bash -exo pipefail -lc
+          name: << parameters.message >>
+          command: << parameters.command >>
+      - when:
+          condition: << pipeline.parameters.cloud-build >>
+          steps:
+            - persist_to_workspace:
+                root: << pipeline.parameters.workspace >>
+                paths:
+                  - .cache/puppeteer
+                  - src
+  npm-run-install:
+    steps:
+      - npm-cmd:
+          message: Node Modules Install
+          command: npm install
+  npm-run-lint:
+    steps:
+      - npm-cmd:
+          message: Lint Check Typescript Files
+          command: npm run lint
+  npm-run-compile:
+    steps:
+      - npm-cmd:
+          message: Compile Typescript and SASS
+          command: npm run build
+  npm-run-test:
+    steps:
+      - npm-cmd:
+          message: Run Unit and End to End Tests
+          command: npm run test-cli
+
+jobs:
+  local-build:
+    working_directory: << pipeline.parameters.working_dir >>
+    docker:
+      - image: talktotrev/angular-test:1.0.0
+        user: circleci
+    steps:
+      - checkout
+      - npm-run-install
+      - npm-run-lint
+      - npm-run-compile
+      - npm-run-test
+
+workflows:
+  version: 2
+  local-cli-build:
+    jobs:
+      - local-build:
+          filters:
+            branches:
+              ignore: /.*/
