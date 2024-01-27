@@ -1,9 +1,30 @@
 ---
+#  See Test Splinting:
+#  https://circleci.com/docs/parallelism-faster-jobs/#manual-allocation
+#
+#  Need to read more about this command: circleci tests run
+#  https://circleci.com/docs/parallelism-faster-jobs/#the-tests-run-command
+#
+
 version: 2.1
 
 orbs:
   node: circleci/node@4.7
   codecov: codecov/codecov@3.2.3
+
+parameters:
+  working_dir:
+    type: string
+    default: /home/circleci/project/src
+  workspace:
+    type: string
+    default: /home/circleci/project
+  docker-image:
+    type: string
+    default: talktotrev/angular-test:1.0.0
+  docker-user:
+    type: string
+    default: circleci
 
 executors:
   angular-build:
@@ -12,23 +33,20 @@ executors:
         user: circleci
     working_directory: /home/circleci/project
 
-jobs:
+commands:
   setup:
-    executor: angular-build
-    working_directory: /home/circleci/project/src
+    # https://circleci.com/docs/reusing-config/#using-the-parameters-declaration
     steps:
       - checkout:
-          path: /home/circleci/project/src
+          path: << pipeline.parameters.working_dir >>
       - node/install-packages:
           pkg-manager: npm
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: << pipeline.parameters.workspace >>
           paths:
             - .cache/puppeteer
             - src
-  npm-cli:
-    executor: angular-build
-    working_directory: /home/circleci/project/src
+  npm-cmd:
     parameters:
       message:
         type: string
@@ -36,28 +54,103 @@ jobs:
         type: string
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: << pipeline.parameters.workspace >>
       - run:
           shell: /bin/bash -exo pipefail -lc
           name: << parameters.message >>
           command: << parameters.command >>
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: << pipeline.parameters.workspace >>
           paths:
             - .cache/puppeteer
             - src
+  npm-run-install:
+    steps:
+      - npm-cmd:
+          message: Node Modules Install
+          command: npm install
+  npm-run-lint:
+    steps:
+      - npm-cmd:
+          message: Lint Check Typescript Files
+          command: npm run lint
+  npm-run-compile:
+    steps:
+      - npm-cmd:
+          message: Compile Typescript and SASS
+          command: npm run build
+  npm-run-test:
+    steps:
+      - npm-cmd:
+          message: Run Unit and End to End Tests
+          command: npm run test-cli
+
+jobs:
+  circleci-setup:
+    # https://circleci.com/docs/reusing-config/#using-the-parameters-declaration
+    parameters:
+      exec:
+        type: string
+      working_dir:
+        type: string
+    executor: << parameters.exec >>
+    working_directory: << parameters.working_dir >>
+    steps:
+      - setup
+
+  circleci-lint:
+    parameters:
+      exec:
+        type: string
+      working_dir:
+        type: string
+    executor: << parameters.exec >>
+    working_directory: << parameters.working_dir >>
+    steps:
+      - npm-run-lint
+
+  circleci-compile:
+    parameters:
+      exec:
+        type: string
+      working_dir:
+        type: string
+    executor: << parameters.exec >>
+    working_directory: << parameters.working_dir >>
+    steps:
+      - npm-run-compile
+
+  circleci-test:
+    parameters:
+      exec:
+        type: string
+      working_dir:
+        type: string
+    executor: << parameters.exec >>
+    working_directory: << parameters.working_dir >>
+    steps:
+      - npm-run-test
+
   codecov:
-    executor: angular-build
-    working_directory: /home/circleci/project/src
+    parameters:
+      exec:
+        type: string
+      working_dir:
+        type: string
+      workspace:
+        type: string
+    executor: << parameters.exec >>
+    working_directory: << parameters.working_dir >>
     steps:
       - attach_workspace:
-          at: /home/circleci/project
+          at: << parameters.workspace >>
       - codecov/upload
       - persist_to_workspace:
-          root: /home/circleci/project
+          root: << parameters.workspace >>
           paths:
             - .cache/puppeteer
             - src
+
   local-build:
     working_directory: /home/circleci/project
     docker:
@@ -109,7 +202,10 @@ workflows:
   version: 2
   circleci-build:
     jobs:
-      - setup:
+      - circleci-setup:
+          name: setup
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           filters:
             branches:
               only:
@@ -119,25 +215,29 @@ workflows:
                 - /dependabot/.*/
                 - pkg-update
                 - pkg-updates
-      - npm-cli:
+      - circleci-lint:
           name: lint
-          message: Lint Check Typescript Files
-          command: npm run lint
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           requires:
             - setup
-      - npm-cli:
+      - circleci-compile:
           name: compile
-          message: Compile Typescript and SASS
-          command: npm run build
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           requires:
             - setup
-      - npm-cli:
+      - circleci-test:
           name: unit-test
-          message: Run Unit and End to End Tests
-          command: npm run test-cli
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           requires:
             - lint
       - codecov:
+          name: CodeCov Upload
+          exec: angular-build
+          working_dir: << pipeline.parameters.working_dir >>
+          workspace: < pipeline.parameters.workspace >>
           requires:
             - unit-test
   local-cli-build:
@@ -148,27 +248,30 @@ workflows:
               ignore: /.*/
   gh-pages:
     jobs:
-      - setup:
+      - circleci-setup:
+          name: setup
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           filters:
             branches:
               only:
                 - master
-      - npm-cli:
+      - circleci-lint:
           name: lint
-          message: Lint Check Typescript Files
-          command: npm run lint
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           requires:
             - setup
-      - npm-cli:
+      - circleci-compile:
           name: compile
-          message: Compile Typescript and SASS
-          command: npm run build
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           requires:
             - setup
-      - npm-cli:
+      - circleci-test:
           name: unit-test
-          message: Run Unit and End to End Tests
-          command: npm run test-cli
+          working_dir: << pipeline.parameters.working_dir >>
+          exec: angular-build
           requires:
             - lint
       - pages-build:
