@@ -8,7 +8,7 @@ orbs:
 executors:
   angular-build:
     docker:
-      - image: talktotrev/angular-test:1.0.0
+      - image: talktotrev/angular-test:1.2.0
         user: circleci
     working_directory: /home/circleci/project
 
@@ -61,7 +61,7 @@ jobs:
   local-build:
     working_directory: /home/circleci/project
     docker:
-      - image: angular-test:latest
+      - image: angular-test:1.2.0
     steps:
       - checkout
       - run:
