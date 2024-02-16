@@ -16,13 +16,14 @@ permissions:
   issues: write
   repository-projects: write
   contents: write
+  checks: read
 
 jobs:
   dependabot:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
-      uses: wechuli/allcheckspassed@v1.0.5
+      - uses: wechuli/allcheckspassed@v1.0.5
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v1
