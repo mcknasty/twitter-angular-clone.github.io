@@ -51,7 +51,7 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-prettier": "^5.0.0",
     "gh-pages": "6.1.1",
-    "jasmine-core": "^5.1.0",
+    "jasmine-core": "^5.1.2",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "^6.4.1",
     "karma-chrome-launcher": "^3.1.0",
