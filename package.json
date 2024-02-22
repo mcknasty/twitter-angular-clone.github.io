@@ -41,7 +41,7 @@
     "@angular-eslint/schematics": "17.2.1",
     "@angular-eslint/template-parser": "17.2.1",
     "@angular/compiler": "~17.2.1",
-    "@angular/compiler-cli": "~17.2.1",
+    "@angular/compiler-cli": "~17.2.2",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "7.0.2",
