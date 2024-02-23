@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DATE_PIPES } from 'ngx-pipes';
 
-import { TweetRecord } from '../model/Tweet';
-import { UserRecord } from '../model/User';
+import { TweetRecord, UserRecord } from '../model/v2/classes';
 import { UserService } from '../user/user.service';
 
 @Component({

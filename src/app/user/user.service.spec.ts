@@ -3,7 +3,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { UserService } from './user.service';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
-import { UserRecord } from '../model/User';
+import { UserRecord } from '../model/v2/classes';
 
 describe('Service: UserService', () => {
   beforeEach(() => TestBed.configureTestingModule({ declarations, imports }));

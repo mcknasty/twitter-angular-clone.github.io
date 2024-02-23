@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { UserRecord } from '../model/User';
+import { UserRecord } from '../model/v2/classes';
 
 @Injectable({
   providedIn: 'root'

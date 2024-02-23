@@ -3,7 +3,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { TweetService } from './tweet.service';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
-import { TweetRecord } from '../model/Tweet';
+import { TweetRecord } from '../model/v2/classes';
 
 describe('Service: TweetService', () => {
   let service: TweetService;

@@ -9,11 +9,16 @@ interface BasicRecordInterface {
 }
 
 abstract class AbstractBasicRecord {
+  // This looks like a way to hold member data
+  // I am not sure why I did this.
   protected static MemberVariablesNames: Array<string> = [
     'id',
     'created',
     'updated'
   ];
+
+  // This looks like a way to see if a key is associated
+  // data parameter passed of AbstractBasicRecord
   protected static implements(
     keys: Array<string>,
     data: AbstractBasicRecord
@@ -21,10 +26,12 @@ abstract class AbstractBasicRecord {
     return keys.every((key) => Object.keys(data).includes(key));
   }
 
+  // Ensure that the data object has all the variables of a AbstractBasicRecord
   public static instanceOf(data: AbstractBasicRecord): boolean {
     return this.implements(this.getKeys(), data);
   }
 
+  // Get all protect variable names
   protected static getKeys(): Array<string> {
     //Todo:  Is there a function to return a list of variables from an interface?
     return [...this.MemberVariablesNames];
@@ -32,13 +39,18 @@ abstract class AbstractBasicRecord {
 }
 
 class BasicRecord extends AbstractBasicRecord implements BasicRecordInterface {
+  // These can't be null or undefined
   public id!: string;
   public created!: number;
   public updated!: number;
 
+  // Either we are populating this instance with some data or 
+  // We are initializing a new one.
   constructor(data: Partial<BasicRecordSchema> | null = null) {
     super();
     if (data) {
+      // This says that it needs all the member variables of
+      // BasicRecord or it's throwing an error.
       if (BasicRecord.instanceOf(data)) {
         Object.assign(this, data);
       } else if (Object.keys(data).length < 3) {
@@ -53,6 +65,7 @@ class BasicRecord extends AbstractBasicRecord implements BasicRecordInterface {
     }
   }
 
+  // Initialize the record
   public initEmptyRecord(): Partial<BasicRecordSchema> {
     const record = {
       id: BasicRecord.generateId(),
@@ -84,6 +97,8 @@ class Record extends BasicRecord {
     return this.instanceOf(data, true);
   }
 
+  // I don't care for this callParent parameter.
+  // 
   protected static override getKeys(callParent = false): Array<string> {
     //Todo:  Is there a function to return a list of variables from an interface?
     return callParent

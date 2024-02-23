@@ -10,8 +10,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 import followers from '../../assets/data/mock-followers.json';
-import { TweetRecord, TweetSchema } from '../model/Tweet';
-import { UserRecord } from '../model/User';
+import { TweetRecord, UserRecord } from '../model/v2/classes';
+import { TweetSchema } from '../model/v2/types';
 import { TweetService } from '../tweet/tweet.service';
 import { UserService } from '../user/user.service';
 

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { TweetRecord } from '../model/Tweet';
+import { TweetRecord } from '../model/v2/classes';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content Type': 'application/json' })

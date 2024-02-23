@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { UserRecord } from '../model/User';
+import { UserRecord } from '../model/v2/classes';
 import { UserService } from '../user/user.service';
 
 @Component({
