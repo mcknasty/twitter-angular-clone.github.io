@@ -1,0 +1,41 @@
+name: Available Angular Update?
+
+on:
+  workflow_call:
+    # Map the workflow outputs to job outputs
+    inputs:
+      branch:
+        type: string
+        required: true
+        description: 'The branch the update should be applied to'
+    #outputs:
+    #  value: ${{ job.detect-update.outputs.REQUIRE_UPDATE }}
+    #outputs:
+    #  AVAILABLE_UPDATE:
+    #    description: "Is a newer version of angular available?"
+    #    value: ${{ jobs.detect-update.outputs.REQUIRE_UPDATE }}
+    #  CORRECT_BRANCH:
+    #    description: "Is this the branch to be checking for updates?"
+    #    value: false
+
+jobs:
+  detect-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: npm-install
+        run: npm install
+      - name: required_updates
+        run: |
+          AVAIL_UPDATE=`npx ng update | grep 'packages to update' | wc -l | tr -d ' ' | tr -d '\n'` &&
+          AVAIL_UPDATE=`if [[ $AVAIL_UPDATE == 0 ]]; then echo 'false'; else echo 'true'; fi` &&
+          echo $AVAIL_UPDATE && 
+          echo "AVAILABLE_UPDATE=$AVAIL_UPDATE" >> "$GITHUB_ENV" &&
+          CORRECT_BRANCH=${{ github.env == github.ref_name }} && 
+          echo $CORRECT_BRANCH && 
+          echo "CORRECT_BRANCH=$CORRECT_BRANCH" >> "$GITHUB_ENV" &&
+          REQUIRE_UPDATE=${{ github.env.AVAILABLE_UPDATE && github.env.CORRECT_BRANCH }} &&
+          echo $REQUIRE_UPDATE &&
+          echo "REQUIRE_UPDATE=$REQUIRE_UPDATE" >> "$GITHUB_OUTPUT"
