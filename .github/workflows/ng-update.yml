@@ -1,0 +1,43 @@
+---
+
+name: Angular Ng Update
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '*/5 * * * *'
+
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+  contents: write
+  checks: read
+
+env:
+  AVAILABLE_UPDATE: npx ng update | grep 'packages to update' | wc -l | tr -d ' ' | tr -d '\n'
+  CURRENT_BRANCH: ${{ github.ref_name }}
+  TARGET_BRANCH: 'master'
+  SHOULD_RUN: ${{ github.env.AVAILABLE_UPDATE == '1' && github.env.CURRENT_BRANCH == github.env.TARGET_BRANCH }}
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo Test
+        run: echo "should run!" && echo ${{ toJson(github.env) }}      
+  ng-update:
+    runs-on: ubuntu-latest
+    if: github.env.SHOULD_RUN == true
+    steps:
+      - name: Echo Test
+        run: echo "should run!" && echo ${{ toJson(github.env) }}
+      #- name: Create NG Update Branch
+      #  uses: peterjgrainger/action-create-branch@v2.2.0
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    branch: 'features/ng-update'
+      #- name: Update Angular CLI
+      #  run: npm update @angular/cli
+      #- name: Angular Core
+      #  run: npx ng update @angular/core
