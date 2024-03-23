@@ -1,0 +1,113 @@
+---
+# Third Party Workflows used:
+#   1.  actions/checkout@v4 - https://github.com/marketplace/actions/checkout
+#   2.  actions4git/setup-git@v1 - https://github.com/marketplace/actions/add-commit-and-push
+#   3.  peterjgrainger/action-create-branch@v3.0.0 - https://github.com/marketplace/actions/create-branch
+#   4.  peter-evans/create-pull-request@v6 - https://github.com/marketplace/actions/create-pull-request
+#
+#  Configure allowed actions here: https://github.com/mcknasty/twitter-angular-clone.github.io/settings/actions
+#
+#  steps context reference - https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
+#  needs context reference - https://docs.github.com/en/actions/learn-github-actions/contexts#needs-context
+#  output reference - https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
+#  
+#  workflow syntax: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+
+name: Angular Core Update
+
+env:
+  TARGET_BRANCH: 'pkg-updates'
+  PR_BRANCH: 'dependabot/ng-update'
+
+on: 
+  push:
+    branches:
+      - 'pkg-updates'
+
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+  contents: write
+  checks: read
+
+jobs:
+  detect-update:
+    runs-on: ubuntu-latest
+    outputs:
+      # the steps key on this context requires the use of the 'id' key, not 'name'
+      REQUIRE_UPDATE: ${{ steps.required_updates.outputs.REQUIRE_UPDATE }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: git setup
+        uses: actions4git/setup-git@v1
+      - name: Create NG Update Branch
+        uses: peterjgrainger/action-create-branch@v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: checkout and pull branch
+        run: |
+          if [[ '${{ env.TARGET_BRANCH }}' != ${{ github.ref_name }} ]]; 
+          then
+            git checkout -b ${{ env.TARGET_BRANCH }} &&
+            git pull origin ${{ env.TARGET_BRANCH }}
+          fi;
+      - id: npm-install
+        run: npm install --silent --no-progress
+# This was a pain to get right.  Need to swap name key with id key to use the steps context variable
+# outputing was variables was difficult as well.        
+      - id: required_updates
+        run: |
+          AVAIL_UPDATE=`npx ng update | grep 'packages to update' | wc -l | tr -d ' ' | tr -d '\n'` &&
+          AVAILABLE_UPDATE=`if [[ $AVAIL_UPDATE == 0 ]]; then echo 'false'; else echo 'true'; fi` &&
+          CORRECT_BRANCH='${{ env.TARGET_BRANCH == github.ref_name }}' && 
+          REQUIRE_UPDATE=`if [[ $AVAILABLE_UPDATE == 'true' &&  $CORRECT_BRANCH == 'true' ]]; then echo 'true'; else echo 'false'; fi` &&
+          echo "REQUIRE_UPDATE=$REQUIRE_UPDATE" >> "$GITHUB_OUTPUT"
+  ng-update:
+    if: ${{ needs.detect-update.outputs.REQUIRE_UPDATE == 'true' }}
+    needs: detect-update
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: git setup
+        uses: actions4git/setup-git@v1
+      - name: Create NG Update Branch
+        uses: peterjgrainger/action-create-branch@v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run npm install
+        run: npm install --silent --no-progress
+      - name: Set Angular Version Variable
+        run: | 
+          NG_VERSION_BUMP=`npx ng update | grep '@angular/core' | sed -E 's/ +/ /g' | sed -E 's/^.+-> //g' | sed -E 's/ ng.+$//g' | tr -d '\n'`
+          echo "NG_VERSION_BUMP=$NG_VERSION_BUMP" >> "$GITHUB_ENV"
+      - name: Update Angular CLI
+        run: |
+          npm update @angular/cli --silent --no-progress &&
+          git add . && 
+          git commit -m 'chore: angular cli updates'
+      - name: Update Angular Core
+        run: |
+          npx ng update @angular/core
+          git add . && 
+          git commit -m 'chore: angular core updates'
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NG_VERSION_BUMP: ${{ env.NG_VERSION_BUMP }}
+        with:
+          branch: ${{ env.PR_BRANCH }}
+          base: ${{ env.TARGET_BRANCH }}
+          title: "Bump Angular Core Version to ${{ env.NG_VERSION_BUMP }}"
+      - name: Pass All Checks
+        uses: wechuli/allcheckspassed@v1.0.5
+      - name: Enable auto-merge for Dependabot PRs
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
