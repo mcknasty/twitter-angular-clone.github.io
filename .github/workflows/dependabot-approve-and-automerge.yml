@@ -8,8 +8,12 @@
 #
 # https://github.com/dotnet/docs/blob/main/.github/workflows/dependabot-approve-and-automerge.yml
 #
-name: Dependabot auto-approve
-on: pull_request
+name: Auto Approve and Merge
+
+on: 
+  pull_request:
+    branches:
+      - 'dependabot/**'
 
 permissions:
   pull-requests: write
@@ -19,10 +23,13 @@ permissions:
   checks: read
 
 jobs:
-  dependabot:
+  approve-merge:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    #if: github.actor == 'dependabot[bot]' || github.actor == 'github-actions[bot]'
+    # if: github.actor == 'dependabot[bot]'
     steps:
+      - name: echo
+        run: echo "${{  github.actor }}" "${{ github.event.sender }}"
       - uses: wechuli/allcheckspassed@v1.0.5
       - name: Dependabot metadata
         id: metadata
