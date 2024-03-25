@@ -47,21 +47,18 @@ jobs:
       NG_CLI_OUT: ${{ steps.required_updates.outputs.NG_CLI_OUT }}
     steps:
       - uses: actions/checkout@v4
-      - name: git setup
-        uses: actions4git/setup-git@v1
-      - name: Create NG Update Branch
-        uses: peterjgrainger/action-create-branch@v3.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - id: npm-install
+      - name: Npm Install
+        id: npm-install
         run: npm install --silent --no-progress
-# This was a pain to get right.  Need to swap name key with id key to use the steps context variable
-# outputing was variables was difficult as well.        
-      - id: required_updates
+      # This was a pain to get right.  Need to swap name key with id key to use the steps context variable
+      # outputing was variables was difficult as well.  Need to watch newline charaters getting appended
+      # to the variable $GITHUB_OUTPUT.  It's used as a delimiter for output key-value pairs.
+      - name: Detect if Angular Update is Required
+        id: required_updates
         run: |
-          NG_CLI_OUT=`npx ng update | grep '@angular/core'`
-          AVAIL_UPDATE=`echo $NG_CLI_OUT | grep '@angular/core' | wc -l | tr -d ' ' | tr -d '\n'` &&
-          REQUIRE_UPDATE=`if [[ $AVAIL_UPDATE == '0' ]]; then echo 'false'; else echo 'true'; fi` &&
+          NG_CLI_OUT=`npx ng update 2>&1 | grep '@angular/core' | tr -d '\n'`
+          AVAIL_UPDATE=`echo $NG_CLI_OUT | grep '@angular/core' | wc -l | tr -d ' ' | tr -d '\n'`
+          REQUIRE_UPDATE=`if [[ $AVAIL_UPDATE == '0' ]]; then echo 'false'; else echo 'true'; fi`
           echo "REQUIRE_UPDATE=$REQUIRE_UPDATE" >> "$GITHUB_OUTPUT"
           echo "NG_CLI_OUT=$NG_CLI_OUT" >> "$GITHUB_OUTPUT"
   ng-update:
@@ -80,7 +77,7 @@ jobs:
       - name: Run npm install
         run: npm install --silent --no-progress
       - name: Set Angular Version Variable
-        run: | 
+        run: |
           NG_VERSION_BUMP_TO=`echo $NG_CLI_OUT | grep '@angular/core' | sed -E 's/ +/ /g' | sed -E 's/^.+-> //g' | sed -E 's/ ng.+$//g' | tr -d '\n'`
           echo "NG_VERSION_BUMP_TO=$NG_VERSION_BUMP_TO" >> "$GITHUB_ENV"
           NG_VERSION=`echo $NG_CLI_OUT | grep '@angular/core' | sed -E 's/ +/ /g' | sed -E 's/ -> .+//g' | sed -E 's/.+core //g' | tr -d '\n'`
