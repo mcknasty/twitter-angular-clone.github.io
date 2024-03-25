@@ -28,8 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
-      - name: echo
-        run: echo "${{  github.actor }}" "${{ github.event.sender }}" "${{ fromJson(github.event.pull_request) }}"
       - uses: wechuli/allcheckspassed@v1.0.5
       - name: Dependabot metadata
         id: metadata
