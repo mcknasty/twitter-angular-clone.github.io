@@ -15,10 +15,10 @@
 #
 #
 #  Some bash command used to in this workflow
-#    updates=`npx ng update | grep '@angular'`
+#    updates=`npx ng update | grep '@angular' | tr -d '\n'`
 #    bump_to=`echo $updates | sed -E 's/ +/ /g' | sed -E 's/^.+-> //g' | sed -E 's/ ng.+$//g' | tr -d '\n'`
 #    bump_from=`echo $updates | sed -E 's/ +/ /g' | sed -E 's/ -> .+//g' | sed -E 's/.+core //g' | tr -d '\n'`
-#    command=`echo $updates | | sed -E 's/ +/ /g' | sed -E 's/^.+->//g' | sed -E 's/^.+[[:digit:]] //g' | tr -d '\n'
+#    command=`echo $updates | sed -E 's/ +/ /g' | sed -E 's/^.+->//g' | sed -E 's/^.+[[:digit:]] //g' | tr -d '\n'
 
 name: Angular Core Update
 
@@ -50,8 +50,9 @@ jobs:
       - name: Npm Install
         id: npm-install
         run: npm install --silent --no-progress
-# This was a pain to get right.  Need to swap name key with id key to use the steps context variable
-# outputing was variables was difficult as well.        
+      # This was a pain to get right.  Need to swap name key with id key to use the steps context variable
+      # outputing was variables was difficult as well.  Need to watch newline charaters getting appended
+      # to the variable $GITHUB_OUTPUT.  It's used as a delimiter for output key-value pairs.
       - name: Detect if Angular Update is Required
         id: required_updates
         run: |
