@@ -114,10 +114,3 @@ jobs:
           branch: ${{ env.PR_BRANCH }}
           base: ${{ env.TARGET_BRANCH }}
           title: "Bump Angular Core Version from ${{ env.NG_VERSION }} to ${{ env.NG_VERSION_BUMP_TO }}"
-      - name: Pass All Checks
-        uses: wechuli/allcheckspassed@v1.0.5
-      - name: Auto Merge PR if checks have passed
-        run: gh pr merge --auto --merge "$PR_URL"
-        env:
-          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

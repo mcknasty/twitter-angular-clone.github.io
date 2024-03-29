@@ -1,0 +1,27 @@
+---
+
+name: Angular PR Automerge
+
+on: 
+  pull_request:
+    branches:
+      - 'dependabot/ng-update'
+
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+  contents: write
+  checks: read
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pass All Checks
+        uses: wechuli/allcheckspassed@v1.0.5
+      - name: Auto Merge PR if checks have passed
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
