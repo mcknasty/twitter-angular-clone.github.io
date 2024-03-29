@@ -29,7 +29,7 @@ env:
 on: 
   push:
     branches:
-      - 'pkg-updates'
+      - 'dependabot/**'
 
 permissions:
   pull-requests: write
@@ -47,6 +47,8 @@ jobs:
       NG_CLI_OUT: ${{ steps.required_updates.outputs.NG_CLI_OUT }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
       - name: Npm Install
         id: npm-install
         run: npm install --silent --no-progress
@@ -68,6 +70,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
       - name: git setup
         uses: actions4git/setup-git@v1
       - name: Create NG Update Branch
@@ -94,11 +98,11 @@ jobs:
           npx ng update @angular/core
           git add . && 
           git commit -m 'chore: angular core updates'
-      - name: Update Angular Eslint Schematics
-        run: |
-          npx ng update  @angular-eslint/schematics
-          git add . && 
-          git commit -m 'chore: angular eslint schematics updates'
+      #- name: Update Angular Eslint Schematics
+      #  run: |
+      #    npx ng update  @angular-eslint/schematics
+      #    git add . && 
+      #    git commit -m 'chore: angular eslint schematics updates'
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
