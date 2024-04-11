@@ -123,3 +123,4 @@ jobs:
           branch: ${{ env.PR_BRANCH }}
           base: ${{ env.TARGET_BRANCH }}
           title: "Bump Angular Core Version from ${{ env.NG_VERSION }} to ${{ env.NG_VERSION_BUMP_TO }}"
+          labels: NG_UPDATE

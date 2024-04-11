@@ -1,0 +1,67 @@
+---
+  # Third Party Workflows used:
+  #   1.  actions/checkout@v4 - https://github.com/marketplace/actions/checkout
+  #   2.  actions4git/setup-git@v1 - https://github.com/marketplace/actions/add-commit-and-push
+  #   3.  peterjgrainger/action-create-branch@v3.0.0 - https://github.com/marketplace/actions/create-branch
+  #   4.  peter-evans/create-pull-request@v6 - https://github.com/marketplace/actions/create-pull-request
+  #
+  #  Configure allowed actions here: https://github.com/mcknasty/twitter-angular-clone.github.io/settings/actions
+  #
+  #  steps context reference - https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
+  #  needs context reference - https://docs.github.com/en/actions/learn-github-actions/contexts#needs-context
+  #  output reference - https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
+  #  
+  #  workflow syntax: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+  #
+  #
+  #  Some bash command used to in this workflow
+  #    updates=`npx ng update | grep '@angular' | tr -d '\n'`
+  #    bump_to=`echo $updates | sed -E 's/ +/ /g' | sed -E 's/^.+-> //g' | sed -E 's/ ng.+$//g' | tr -d '\n'`
+  #    bump_from=`echo $updates | sed -E 's/ +/ /g' | sed -E 's/ -> .+//g' | sed -E 's/.+core //g' | tr -d '\n'`
+  #    command=`echo $updates | sed -E 's/ +/ /g' | sed -E 's/^.+->//g' | sed -E 's/^.+[[:digit:]] //g' | tr -d '\n'
+  
+  name: NG Update Automerge
+  
+  env:
+    TARGET_BRANCH: 'pkg-updates'
+    PR_BRANCH: 'dependabot/ng-update'
+  
+  on:
+    workflow_run:
+      workflows: [Angular Core Update]
+      types:
+        - completed
+    
+  
+  permissions:
+    pull-requests: write
+    issues: write
+    repository-projects: write
+    contents: write
+    checks: read
+
+  jobs:
+    automerge:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Echo vars
+          run: |
+            echo ${{ github.event.workflow_run.event.pull_request.html_url }}
+      
+      #steps:
+      #  - uses: wechuli/allcheckspassed@v1.0.5
+      #  - name: Dependabot metadata
+      #    id: metadata
+      #    uses: dependabot/fetch-metadata@v1
+      #    with:
+      #      github-token: "${{ secrets.GITHUB_TOKEN }}"
+      #  - name: Approve a PR
+      #    run: gh pr review --approve "$PR_URL"
+      #    env:
+      #      PR_URL: ${{ github.event.workflow_run.event.pull_request.html_url }}
+      #      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  - name: Enable auto-merge for Dependabot PRs
+      #    run: gh pr merge --auto --merge "$PR_URL"
+      #    env:
+      #      PR_URL: ${{ github.event.workflow_run.event.pull_request.html_url }}
+      #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
