@@ -25,7 +25,7 @@
     "@angular/forms": "~17.3.3",
     "@angular/language-service": "~17.3.3",
     "@angular/platform-browser": "~17.3.3",
-    "@angular/platform-browser-dynamic": "~17.3.3",
+    "@angular/platform-browser-dynamic": "~17.3.4",
     "@angular/router": "~17.3.3",
     "angular-in-memory-web-api": "^0.17.0",
     "ngx-pipes": "^3.2.0",
