@@ -1,0 +1,51 @@
+---  
+  name: NG Update Automerge
+  
+  on:
+    schedule:
+      - cron: "0,15,30,45 * * * *"
+  #on:
+  #  workflow_dispatch  
+  
+  permissions:
+    pull-requests: write
+    issues: write
+    repository-projects: write
+    contents: write
+    checks: read
+
+  jobs:
+    detect-state:
+      runs-on: ubuntu-latest
+      outputs:
+        # the steps key on this context requires the use of the 'id' key, not 'name'
+        PR_URL: ${{ steps.set_vars.outputs.PR_URL }}
+        CAN_MERGE: ${{ steps.set_vars.outputs.CAN_MERGE }}
+      steps:
+        - name: checkout
+          uses: actions/checkout@v4
+        - name: Setting Output Variables
+          id: set_vars
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+            PR_URL=`gh pr list --label NG_UPDATE --json url | grep url | sed -E 's@^.*":"@@g' | sed -E 's@"}\]@@g' | tr -d "\n"`
+            CAN_MERGE=`gh pr list --label NG_UPDATE --json mergeable | grep mergeable | sed -E 's@^.+:\"@@g' | sed -E 's@\"\}\]@@g'`
+            echo $PR_URL $CAN_MERGE
+            echo "PR_URL=$PR_URL" >> "$GITHUB_OUTPUT"
+            echo "CAN_MERGE=$CAN_MERGE" >> "$GITHUB_OUTPUT"
+    automerge:
+      needs: detect-state
+      if: ${{ needs.detect-state.outputs.CAN_MERGE == 'MERGEABLE' }}
+      runs-on: ubuntu-latest
+      steps:
+        - name: Echo vars
+          env:
+            PR_URL: ${{ needs.detect-state.outputs.PR_URL }}
+          run: |
+            echo $PR_URL
+        - name: Enable auto-merge for Dependabot PRs
+          run: gh pr merge --auto --merge "$PR_URL"
+          env:
+            PR_URL: ${{ needs.detect-state.outputs.PR_URL }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
