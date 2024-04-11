@@ -91,19 +91,27 @@ jobs:
           NG_CLI_OUT: ${{ needs.detect-update.outputs.NG_CLI_OUT }}
       - name: Update Angular CLI
         run: |
-          npm update @angular/cli --silent --no-progress &&
-          git add . && 
-          git commit -m 'chore: angular cli updates'
+          npm update @angular/cli --silent --no-progress
+          DIFF_STATUS=`git status | grep 'working tree clean' | wc -l | tr -d '\n'`
+          if [[ DIFF_STATUS -ne '1' ]]
+          then
+            git add .
+            git commit -m 'chore: angular cli updates'
+          fi
       - name: Update Angular Core
         run: |
           npx ng update @angular/core
           git add . && 
           git commit -m 'chore: angular core updates'
-      #- name: Update Angular Eslint Schematics
-      #  run: |
-      #    npx ng update  @angular-eslint/schematics
-      #    git add . && 
-      #    git commit -m 'chore: angular eslint schematics updates'
+      - name: Update Angular Eslint Schematics
+        run: |
+          npx ng update  @angular-eslint/schematics
+          DIFF_STATUS=`git status | grep 'working tree clean' | wc -l | tr -d '\n'`
+          if [[ DIFF_STATUS -ne '1' ]]
+          then
+            git add . && 
+            git commit -m 'chore: angular eslint schematics updates'
+          fi
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
