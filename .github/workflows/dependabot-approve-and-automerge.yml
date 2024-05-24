@@ -27,10 +27,13 @@ permissions:
   checks: read
 
 jobs:
-  approve-merge:
+  allchecks:
     runs-on: ubuntu-latest
     steps:
       - uses: wechuli/allcheckspassed@v1.0.5
+  approve-merge:
+    runs-on: ubuntu-latest
+    steps:
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v1
