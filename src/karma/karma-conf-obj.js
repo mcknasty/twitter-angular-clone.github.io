@@ -23,7 +23,6 @@ module.exports.conf = {
   client: {
     clearContext: false, // leave Jasmine Spec Runner output visible in browser
     captureConsole: true,
-    /**                 **/
     jasmine: {
       random: true,
       seed: '4321',
@@ -50,6 +49,8 @@ module.exports.conf = {
   colors: true,
   autoWatch: true,
   browsers: ['ChromeHeadless'],
+  concurrency: 3,
+  singleRun: false,
   customLaunchers: {
     WindowsChrome: {
       base: 'Chrome',
@@ -62,27 +63,18 @@ module.exports.conf = {
         '--disable-gpu',
         '--no-sandbox',
         '--remote-debugging-port=9222'
-      ]
+      ],
+      browserDisconnectTimeout: 280000,
+      browserNoActivityTimeout: 280000,
+      browserDisconnectTolerance : 1
     }
-  },
-  concurrency: 3,
-  singleRun: false,
-  browserDisconnectTimeout: 180000,
-  browserNoActivityTimeout: 180000
-  //restartOnFileChange: true,
+  }
   /**                          ** /
+  restartOnFileChange: true,
   browserDisconnectTimeout : 10000,
   browserDisconnectTolerance : 10,
-  browserNoActivityTimeout : 4*60*1000,
-  //browserNoActivityTimeout: 9000,
-
-  browserDisconnectTimeout : 10000,
   browserDisconnectTolerance : 1,
-  //browserNoActivityTimeout : 4*60*1000,
-  //captureTimeout : 4*60*1000
+  captureTimeout : 4*60*1000
   /**                          **/
 };
-
-// per https://pptr.dev/guides/configuration
-// module.exports.cacheDirectory = join('~', 'project', '.cache', 'puppeteer');
 
