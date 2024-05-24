@@ -34,16 +34,15 @@
             echo $PR_URL $CAN_MERGE
             echo "PR_URL=$PR_URL" >> "$GITHUB_OUTPUT"
             echo "CAN_MERGE=$CAN_MERGE" >> "$GITHUB_OUTPUT"
+    allchecks:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: wechuli/allcheckspassed@v1.0.5
     automerge:
       needs: detect-state
       if: ${{ needs.detect-state.outputs.CAN_MERGE == 'MERGEABLE' }}
       runs-on: ubuntu-latest
       steps:
-        - name: Echo vars
-          env:
-            PR_URL: ${{ needs.detect-state.outputs.PR_URL }}
-          run: |
-            echo $PR_URL
         - name: Enable auto-merge for Dependabot PRs
           run: gh pr merge --auto --merge "$PR_URL"
           env:
