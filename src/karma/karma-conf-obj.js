@@ -32,13 +32,9 @@ module.exports.conf = {
     }
   },
   coverageReporter: {
-    dir: require('path').join(__dirname, '../coverage'),
+    dir: require('path').join(__dirname, '../../.coverage'),
     subdir: '.',
-    reporters: [
-      { type: 'lcovonly' },
-      { type: 'text-summary' },
-      { type: 'text' }
-    ],
+    reporters: [],
     fixWebpackSourcePaths: true
   },
   browserConsoleLogOptions: {

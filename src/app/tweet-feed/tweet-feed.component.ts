@@ -81,11 +81,16 @@ export class TweetFeedComponent implements OnInit {
   }
 
   filterTweets(id: string): void {
-    this.tweetService.getTweets().subscribe((tweets: TweetRecord[]) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.tweetService.getTweets().subscribe((tweets: any) => {
+      // Todo: Need to move this next line into the tweet service.
+      // Could be a number of parameters
+      const Tweets = tweets as TweetRecord[];
       const followed: string[] = this.getUsersFollowed(id);
       followed.push(id);
-      this.tweets = tweets
-        .filter((tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1)
+      this.tweets = Tweets.filter(
+        (tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1
+      )
         .slice(0, 20)
         .sort((a, b) => {
           if (a.created < b.created) {
@@ -104,13 +109,20 @@ export class TweetFeedComponent implements OnInit {
   }
 
   getUser(): void {
-    // const idKey = this.route.snapshot.paramMap.get('id');
-    const idKey = this.locationService.path().split('/')[2];
+    const pathArray = this.locationService.path().split('/');
 
-    if (idKey)
-      this.userService.getUser(idKey).subscribe((user) => {
-        this.user = user;
-      });
+    if (pathArray.length > 1) {
+      const idKey = pathArray[2];
+
+      if (idKey && idKey !== 'string')
+        this.userService.getUser(idKey).subscribe((user) => {
+          if (user instanceof UserRecord) {
+            this.user = user;
+          } else if (typeof user === 'string') {
+            throw user;
+          }
+        });
+    }
   }
 
   toggle(): void {
@@ -118,12 +130,15 @@ export class TweetFeedComponent implements OnInit {
     this.hide = !this.hide;
   }
 
-  add(tweetText: string, id = '') {
-    const userId: string = id === '' ? this.user.id : id;
+  add(tweetText: string, id?: string) {
+    const userId: string = id === '' ? this.user.id : (id as string);
     this.initNewTweet({ userId, tweetText });
-    this.tweetService
-      .addTweet(this.newTweet)
-      .subscribe((tweet) => this.tweets.unshift(tweet));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.tweetService.addTweet(this.newTweet).subscribe((tweet: any) => {
+      // Todo: This isn't great.  Should move this next line into the service
+      const Tweet = tweet as TweetRecord;
+      this.tweets.unshift(Tweet);
+    });
   }
 
   ngOnDestroy(): void {

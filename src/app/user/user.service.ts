@@ -1,58 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
+import {
+  AbstractHttpService,
+  ServiceHttpError
+} from '../abstracts/AbstractHttpService';
 import { UserRecord } from '../model/User';
+
+type GetUserResponse = UserRecord | ServiceHttpError;
+type GetUsersResponse = UserRecord[] | ServiceHttpError;
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends AbstractHttpService {
   private userUrl = 'api/users'; // URL to web api
 
-  constructor(private http: HttpClient) {
+  constructor(http: HttpClient) {
+    super(http, 'UserService encountered an error');
     this.getUsers();
   }
 
-  initUser(): UserRecord {
-    return new UserRecord();
-  }
-
   /** GET users from the server */
-  getUsers(): Observable<UserRecord[]> {
-    return this.http
-      .get<UserRecord[]>(this.userUrl)
-      .pipe(
-        catchError(this.handleError<UserRecord[]>('function: getUser', []))
-      );
+  getUsers(): Observable<GetUsersResponse> {
+    return this.httpGet<GetUsersResponse>(this.userUrl);
   }
 
   /** GET user by id. Will 404 if id not found */
-  getUser(id: string): Observable<UserRecord> {
+  getUser(id: string): Observable<GetUserResponse> {
     const url = `${this.userUrl}/${id}`;
-    return this.http
-      .get<UserRecord>(url)
-      .pipe(
-        catchError(
-          this.handleError<UserRecord>(
-            `getUser function: id=${id}`,
-            this.initUser()
-          )
-        )
-      );
-  }
-
-  public throwError<T>(message: string, result: T) {
-    return this.handleError<T>(message, result)(message);
-  }
-
-  private handleError<T>(message: string, result: T) {
-    return (error: unknown): Observable<T> => {
-      console.error(
-        `UserService encountered an error: ${message} error: ${error}`
-      );
-      return of(result as T);
-    };
+    return this.httpGet<GetUserResponse>(url);
   }
 }
