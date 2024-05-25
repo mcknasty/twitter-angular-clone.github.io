@@ -27,8 +27,9 @@ env:
   PR_BRANCH: 'dependabot/ng-update'
 
 on:
-  schedule:
-    - cron: "0,15,30,45 * * * *"
+  workflow_dispatch
+  #schedule:
+  #  - cron: "0,15,30,45 * * * *"
 
 permissions:
   pull-requests: write
@@ -50,7 +51,7 @@ jobs:
           ref: ${{ env.TARGET_BRANCH }}
       - name: Npm Install
         id: npm-install
-        run: npm install --silent --no-progress
+        run: npm install 
       # This was a pain to get right.  Need to swap name key with id key to use the steps context variable
       # outputing was variables was difficult as well.  Need to watch newline charaters getting appended
       # to the variable $GITHUB_OUTPUT.  It's used as a delimiter for output key-value pairs.

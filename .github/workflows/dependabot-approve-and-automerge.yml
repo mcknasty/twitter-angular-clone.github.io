@@ -33,6 +33,7 @@ jobs:
       - uses: wechuli/allcheckspassed@v1.0.5
   approve-merge:
     runs-on: ubuntu-latest
+    needs: allchecks
     steps:
       - name: Dependabot metadata
         id: metadata
