@@ -26,11 +26,10 @@ env:
   TARGET_BRANCH: 'pkg-updates'
   PR_BRANCH: 'dependabot/ng-update'
 
-on: 
-  push:
-    branches:
-      - 'dependabot/**'
-      - '!dependabot/ng-update'
+on:
+  workflow_dispatch
+  #schedule:
+  #  - cron: "0,15,30,45 * * * *"
 
 permissions:
   pull-requests: write
@@ -52,7 +51,7 @@ jobs:
           ref: ${{ env.TARGET_BRANCH }}
       - name: Npm Install
         id: npm-install
-        run: npm install --silent --no-progress
+        run: npm install 
       # This was a pain to get right.  Need to swap name key with id key to use the steps context variable
       # outputing was variables was difficult as well.  Need to watch newline charaters getting appended
       # to the variable $GITHUB_OUTPUT.  It's used as a delimiter for output key-value pairs.
@@ -105,7 +104,7 @@ jobs:
           git commit -m 'chore: angular core updates'
       - name: Update Angular Eslint Schematics
         run: |
-          npx ng update  @angular-eslint/schematics
+          npx ng update @angular-eslint/schematics 
           DIFF_STATUS=`git status | grep 'working tree clean' | wc -l | tr -d '\n'`
           if [[ DIFF_STATUS -ne '1' ]]
           then
