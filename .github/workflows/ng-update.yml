@@ -29,8 +29,9 @@ env:
  #on:
  #   schedule:
  #     - cron: "0,15,30,45 * * * *"
-  on:
-    workflow_dispatch
+on:
+  workflow_dispatch
+
 
 permissions:
   pull-requests: write
