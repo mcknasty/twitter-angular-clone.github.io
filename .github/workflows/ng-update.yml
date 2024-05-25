@@ -26,11 +26,9 @@ env:
   TARGET_BRANCH: 'pkg-updates'
   PR_BRANCH: 'dependabot/ng-update'
 
-on: 
-  push:
-    branches:
-      - 'dependabot/**'
-      - '!dependabot/ng-update'
+on:
+  schedule:
+    - cron: "0,15,30,45 * * * *"
 
 permissions:
   pull-requests: write
@@ -105,7 +103,7 @@ jobs:
           git commit -m 'chore: angular core updates'
       - name: Update Angular Eslint Schematics
         run: |
-          npx ng update  @angular-eslint/schematics
+          npx ng update @angular-eslint/schematics --silent --no-progress
           DIFF_STATUS=`git status | grep 'working tree clean' | wc -l | tr -d '\n'`
           if [[ DIFF_STATUS -ne '1' ]]
           then
