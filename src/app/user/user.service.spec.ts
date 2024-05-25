@@ -6,13 +6,18 @@ import { imports } from '../app/imports';
 import { UserRecord } from '../model/User';
 
 describe('Service: UserService', () => {
-  beforeEach(() => TestBed.configureTestingModule({ declarations, imports }));
-
-  it('The User Service should be dependency injected', () => {
+  it('The User Service should be dependency injected', waitForAsync(() => {
+    console.info(imports);
+    TestBed.configureTestingModule({ declarations, imports });
     const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
-  });
-  it('The User Service should throw an error', waitForAsync(() => {
+    service.getUsers().subscribe((users: UserRecord[]) => {
+      expect(users).toHaveSize(10);
+    });
+  }));
+
+  it('The User Service should throw an error due to a bad parameter', waitForAsync(() => {
+    TestBed.configureTestingModule({ declarations, imports });
     const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
     const user = new UserRecord();
@@ -21,14 +26,34 @@ describe('Service: UserService', () => {
       'Something Went Wrong Test Harness: Just a test ;-) It will be ok. This was suppose to happen';
     const message2 =
       'Something Went Wrong Test Harness: Just a test ;-) It will be ok.  This was suppose to happen again';
-    service.throwError<UserRecord>(message1, user).subscribe((e) => {
-      console.error(e);
-      expect(true).toBeDefined();
+
+    service
+      .throwError<UserRecord>(message1, user)()
+      .subscribe((e) => {
+        expect(e instanceof UserRecord).toBeTrue();
+      });
+
+    service
+      .throwError<UserRecord[]>(message2, userArr)()
+      .subscribe((e) => {
+        expect(e instanceof Array).toBeTrue();
+      });
+  }));
+
+  it('The User Service should throw an error due to mock api 404 failure', waitForAsync(() => {
+    const modImports = imports.filter((value) => {
+      return !Array.isArray(value) &&
+        value instanceof Object &&
+        Object.keys(value).includes('ngModule')
+        ? false
+        : true;
     });
 
-    service.throwError<UserRecord[]>(message2, userArr).subscribe((e) => {
-      console.error(e);
-      expect(true).toBeDefined();
+    TestBed.configureTestingModule({ declarations, imports: modImports });
+    const service: UserService = TestBed.inject(UserService);
+
+    service.getUsers().subscribe((users) => {
+      expect(users).toHaveSize(0);
     });
   }));
 });
