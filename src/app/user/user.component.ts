@@ -35,6 +35,12 @@ export class UserComponent implements OnInit {
   getUser(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id)
-      this.userService.getUser(id).subscribe((user) => (this.user = user));
+      this.userService.getUser(id).subscribe((user) => {
+        if (user instanceof UserRecord) {
+          this.user = user;
+        } else if (typeof user === 'string') {
+          throw user;
+        }
+      });
   }
 }

@@ -25,8 +25,12 @@ export class TweetComponent implements OnInit {
   }
 
   getUser(): void {
-    this.userService
-      .getUser(this.tweet.userId)
-      .subscribe((user) => (this.user = user));
+    this.userService.getUser(this.tweet.userId).subscribe((user) => {
+      if (user instanceof UserRecord) {
+        this.user = user;
+      } else if (typeof user === 'string') {
+        throw user;
+      }
+    });
   }
 }
