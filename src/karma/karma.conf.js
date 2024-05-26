@@ -3,8 +3,12 @@
 let { conf } = require('./karma-conf-obj');
 let reporters = ['coverage', 'verbose', 'progress'];
 conf.reporters = reporters;
+conf.logLevel = 'INFO';
+conf.coverageReporter.reporters.push({ type: 'text-summary' });
+conf.coverageReporter.reporters.push({ type: 'text' });
 module.exports = function (config) {
-  config.LOG_LOG = 'WARN';
-  (conf.logLevel = config.LOG_LOG), config.set(conf);
+  const c = {};
+  Object.assign(c, config, conf);
+  config.set(c);
 }
 
