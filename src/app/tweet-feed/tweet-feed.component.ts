@@ -108,13 +108,11 @@ export class TweetFeedComponent implements OnInit {
 
     if (pathArray.length > 1) {
       const idKey = pathArray[2];
-      console.log(idKey, pathArray);
 
       if (idKey && idKey !== 'string')
         this.userService.getUser(idKey).subscribe((user) => {
           if (user instanceof UserRecord) {
             this.user = user;
-            console.info(this.user.id);
           } else if (typeof user === 'string') {
             throw user;
           }

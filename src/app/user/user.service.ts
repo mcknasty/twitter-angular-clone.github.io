@@ -48,7 +48,6 @@ export class UserService {
       );
     }
     // When logging is setup, need to print this message to screen and the log.
-    // console.info(errorMessage);
     return of(errorMessage);
   }
 }

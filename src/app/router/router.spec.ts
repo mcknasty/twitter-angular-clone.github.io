@@ -107,8 +107,6 @@ xdescribe('Router Testing Module:', () => {
         TweetFeed.whenStable().then(() => {
           const tweetFeed = debug.queryAll(By.css('.tweet-text'));
           const insertedTweetText = tweetFeed[0].nativeNode.innerHTML.trim();
-          // Debug Code
-          // console.log(tweetFeed.length, insertedTweetText, newTweetText, tweetFeed[0]);
           expect(tweetFeed.length).toBeGreaterThan(0);
           expect(insertedTweetText).toContain(newTweetText);
         });

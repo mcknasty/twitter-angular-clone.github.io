@@ -55,7 +55,6 @@ describe('Service: UserService', () => {
     const service: UserService = TestBed.inject(UserService);
 
     service.getUsers().subscribe((message) => {
-      console.info(message, typeof message);
       expect(typeof message === 'string').toBeTrue();
       expect(Array.isArray(message)).toBeFalse();
     });
