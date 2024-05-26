@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import {} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -10,7 +9,6 @@ import { UserModule } from '../user/user.module';
 const imports = [
   BrowserModule,
   AppRoutingModule,
-  HttpClientModule,
   InMemoryService,
   BrowserAnimationsModule,
   CommonModule,
