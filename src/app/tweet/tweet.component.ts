@@ -13,8 +13,8 @@ import { UserService } from '../user/user.service';
 })
 export class TweetComponent implements OnInit {
   @Input() tweet: TweetRecord = new TweetRecord();
-  user: UserRecord = new UserRecord();
-  now: number = Date.now();
+  protected user: UserRecord = new UserRecord();
+  protected now: number = Date.now();
   created!: Date;
 
   constructor(private userService: UserService) {}
@@ -25,8 +25,14 @@ export class TweetComponent implements OnInit {
   }
 
   getUser(): void {
-    this.userService
-      .getUser(this.tweet.userId)
-      .subscribe((user) => (this.user = user));
+    this.userService.getUser(this.tweet.userId).subscribe((user) => {
+      //Todo: Need to move this next line into the service
+      const User = user as UserRecord;
+      if (UserRecord.instanceOf(user)) {
+        this.user = User;
+      } else if (typeof user === 'string') {
+        throw user;
+      }
+    });
   }
 }
