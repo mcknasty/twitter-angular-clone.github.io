@@ -79,7 +79,7 @@ jobs:
       - run:
           shell: /bin/bash -exo pipefail -lc
           name: Run Unit and End to End Tests
-          command: npm run test
+          command: npm run test:ci
   pages-build:
     working_directory: /home/circleci/project/src
     executor: angular-build
@@ -134,7 +134,7 @@ workflows:
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
-          command: npm run test-cli
+          command: npm run test:ci
           requires:
             - lint
       - codecov:
@@ -168,7 +168,7 @@ workflows:
       - npm-cli:
           name: unit-test
           message: Run Unit and End to End Tests
-          command: npm run test-cli
+          command: npm run test:ci
           requires:
             - lint
       - pages-build:

@@ -14,7 +14,8 @@ module.exports.conf = {
     require('@angular-devkit/build-angular/plugins/karma'),
     require('karma-verbose-reporter'),
     require('karma-typescript'),
-    require('karma-coverage')
+    require('karma-coverage'),
+    require('karma-fail-fast-reporter')
   ],
   preprocessors: {
     '**/*.ts': ['karma-typescript', 'coverage'],
