@@ -1,16 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AbstractService, ServiceHttpError } from '../abstracts/AbstractService'
+
+import {
+  AbstractHttpService,
+  ServiceHttpError
+} from '../abstracts/AbstractHttpService';
 import { UserRecord } from '../model/User';
 
-type GetUserResponse = UserRecord | ServiceHttpError
-type GetUsersResponse = UserRecord[] | ServiceHttpError
+type GetUserResponse = UserRecord | ServiceHttpError;
+type GetUsersResponse = UserRecord[] | ServiceHttpError;
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends AbstractService {
+export class UserService extends AbstractHttpService {
   private userUrl = 'api/users'; // URL to web api
 
   constructor(http: HttpClient) {
@@ -20,7 +24,7 @@ export class UserService extends AbstractService {
 
   /** GET users from the server */
   getUsers(): Observable<GetUsersResponse> {
-    return this.httpGet<GetUsersResponse>(this.userUrl)
+    return this.httpGet<GetUsersResponse>(this.userUrl);
   }
 
   /** GET user by id. Will 404 if id not found */

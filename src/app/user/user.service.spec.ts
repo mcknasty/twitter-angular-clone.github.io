@@ -6,25 +6,28 @@ import { imports } from '../app/imports';
 import { UserRecord } from '../model/User';
 
 describe('Service: UserService', () => {
-  beforeEach(waitForAsync( async() => {
-    TestBed
-      .configureTestingModule({ declarations, imports })
-      .compileComponents();
+  beforeEach(waitForAsync(async () => {
+    TestBed.configureTestingModule({
+      declarations,
+      imports
+    }).compileComponents();
   }));
 
   it('getUsers should return an array of populated User Record objects', waitForAsync(async () => {
     const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
     service.getUsers()?.subscribe((users) => {
-      const Users = users as UserRecord[]
+      const Users = users as UserRecord[];
 
-      const isCorrectType: boolean = Users
-        .every(user => UserRecord.instanceOf(user));
+      const isCorrectType: boolean = Users.every((user) =>
+        UserRecord.instanceOf(user)
+      );
       expect(isCorrectType).toBeTrue();
 
-      const isPopulated: boolean = Users.map(v => v.name)
-        .every(name => typeof name == 'string');
-      expect(isPopulated).toBeTrue()
+      const isPopulated: boolean = Users.map((v) => v.name).every(
+        (name) => typeof name == 'string'
+      );
+      expect(isPopulated).toBeTrue();
 
       expect(Users).toHaveSize(10);
     });
@@ -70,7 +73,7 @@ describe('Service: UserService', () => {
         : true;
     });
 
-    TestBed.resetTestingModule()
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({ declarations, imports: modImports });
     const service: UserService = TestBed.inject(UserService);
 

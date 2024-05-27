@@ -1,13 +1,17 @@
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
 
-type ServiceHttpError = HttpErrorResponse | string
+type ServiceHttpError = HttpErrorResponse | string;
 
-class AbstractService {
+class AbstractHttpService {
   private appendableErrorString: string;
   private http: HttpClient;
 
-  constructor(http: HttpClient, errorPrefix: string){
+  constructor(http: HttpClient, errorPrefix: string) {
     this.http = http;
     this.appendableErrorString = errorPrefix;
   }
@@ -24,18 +28,16 @@ class AbstractService {
     );
   }
 
-  public httpPost<T, U>(url: string, obj: U ): Observable<T | ServiceHttpError> {
+  public httpPost<T, U>(url: string, obj: U): Observable<T | ServiceHttpError> {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content Type': 'application/json' })
     };
-    
-    return this.http
-      .post<T>(url, obj, httpOptions)
-      .pipe(
-        catchError((error) => {
-          return this.handleError(error);
-        })
-      );
+
+    return this.http.post<T>(url, obj, httpOptions).pipe(
+      catchError((error) => {
+        return this.handleError(error);
+      })
+    );
   }
 
   public throwError(message: ServiceHttpError) {
@@ -56,5 +58,4 @@ class AbstractService {
   }
 }
 
-export { AbstractService, ServiceHttpError}
-
+export { AbstractHttpService, ServiceHttpError };
