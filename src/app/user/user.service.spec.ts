@@ -6,10 +6,14 @@ import { imports } from '../app/imports';
 import { UserRecord } from '../model/User';
 
 describe('Service: UserService', () => {
-  it('getUsers should return an array of populated User Record objects', waitForAsync(async () => {
-    TestBed.configureTestingModule({ declarations, imports });
-    const service: UserService = TestBed.inject(UserService);
+  beforeEach(waitForAsync( async() => {
+    TestBed
+      .configureTestingModule({ declarations, imports })
+      .compileComponents();
+  }));
 
+  it('getUsers should return an array of populated User Record objects', waitForAsync(async () => {
+    const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
     service.getUsers()?.subscribe((users) => {
       const Users = users as UserRecord[]
@@ -27,7 +31,6 @@ describe('Service: UserService', () => {
   }));
 
   it('getUser should return the correct populated UserRecord object', waitForAsync(async () => {
-    TestBed.configureTestingModule({ declarations, imports });
     const service: UserService = TestBed.inject(UserService);
     const userId = '71ab267fc37caa55b9d8de7280daee18';
 
@@ -39,7 +42,6 @@ describe('Service: UserService', () => {
   }));
 
   it('The User Service should throw an error due to a bad parameter', waitForAsync(async () => {
-    TestBed.configureTestingModule({ declarations, imports });
     const service: UserService = TestBed.inject(UserService);
     expect(service).toBeDefined();
 
@@ -68,6 +70,7 @@ describe('Service: UserService', () => {
         : true;
     });
 
+    TestBed.resetTestingModule()
     TestBed.configureTestingModule({ declarations, imports: modImports });
     const service: UserService = TestBed.inject(UserService);
 
