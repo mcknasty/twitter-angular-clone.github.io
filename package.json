@@ -8,7 +8,7 @@
     "build": "npx ng build",
     "test": "npx ng test --karma-config=src/karma/karma-cli.conf.js --code-coverage",
     "test:debug": "npx ng test --code-coverage",
-    "test:ci": "npx ng test --karma-config=src/karma/karma-ci.conf.js --code-coverage",
+    "test:ci": "npx ng test --karma-config=src/karma/karma-ci.conf.js --code-coverage --progress false",
     "lint": "npx ng lint --lint-file-patterns=src/app/**/*.ts",
     "format": "npx prettier 'src/**/*.{ts,tsx}' --write",
     "gh-pages:build": "npm run gh-pages:clean && npm run gh-pages:bundle && npm run gh-pages:deploy",

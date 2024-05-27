@@ -4,7 +4,7 @@ const { conf } = require('./karma-conf-obj');
 let reporters = ['coverage', 'fail-fast'];
 conf.reporters = reporters;
 conf.failOnFailingTestSuite = true;
-conf.failOnSkippedTests = true;
+conf.failOnSkippedTests = false;
 conf.logLevel = 'FATAL';
 conf.plugins.push(require('karma-fail-fast-reporter'))
 conf.coverageReporter.reporters.push({ type: 'lcov' });

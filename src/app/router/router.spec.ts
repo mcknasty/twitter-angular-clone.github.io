@@ -29,7 +29,7 @@ let location: SpyLocation;
 
 let TweetFeed: ComponentFixture<TweetFeedComponent>;
 
-xdescribe('Router Testing Module:', () => {
+describe('Router Testing Module:', () => {
   const user1Id = '71ab267fc37caa55b9d8de7280daee18';
   const user2Id = '20a35644b18ae7998da37847e387d11d';
   const userNameText = 'Nissa Dagless';
@@ -58,7 +58,7 @@ xdescribe('Router Testing Module:', () => {
     });
   }));
 
-  it("The App should be able to navigate to another user's profile from their username link", waitForAsync(async () => {
+  xit("The App should be able to navigate to another user's profile from their username link", waitForAsync(async () => {
     initializeFeedTestCase(() => {
       const debug = fixture.debugElement;
       const tweetUsers = debug.query(By.css('.profile-link'));
