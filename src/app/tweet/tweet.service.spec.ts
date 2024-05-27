@@ -6,47 +6,98 @@ import { imports } from '../app/imports';
 import { TweetRecord } from '../model/Tweet';
 
 describe('Service: TweetService', () => {
-  let service: TweetService;
-  beforeEach(() => {
+  beforeEach(waitForAsync(async () => {
     TestBed.configureTestingModule({
       declarations,
       imports
     }).compileComponents();
-    service = TestBed.inject(TweetService);
-  });
-
-  it('The Tweet Service should be dependency injected', waitForAsync(() => {
-    expect(service).toBeDefined();
   }));
 
-  it('The Tweet Service should be able to get a feed of tweets', waitForAsync(() => {
+  it('getTweets should return an array of populated Tweet Record objects', waitForAsync(async () => {
+    const service = TestBed.inject(TweetService);
     expect(service).toBeDefined();
-    service.getTweets().subscribe((tweets: TweetRecord[]) => {
-      expect(tweets.length).toBeGreaterThan(0);
+
+    service.getTweets().subscribe((tweets) => {
+      const Tweets = tweets as TweetRecord[];
+
+      const isCorrectType: boolean = Tweets.every((tweet) =>
+        TweetRecord.instanceOf(tweet)
+      );
+      expect(isCorrectType).toBeTrue();
+
+      const isPopulated: boolean = Tweets.map((v) => v.tweetText).every(
+        (tweetText) => typeof tweetText == 'string'
+      );
+      expect(isPopulated).toBeTrue();
+
+      // console.info(Tweets.length)
+      expect(Tweets).toHaveSize(100);
     });
   }));
 
-  it('The Tweet Service should be able to add a tweet', waitForAsync(() => {
+  it('addTweet should be able to add a tweet', waitForAsync(async () => {
+    const service = TestBed.inject(TweetService);
+    expect(service).toBeDefined();
+
     const newTweetText = 'test test test';
     const tweet = new TweetRecord({
       userId: TweetRecord.generateId(),
       tweetText: newTweetText
     });
-    expect(service).toBeDefined();
+
     service.addTweet(tweet).subscribe((tweet) => {
-      expect(tweet).toBeDefined();
-      expect(tweet.tweetText).toEqual(newTweetText);
+      const Tweet = tweet as TweetRecord;
+      expect(Tweet).toBeDefined();
+      expect(Tweet.tweetText).toEqual(newTweetText);
     });
   }));
 
-  it('The Tweet Service should throw an error', waitForAsync(() => {
+  it('should throw an error due to a bad parameter', waitForAsync(async () => {
+    const service = TestBed.inject(TweetService);
     expect(service).toBeDefined();
-    const tweet = new TweetRecord();
+
     const message1 =
       'Something Went Wrong Test Harness: Just a test ;-) It will be ok. This was suppose to happen';
-    service.throwError<TweetRecord>(message1, tweet).subscribe((e) => {
-      console.error(e);
-      expect(true).toBeDefined();
+    const message2 =
+      'Something Went Wrong Test Harness: Just a test ;-) It will be ok.  This was suppose to happen again';
+
+    service.throwError(message1).subscribe((message) => {
+      expect(typeof message === 'string').toBeTrue();
+      expect(message).toMatch('This was suppose to happen');
+    });
+
+    service.throwError(message2).subscribe((message) => {
+      expect(typeof message === 'string').toBeTrue();
+      expect(message).toMatch('This was suppose to happen again');
+    });
+  }));
+
+  it('should throw an error due to mock api 404 failure', waitForAsync(async () => {
+    const modImports = imports.filter((value) => {
+      return !Array.isArray(value) &&
+        value instanceof Object &&
+        Object.keys(value).includes('ngModule')
+        ? false
+        : true;
+    });
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({ declarations, imports: modImports });
+    const service = TestBed.inject(TweetService);
+
+    service.getTweets().subscribe((message) => {
+      expect(typeof message === 'string').toBeTrue();
+      expect(Array.isArray(message)).toBeFalse();
+    });
+
+    const newTweetText = 'test test test';
+    const tweet = new TweetRecord({
+      userId: TweetRecord.generateId(),
+      tweetText: newTweetText
+    });
+    service.addTweet(tweet).subscribe((message) => {
+      expect(typeof message === 'string').toBeTrue();
+      expect(message instanceof TweetRecord).toBeFalse();
     });
   }));
 });
