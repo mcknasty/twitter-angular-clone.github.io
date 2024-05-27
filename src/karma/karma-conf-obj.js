@@ -14,8 +14,7 @@ module.exports.conf = {
     require('@angular-devkit/build-angular/plugins/karma'),
     require('karma-verbose-reporter'),
     require('karma-typescript'),
-    require('karma-coverage'),
-    require('karma-fail-fast-reporter')
+    require('karma-coverage')
   ],
   preprocessors: {
     '**/*.ts': ['karma-typescript', 'coverage'],
@@ -33,13 +32,9 @@ module.exports.conf = {
     }
   },
   coverageReporter: {
-    dir: require('path').join(__dirname, '../coverage'),
+    dir: require('path').join(__dirname, '../../.coverage'),
     subdir: '.',
-    reporters: [
-      { type: 'lcovonly' },
-      { type: 'text-summary' },
-      { type: 'text' }
-    ],
+    reporters: [],
     fixWebpackSourcePaths: true
   },
   browserConsoleLogOptions: {
@@ -67,7 +62,7 @@ module.exports.conf = {
       ],
       browserDisconnectTimeout: 280000,
       browserNoActivityTimeout: 280000,
-      browserDisconnectTolerance : 1
+      browserDisconnectTolerance : 3
     }
   }
   /**                          ** /
