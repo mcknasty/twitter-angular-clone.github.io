@@ -16,19 +16,17 @@ This project was created with the following features:
   - [In memory Web Api](https://github.com/angular/in-memory-web-api). :thumbsup:
 
 ## Live Example
-  [Live Example of this code base](https://mcknasty.github.io/twitter-angular-clone.github.io).
+  [Live Example](https://mcknasty.github.io/twitter-angular-clone.github.io) of this code base.
 
   ### Use Cases
   - To add a new tweet click the tweet button at the top of the tweet feed.  
-  - To see another user's feed click on any of the handles in the tweets
+  - To see another user's feed click on any of the handles in the tweets.
+
+  [Live Example](https://app.circleci.com/pipelines/github/mcknasty/twitter-angular-clone.github.io) CI/CD pipeline hosted on [Circleci](https://circleci.com/).
 
 ## Working with this project
-Install angular cli with the following command:
-```
- npm install -g @angular/cli
-```
 
-Clone the project to a convenient directory path then change into the repository's directories
+Clone the project to a convenient directory path then change it into the repository's directory.
 ```
   git clone git@github.com:mcknasty/twitter-angular-clone.github.io.git
   cd twitter-angular-clone.github.io
