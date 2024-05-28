@@ -16,7 +16,11 @@ This project was created with the following features:
   - [In memory Web Api](https://github.com/angular/in-memory-web-api). :thumbsup:
 
 ## Live Example
-  [To see a live example of this demo, please follow this link](https://mcknasty.github.io/twitter-angular-clone.github.io). To add a new tweet click the tweet button at the top of the tweet feed.  To see another users feed click on any of the handles in the tweets
+  [Live Example of this code base](https://mcknasty.github.io/twitter-angular-clone.github.io).
+
+  ### Use Cases
+  - To add a new tweet click the tweet button at the top of the tweet feed.  
+  - To see another user's feed click on any of the handles in the tweets
 
 ## Working with this project
 Install angular cli with the following command:
