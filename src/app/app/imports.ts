@@ -10,7 +10,6 @@ import { UserModule } from '../user/user.module';
 const imports = [
   BrowserModule,
   AppRoutingModule,
-  HttpClientModule,
   InMemoryService,
   BrowserAnimationsModule,
   CommonModule,

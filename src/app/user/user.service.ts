@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -10,8 +10,9 @@ import { UserRecord } from '../model/User';
 })
 export class UserService {
   private userUrl = 'api/users'; // URL to web api
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.getUsers();
   }
 
