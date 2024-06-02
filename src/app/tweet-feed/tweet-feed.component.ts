@@ -129,7 +129,8 @@ export class TweetFeedComponent implements OnInit {
   }
 
   add(tweetText: string, id?: string) {
-    const userId: string = id === '' ? this.user.id : (id as string);
+    const userId: string =
+      typeof id === 'undefined' ? this.user.id : (id as string);
     this.initNewTweet({ userId, tweetText });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.tweetService.addTweet(this.newTweet).subscribe((tweet: any) => {
