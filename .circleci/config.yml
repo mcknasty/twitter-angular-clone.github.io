@@ -116,6 +116,7 @@ workflows:
                 - develop
                 - /features/.*/
                 - /feature/.*/
+                - /feat/*
                 - /dependabot/.*/
                 - pkg-update
                 - pkg-updates

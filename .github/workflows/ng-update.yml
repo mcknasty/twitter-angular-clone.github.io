@@ -26,10 +26,12 @@ env:
   TARGET_BRANCH: 'pkg-updates'
   PR_BRANCH: 'dependabot/ng-update'
 
+#on:
+#  #workflow_dispatch
+
 on:
-  workflow_dispatch
-  #schedule:
-  #  - cron: "0,15,30,45 * * * *"
+  schedule:
+    - cron: "0,15,30,45 * * * *"
 
 permissions:
   pull-requests: write

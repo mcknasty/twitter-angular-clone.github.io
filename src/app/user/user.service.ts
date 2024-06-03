@@ -1,59 +1,47 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import {
+  AbstractHttpService,
+  ServiceHttpError
+} from '../abstracts/AbstractHttpService';
 import { UserRecord } from '../model/User';
+
+type GetUserResponse = UserRecord | ServiceHttpError;
+type GetUsersResponse = UserRecord[] | ServiceHttpError;
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends AbstractHttpService {
   private userUrl = 'api/users'; // URL to web api
-  private http = inject(HttpClient);
 
   constructor() {
-    this.getUsers();
-  }
-
-  initUser(): UserRecord {
-    return new UserRecord();
+    super('UserService encountered an error');
   }
 
   /** GET users from the server */
-  getUsers(): Observable<UserRecord[]> {
-    return this.http
-      .get<UserRecord[]>(this.userUrl)
-      .pipe(
-        catchError(this.handleError<UserRecord[]>('function: getUser', []))
-      );
+  getUsers(): Observable<GetUsersResponse> {
+    return this.httpGet<GetUsersResponse>(this.userUrl);
   }
 
   /** GET user by id. Will 404 if id not found */
-  getUser(id: string): Observable<UserRecord> {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  async getUser(id: string, success: Function): Promise<void> {
     const url = `${this.userUrl}/${id}`;
-    return this.http
-      .get<UserRecord>(url)
-      .pipe(
-        catchError(
-          this.handleError<UserRecord>(
-            `getUser function: id=${id}`,
-            this.initUser()
-          )
-        )
-      );
-  }
-
-  public throwError<T>(message: string, result: T) {
-    return this.handleError<T>(message, result)(message);
-  }
-
-  private handleError<T>(message: string, result: T) {
-    return (error: unknown): Observable<T> => {
-      console.error(
-        `UserService encountered an error: ${message} error: ${error}`
-      );
-      return of(result as T);
-    };
+    this.httpGet<GetUserResponse>(url).subscribe((user) => {
+      const User = user as UserRecord;
+      if (UserRecord.instanceOf(User)) {
+        success(User);
+      }
+      /** * /
+      else if (typeof user === 'string') {
+        // Todo: Something like this is what I want
+        // throw new Error(JSON.stringify(User));
+        // Settling for something like this
+        console.error(User)
+      }
+      /** */
+    });
   }
 }

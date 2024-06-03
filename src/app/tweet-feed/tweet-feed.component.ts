@@ -55,19 +55,21 @@ export class TweetFeedComponent implements OnInit {
     public router: Router,
     public locationService: Location
   ) {
-    this.navigationSubscription = this.router.events.subscribe((e: unknown) => {
-      // If it is a NavigationEnd event re-initialize the component
-      if (e instanceof NavigationEnd) {
-        this.initNewTweet();
-        this.getTweets();
-        this.getUser();
+    this.navigationSubscription = this.router.events.subscribe(
+      async (e: unknown) => {
+        // If it is a NavigationEnd event re-initialize the component
+        if (e instanceof NavigationEnd) {
+          this.initNewTweet();
+          this.getTweets();
+          await this.getUser();
+        }
       }
-    });
+    );
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.initNewTweet();
-    this.getUser();
+    await this.getUser();
     this.getTweets();
   }
 
@@ -81,11 +83,16 @@ export class TweetFeedComponent implements OnInit {
   }
 
   filterTweets(id: string): void {
-    this.tweetService.getTweets().subscribe((tweets: TweetRecord[]) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.tweetService.getTweets().subscribe((tweets: any) => {
+      // Todo: Need to move this next line into the tweet service.
+      // Could be a number of parameters
+      const Tweets = tweets as TweetRecord[];
       const followed: string[] = this.getUsersFollowed(id);
       followed.push(id);
-      this.tweets = tweets
-        .filter((tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1)
+      this.tweets = Tweets.filter(
+        (tweet: TweetRecord) => followed.indexOf(tweet.userId) !== -1
+      )
         .slice(0, 20)
         .sort((a, b) => {
           if (a.created < b.created) {
@@ -103,14 +110,15 @@ export class TweetFeedComponent implements OnInit {
     return followers.filter((f) => userId === f.userId).map((f) => f.targetId);
   }
 
-  getUser(): void {
-    // const idKey = this.route.snapshot.paramMap.get('id');
-    const idKey = this.locationService.path().split('/')[2];
-
-    if (idKey)
-      this.userService.getUser(idKey).subscribe((user) => {
-        this.user = user;
-      });
+  async getUser(): Promise<void> {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      if (id) {
+        await this.userService.getUser(id, (user: UserRecord) => {
+          this.user = user;
+        });
+      }
+    }
   }
 
   toggle(): void {
@@ -118,12 +126,16 @@ export class TweetFeedComponent implements OnInit {
     this.hide = !this.hide;
   }
 
-  add(tweetText: string, id = '') {
-    const userId: string = id === '' ? this.user.id : id;
+  add(tweetText: string, id?: string) {
+    const userId: string =
+      typeof id === 'undefined' ? this.user.id : (id as string);
     this.initNewTweet({ userId, tweetText });
-    this.tweetService
-      .addTweet(this.newTweet)
-      .subscribe((tweet) => this.tweets.unshift(tweet));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.tweetService.addTweet(this.newTweet).subscribe((tweet: any) => {
+      // Todo: This isn't great.  Should move this next line into the service
+      const Tweet = tweet as TweetRecord;
+      this.tweets.unshift(Tweet);
+    });
   }
 
   ngOnDestroy(): void {

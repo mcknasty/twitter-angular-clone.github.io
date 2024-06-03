@@ -17,7 +17,9 @@ on:
     branches:
       - 'dependabot/**'
       - 'dependabot/*'
-      - 'pkg-updates'
+      # Revist this.  I think I need a dev branch that syncs up with pkg-updates
+      # This workflow keeps firing
+      # - 'pkg-updates'
 
 permissions:
   pull-requests: write
