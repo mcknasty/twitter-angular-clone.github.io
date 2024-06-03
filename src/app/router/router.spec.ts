@@ -11,23 +11,17 @@ import {
   waitForAsync
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterTestingHarness } from '@angular/router/testing';
 
-import { AppRoutes } from './routes';
-import { AppComponent } from '../app/app.component';
 import { AppModule } from '../app/app.module';
 import { declarations } from '../app/declarations';
 import { imports } from '../app/imports';
 import { TweetService } from '../tweet/tweet.service';
-import { TweetFeedComponent } from '../tweet-feed/tweet-feed.component';
 import { UserComponent } from '../user/user.component';
 import { UserService } from '../user/user.service';
 
-let fixture: ComponentFixture<AppComponent>;
+let fixture: ComponentFixture<UserComponent>;
 let location: SpyLocation;
-
-let TweetFeed: ComponentFixture<TweetFeedComponent>;
 
 describe('Router Testing Module:', () => {
   const user1Id = '71ab267fc37caa55b9d8de7280daee18';
@@ -35,36 +29,34 @@ describe('Router Testing Module:', () => {
   const userNameText = 'Nissa Dagless';
   const userHandleText = '@BrindledGnu';
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(waitForAsync(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        ...imports,
-        AppModule,
-        RouterTestingModule.withRoutes(AppRoutes)
-      ],
+      imports: [...imports, AppModule],
       declarations: [...declarations],
       providers: [
         { provide: ComponentFixtureAutoDetect, useValue: true },
         { provide: UserService },
-        { provide: TweetService }
+        { provide: TweetService },
+        { provide: Location, useClass: SpyLocation }
       ]
     }).compileComponents();
   }));
 
-  it("The App should redirect to an arbitrary user's page on loading", waitForAsync(() => {
-    initializeFeedTestCase(() => {
+  it("The App should redirect to an arbitrary user's page on loading", waitForAsync(async () => {
+    await initializeTestCase(() => {
       expectPathToBe(`/user/${user1Id}`, 'after initialNavigation()');
       expectElementOf(UserComponent);
     });
   }));
 
-  it("The App should be able to navigate to another user's profile from their username link", waitForAsync(() => {
-    initializeFeedTestCase(() => {
+  it("The App should be able to navigate to another user's profile from their username link", waitForAsync(async () => {
+    await initializeTestCase(() => {
       const debug = fixture.debugElement;
       const tweetUsers = debug.query(By.css('.profile-link'));
       const link = tweetUsers.nativeElement;
       link.click();
-      advance();
+
+      fixture.detectChanges();
       fixture.whenStable().then(() => {
         expectPathToBe(`/user/${user2Id}`);
         expectElementOf(UserComponent);
@@ -80,37 +72,44 @@ describe('Router Testing Module:', () => {
   }));
 
   //Todo need to come back to this one.  Not picking up id in URL.  Not sure why.
-  it('The App should be to add a new tweet utilizing the user id in the url', waitForAsync(() => {
-    initializeFeedTestCase(() => {
+  it('The App should be to add a new tweet utilizing the user id in the url', waitForAsync(async () => {
+    await initializeTestCase(() => {
       //Open the Drawer
-      const debug = TweetFeed.debugElement;
+      let debug = fixture.debugElement;
       const linkDes = debug.query(By.css('.feed-header .button'));
       linkDes.triggerEventHandler('click', null);
-      TweetFeed.detectChanges();
 
-      TweetFeed.whenStable().then(() => {
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        debug = fixture.debugElement;
         const newTweetText = 'New Tweet! 123';
         const drawerClosed = debug.query(By.css('.display-none'));
         expect(drawerClosed).toBeNull();
 
         //Add some text to the compose tweet text area
-        const textBox = debug.query(By.css('#new-tweet'));
-        textBox.nativeElement.value = newTweetText;
-        textBox.nativeElement.innerHTML = newTweetText;
-        textBox.nativeElement.dispatchEvent(new Event('input'));
-        TweetFeed.detectChanges();
+        const textBox = debug.nativeElement.querySelector('#new-tweet');
+        textBox.innerHTML = newTweetText;
+        textBox.dispatchEvent(new Event('onchange'));
 
-        //Click the submit button
-        const submit = debug.query(By.css('#submit-tweet'));
-        submit.nativeElement.dispatchEvent(new Event('click'));
-        TweetFeed.detectChanges();
-        TweetFeed.whenStable().then(() => {
-          const tweetFeed = debug.queryAll(By.css('.tweet-text'));
-          const insertedTweetText = tweetFeed[0].nativeNode.innerHTML.trim();
-          // Debug Code
-          // console.log(tweetFeed.length, insertedTweetText, newTweetText, tweetFeed[0]);
-          expect(tweetFeed.length).toBeGreaterThan(0);
-          expect(insertedTweetText).toContain(newTweetText);
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+          //Click the submit button
+          const submit = debug.nativeElement.querySelector('#submit-tweet');
+          submit.dispatchEvent(new Event('click'));
+          fixture.detectChanges();
+          fixture.whenStable().then(() => {
+            // Wait for the animation
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+              debug = fixture.debugElement;
+              const tweetFeed = debug.queryAll(By.css('.tweet-text'));
+              const tweetText = tweetFeed.map((v) =>
+                v.nativeNode.innerHTML.trim()
+              );
+              expect(tweetFeed.length).toBeGreaterThan(0);
+              expect(tweetText[0]).toContain(newTweetText);
+            });
+          });
         });
       });
     });
@@ -121,41 +120,19 @@ describe('Router Testing Module:', () => {
 ////// Helpers /////////
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const initializeTestCase = (callback: Function) => {
-  fixture = TestBed.createComponent(AppComponent);
-  const injector = fixture.debugElement.injector;
-  location = injector.get(Location) as SpyLocation;
-  const router = injector.get(Router);
-  injector.get(UserService);
-  injector.get(TweetService);
-  router.initialNavigation();
-  advance();
-
-  fixture.whenStable().then(() => {
-    callback();
-  });
-};
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-const initializeFeedTestCase = (callback: Function) => {
-  initializeTestCase(() => {
-    TestBed.inject(UserService);
-    TestBed.inject(TweetService);
-    TweetFeed = TestBed.createComponent(TweetFeedComponent);
-    TweetFeed.detectChanges();
-    TweetFeed.whenStable().then(() => {
-      callback();
+const initializeTestCase = async (callback: Function) => {
+  const UserId = '71ab267fc37caa55b9d8de7280daee18';
+  const router = await RouterTestingHarness.create();
+  await router.navigateByUrl(`user/${UserId}`, UserComponent);
+  const Fixture = router.fixture;
+  if (Fixture instanceof ComponentFixture) {
+    fixture = Fixture as ComponentFixture<UserComponent>;
+    fixture.detectChanges();
+    fixture.whenStable().then(async () => {
+      await callback();
     });
-  });
+  }
 };
-
-/**
- * Advance to the routed page
- * Wait a tick, then detect changes, and tick again
- */
-function advance(): void {
-  fixture.detectChanges(); // update view
-}
 
 function expectPathToBe(path: string, expectationFailOutput?: string) {
   const injector = fixture.debugElement.injector;

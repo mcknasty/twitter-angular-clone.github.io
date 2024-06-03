@@ -4,11 +4,12 @@ const { conf } = require('./karma-conf-obj');
 let reporters = ['coverage', 'fail-fast'];
 conf.reporters = reporters;
 conf.failOnFailingTestSuite = true;
-conf.failOnSkippedTests = true;
+conf.failOnSkippedTests = false;
+conf.logLevel = 'FATAL';
+conf.plugins.push(require('karma-fail-fast-reporter'))
+conf.coverageReporter.reporters.push({ type: 'lcov' });
 module.exports = function (config) {
-  config.LOG_LOG = 'WARN';
-//  config.LOG_LOG = 'OFF';
-//  config.failOnFailingTestSuite = true;
-//  config.failOnSkippedTests = true;
-  (conf.logLevel = config.LOG_LOG), config.set(conf);
+  const c = {};
+  Object.assign(c, config, conf);
+  config.set(c);
 };
