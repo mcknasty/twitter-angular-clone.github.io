@@ -9,7 +9,7 @@ import { UserService } from '../user/user.service';
   templateUrl: './user.component.html'
 })
 export class UserComponent implements OnInit {
-  user: UserRecord = new UserRecord();
+  protected user: UserRecord = new UserRecord();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   navigationSubscription: any;
   now: number = Date.now();
@@ -19,22 +19,27 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private router: Router
   ) {
+    this.ngOnInit();
     this.navigationSubscription = this.router.events.subscribe((e: unknown) => {
       // If it is a NavigationEnd event re-initialize the component
       if (e instanceof NavigationEnd) {
-        this.now = Date.now();
-        this.getUser();
+        this.ngOnInit();
       }
     });
   }
 
-  ngOnInit(): void {
-    this.getUser();
+  async ngOnInit(): Promise<void> {
+    await this.getUser();
+    this.now = Date.now();
   }
 
-  getUser(): void {
+  async getUser(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id)
-      this.userService.getUser(id).subscribe((user) => (this.user = user));
+
+    if (id) {
+      await this.userService.getUser(id, (user: UserRecord) => {
+        this.user = user;
+      });
+    }
   }
 }

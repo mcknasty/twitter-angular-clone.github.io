@@ -73,18 +73,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "twitter-clone:build"
+            "buildTarget": "twitter-clone:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "twitter-clone:build:production"
+              "buildTarget": "twitter-clone:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "twitter-clone:build"
+            "buildTarget": "twitter-clone:build"
           }
         },
         "test": {

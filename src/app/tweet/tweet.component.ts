@@ -13,20 +13,23 @@ import { UserService } from '../user/user.service';
 })
 export class TweetComponent implements OnInit {
   @Input() tweet: TweetRecord = new TweetRecord();
-  user: UserRecord = new UserRecord();
-  now: number = Date.now();
+  protected user: UserRecord = new UserRecord();
+  protected now: number = Date.now();
   created!: Date;
 
   constructor(private userService: UserService) {}
 
-  ngOnInit() {
-    this.getUser();
+  async ngOnInit(): Promise<void> {
+    await this.getUser();
     this.created = new Date(this.tweet.created);
   }
 
-  getUser(): void {
-    this.userService
-      .getUser(this.tweet.userId)
-      .subscribe((user) => (this.user = user));
+  async getUser(): Promise<void> {
+    const { userId } = this.tweet;
+    if (userId) {
+      await this.userService.getUser(userId, (user: UserRecord) => {
+        this.user = user;
+      });
+    }
   }
 }
