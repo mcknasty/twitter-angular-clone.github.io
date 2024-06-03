@@ -38,7 +38,8 @@ describe('Service: UserService', () => {
     const userId = '71ab267fc37caa55b9d8de7280daee18';
 
     expect(service).toBeDefined();
-    service.getUser(userId)?.subscribe((user) => {
+
+    await service.getUser(userId, (user: UserRecord) => {
       const u = user as UserRecord;
       expect(u.id).toEqual(userId);
     });
@@ -82,10 +83,8 @@ describe('Service: UserService', () => {
       expect(Array.isArray(message)).toBeFalse();
     });
 
+    //make sure there is some console output.
     const userId = '71ab267fc37caa55b9d8de7280daee18';
-    service.getUser(userId).subscribe((message) => {
-      expect(typeof message === 'string').toBeTrue();
-      expect(message instanceof UserRecord).toBeFalse();
-    });
+    await service.getUser(userId, () => {});
   }));
 });

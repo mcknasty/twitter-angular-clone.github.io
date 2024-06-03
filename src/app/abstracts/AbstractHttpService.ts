@@ -16,10 +16,6 @@ class AbstractHttpService {
     this.appendableErrorString = errorPrefix;
   }
 
-  protected setAppendableErrorString(error: string) {
-    this.appendableErrorString = error;
-  }
-
   public httpGet<T>(url: string): Observable<T | ServiceHttpError> {
     return this.http.get<T>(url).pipe(
       catchError((error) => {

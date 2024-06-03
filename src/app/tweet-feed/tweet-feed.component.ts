@@ -55,19 +55,21 @@ export class TweetFeedComponent implements OnInit {
     public router: Router,
     public locationService: Location
   ) {
-    this.navigationSubscription = this.router.events.subscribe((e: unknown) => {
-      // If it is a NavigationEnd event re-initialize the component
-      if (e instanceof NavigationEnd) {
-        this.initNewTweet();
-        this.getTweets();
-        this.getUser();
+    this.navigationSubscription = this.router.events.subscribe(
+      async (e: unknown) => {
+        // If it is a NavigationEnd event re-initialize the component
+        if (e instanceof NavigationEnd) {
+          this.initNewTweet();
+          this.getTweets();
+          await this.getUser();
+        }
       }
-    });
+    );
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.initNewTweet();
-    this.getUser();
+    await this.getUser();
     this.getTweets();
   }
 
@@ -108,18 +110,14 @@ export class TweetFeedComponent implements OnInit {
     return followers.filter((f) => userId === f.userId).map((f) => f.targetId);
   }
 
-  getUser(): void {
+  async getUser(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.userService.getUser(id).subscribe((user) => {
-        //Todo: need to move this next line down to the service
-        const User = user as UserRecord;
-        if (UserRecord.instanceOf(User)) {
-          this.user = User;
-        } else if (typeof user === 'string') {
-          throw User;
-        }
-      });
+      if (id) {
+        await this.userService.getUser(id, (user: UserRecord) => {
+          this.user = user;
+        });
+      }
     }
   }
 

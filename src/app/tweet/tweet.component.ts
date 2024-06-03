@@ -19,20 +19,17 @@ export class TweetComponent implements OnInit {
 
   constructor(private userService: UserService) {}
 
-  ngOnInit() {
-    this.getUser();
+  async ngOnInit(): Promise<void> {
+    await this.getUser();
     this.created = new Date(this.tweet.created);
   }
 
-  getUser(): void {
-    this.userService.getUser(this.tweet.userId).subscribe((user) => {
-      //Todo: Need to move this next line into the service
-      const User = user as UserRecord;
-      if (UserRecord.instanceOf(user)) {
-        this.user = User;
-      } else if (typeof user === 'string') {
-        throw user;
-      }
-    });
+  async getUser(): Promise<void> {
+    const { userId } = this.tweet;
+    if (userId) {
+      await this.userService.getUser(userId, (user: UserRecord) => {
+        this.user = user;
+      });
+    }
   }
 }

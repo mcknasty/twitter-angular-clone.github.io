@@ -28,24 +28,17 @@ export class UserComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getUser();
+  async ngOnInit(): Promise<void> {
+    await this.getUser();
     this.now = Date.now();
   }
 
-  getUser(): void {
+  async getUser(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      // if (id && typeof id === 'string' && id.length < 32) {
-      this.userService.getUser(id).subscribe((user) => {
-        //Todo: need to move this next line down to the service
-        const User = user as UserRecord;
-        if (UserRecord.instanceOf(User)) {
-          this.user = User;
-        } else if (typeof user === 'string') {
-          throw User;
-        }
+      await this.userService.getUser(id, (user: UserRecord) => {
+        this.user = user;
       });
     }
   }

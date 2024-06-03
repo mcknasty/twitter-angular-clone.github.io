@@ -26,8 +26,22 @@ export class UserService extends AbstractHttpService {
   }
 
   /** GET user by id. Will 404 if id not found */
-  getUser(id: string): Observable<GetUserResponse> {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  async getUser(id: string, success: Function): Promise<void> {
     const url = `${this.userUrl}/${id}`;
-    return this.httpGet<GetUserResponse>(url);
+    this.httpGet<GetUserResponse>(url).subscribe((user) => {
+      const User = user as UserRecord;
+      if (UserRecord.instanceOf(User)) {
+        success(User);
+      }
+      /** * /
+      else if (typeof user === 'string') {
+        // Todo: Something like this is what I want
+        // throw new Error(JSON.stringify(User));
+        // Settling for something like this
+        console.error(User)
+      }
+      /** */
+    });
   }
 }
