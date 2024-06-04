@@ -39,6 +39,7 @@
             GH_TOKEN: ${{ github.token }}
 
     approvePrs:
+      if: ${{ needs.PR-By-Label.outputs.PULL_REQUESTS != '' }}
       needs: PR-By-Label
       uses: mcknasty/twitter-angular-clone.github.io/.github/workflows/approve-prs.yml@master
       with:

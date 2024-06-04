@@ -20,7 +20,7 @@
     checks: read
 
   jobs:
-    approve-prs:
+    checkout:
       runs-on: ubuntu-latest
       steps:
         - id: checkout
@@ -30,6 +30,10 @@
             sparse-checkout: |
               .github
             sparse-checkout-cone-mode: false
+    approve-prs:
+      needs: checkout
+      runs-on: ubuntu-latest
+      steps:
         - name: Approve PR
           run: |
             PR_URLS=( $( echo ${{ env.URLS }} | sed -e "s/'//g" ) );
