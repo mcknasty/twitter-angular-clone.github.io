@@ -1,0 +1,45 @@
+---  
+  name: "  - Find PRs by Label"
+
+  on:
+    workflow_call:
+      inputs:
+        LABEL:
+          required: true
+          type: string
+  
+  permissions:
+    pull-requests: write
+    issues: write
+    repository-projects: write
+    contents: write
+    checks: read
+
+  jobs:
+    PR-By-Label:
+      runs-on: ubuntu-latest
+      outputs:
+        # the steps key on this context requires the use of the 'id' key, not 'name'
+        PULL_REQUESTS: ${{ steps.find.outputs.PULL_REQUESTS }}
+      steps:
+        - id: checkout
+          name: Checkout .github folder
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: |
+              .github
+            sparse-checkout-cone-mode: false
+        - id: find
+          name: Find All Pull Requests Labeled.
+          run: |
+            PULL_REQUESTS=$( ./.github/bash/find-labeled-prs.sh '${{ env.LABEL }}' | tr -d "\n" );
+            echo "PULL_REQUESTS='$PULL_REQUESTS'" >> $GITHUB_OUTPUT;
+          env:
+            LABEL: ${{ inputs.LABEL }}
+            GH_TOKEN: ${{ github.token }}
+
+    approvePrs:
+      needs: PR-By-Label
+      uses: mcknasty/twitter-angular-clone.github.io/.github/workflows/approve-prs.yml@master
+      with:
+        PULL_REQUESTS: ${{ needs.PR-By-Label.outputs.PULL_REQUESTS }}
