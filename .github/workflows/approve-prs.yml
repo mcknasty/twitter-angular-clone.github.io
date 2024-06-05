@@ -20,29 +20,28 @@
     checks: read
 
   jobs:
-    checkout:
+    approve:
       runs-on: ubuntu-latest
       steps:
-        - id: checkout
+        - id: checkout-github-folder
           name: Checkout .github folder
           uses: actions/checkout@v4
           with:
             sparse-checkout: |
               .github
             sparse-checkout-cone-mode: false
-    approve-prs:
-      needs: checkout
-      runs-on: ubuntu-latest
-      steps:
         - name: Approve PR
           run: |
             PR_URLS=( $( echo ${{ env.URLS }} | sed -e "s/'//g" ) );
-            TARGET_PR=${PR_URLS[0]}
-            PR_URLS=( "${PR_URLS[@]:1}" )
-            
-            TARGET_URL=$( echo $TARGET_PR | sed -e 's/"//g' )
-            gh pr review --approve $TARGET_URL;
-            gh pr merge --auto --merge $TARGET_URL
+            if [[ "PR_URLS"  -ne 'false' ]]
+            then
+              TARGET_PR=${PR_URLS[0]}
+              PR_URLS=( "${PR_URLS[@]:1}" )
+              
+              TARGET_URL=$( echo $TARGET_PR | sed -e 's/"//g' )
+              gh pr review --approve $TARGET_URL;
+              gh pr merge --auto --merge $TARGET_URL
+            fi;
 
             #for u in "${PR_URLS[@]}"
             #do

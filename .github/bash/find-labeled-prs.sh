@@ -23,4 +23,4 @@ for PR in "${PULL_REQUESTS[@]}"; do
   fi;
 done
 
-echo "${URLS[@]}"
+echo "'${URLS[@]}'"
