@@ -1,12 +1,12 @@
 ---  
   name: Approve Pull Requests
     
-  #on:
-  #  workflow_dispatch
-
   on:
-    schedule:
-      - cron: 5,10,15,20,25,30,35,40,45,50,55,0 * * * *
+    workflow_dispatch
+
+#  on:
+#    schedule:
+#      - cron: 5,10,15,20,25,30,35,40,45,50,55,0 * * * *
 
   permissions:
     pull-requests: write
@@ -20,6 +20,6 @@
       strategy:
         matrix:
           label: ['dependencies']
-      uses: mcknasty/twitter-angular-clone.github.io/.github/workflows/find-labeled-prs.yml@master
+      uses: mcknasty/twitter-angular-clone.github.io/.github/workflows/pr-by-label.yml@master
       with:
         label: ${{ matrix.label }}

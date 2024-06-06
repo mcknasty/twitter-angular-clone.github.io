@@ -16,11 +16,11 @@ for PR in "${PULL_REQUESTS[@]}"; do
   #echo "${checksSuccessful} ${hasConFlicts}";
   if [[ "${checksSuccessful}" -eq '0' && "${mergeable}" == "'MERGEABLE'" &&  "${hasConFlicts}" -eq '0' ]];
   then
-    URLS+=( $( echo $url | tr "'" '"' ) )
+    URLS+=( $( echo $url | sed -e "s@'@@g" ) )
     #echo "Log: Checks Successful for Pull Request #${number} and Pull request is MERGEABLE"
     #gh pr review --approve "$url
     #echo "Log: Pull Request #${number} Approved!"
   fi;
 done
 
-echo "${URLS[@]}"
+echo "'${URLS[@]}'"
