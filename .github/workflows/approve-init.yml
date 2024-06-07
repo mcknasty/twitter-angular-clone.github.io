@@ -1,12 +1,12 @@
 ---  
   name: Approve Pull Requests
     
-  on:
-    workflow_dispatch
-
 #  on:
-#    schedule:
-#      - cron: 5,10,15,20,25,30,35,40,45,50,55,0 * * * *
+#    workflow_dispatch
+
+  on:
+    schedule:
+      - cron: "*/5 * * * *"
 
   permissions:
     pull-requests: write
