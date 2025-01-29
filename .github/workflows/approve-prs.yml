@@ -1,0 +1,52 @@
+---
+  name: "  - Approve PRS by Url"
+  
+  #on:
+  #  workflow_dispatch
+  
+  on:
+    workflow_call:
+      inputs:
+        PULL_REQUESTS:
+          required: true
+          type: string
+
+
+  permissions:
+    pull-requests: write
+    issues: write
+    repository-projects: write
+    contents: write
+    checks: read
+
+  jobs:
+    approve:
+      runs-on: ubuntu-latest
+      steps:
+        - id: checkout-github-folder
+          name: Checkout .github folder
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: |
+              .github
+            sparse-checkout-cone-mode: false
+        - name: Approve PR
+          run: |
+            if [[ "$PR_URLS" != 'false' ]]
+            then
+              PR_URLS=( $( echo ${{ env.URLS }} | sed -e "s/'//g" ) );
+              TARGET_PR="${PR_URLS[0]}"
+              
+              TARGET_URL=$( echo "$TARGET_PR" | sed -e 's/"//g' )
+              gh pr review --approve $TARGET_URL;
+              gh pr merge --auto --merge $TARGET_URL
+            fi;
+
+            #for u in "${PR_URLS[@]}"
+            #do
+            #  url=$( echo $u | sed -e 's/"//g' )
+            # Do I need to rebaseline with dependabot here?
+            #done
+          env:
+            URLS: ${{ inputs.PULL_REQUESTS }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
