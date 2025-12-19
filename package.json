@@ -66,7 +66,7 @@
     "karma-typescript": "^5.5.3",
     "karma-verbose-reporter": "0.0.8",
     "prettier": "^3.3.1",
-    "puppeteer": "^22.15.0",
+    "puppeteer": "^24.33.1",
     "ts-node": "~10.9.2",
     "typescript": "^5.4.5"
   }
